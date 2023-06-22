@@ -2,7 +2,13 @@
 #include <iostream>
 Board::Board(string fen)
 {
-    for(int i=0;i<64;i++)board[i]=None;
+    for(int i=0;i<120;i++)board[i]=121;
+
+    for(int i=0;i<64;i++)
+    {
+        int sq120 = sq64to120[i];
+        board[sq120]= Empty;
+    }
 
     int idx = 0;
     for(int i=0;i<fen.length();i++)
@@ -20,7 +26,8 @@ Board::Board(string fen)
         }
         else {
             uint8_t piece = it->second;
-            board[idx]=piece;
+            int sq120 = sq64to120[idx];
+            board[sq120]=piece;
 
             idx++;
         }
@@ -42,8 +49,10 @@ void Board::printBoard()
 
         for(int file=0;file<8;file++)
         {
-            int sq = rnk*8+file;
-            Piece piece = static_cast<Piece>(board[sq]);
+            int sq120 = fileRankToSq120(file,rnk);
+
+            Piece piece = static_cast<Piece>(board[sq120]);
+
             char pieceChar = pieceToChar.at(piece);
             cout<<"| "<<pieceChar<<" ";
 

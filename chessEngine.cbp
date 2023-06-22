@@ -32,6 +32,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="board.cpp" />
+		<Unit filename="board.h" />
+		<Unit filename="defs.h" />
 		<Unit filename="main.cpp" />
 		<Extensions />
 	</Project>
