@@ -1,5 +1,6 @@
 #include <iostream>
 #include "board.h"
+#include "zobrist.h"
 
 using namespace std;
 
@@ -7,6 +8,8 @@ int main()
 {
     Board board;
     board.printBoard();
+    uint64_t hashKey = getHashKey(board.board,"KQkq","-",1);
+    cout<<hex<<hashKey;
     /*int move = setMove(85,65,12,1,1,1,1);
 
     int from = getMoveFrom(move);

@@ -35,7 +35,10 @@
 		<Unit filename="board.cpp" />
 		<Unit filename="board.h" />
 		<Unit filename="defs.h" />
+		<Unit filename="helpers.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="zobrist.cpp" />
+		<Unit filename="zobrist.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
