@@ -10,8 +10,10 @@ int main()
 {
     Board board;
     board.printBoard();
-    uint64_t hashKey = getHashKey(board.board,"KQkq","-",1);
-    int move = getBookMove(hashKey);
+    uint64_t hashKey = getHashKey(&board);
+
+    //int move = getBookMove(hashKey);
+
 
 
     /*int move = setMove(85,65,12,1,1,1,1);

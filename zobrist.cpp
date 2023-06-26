@@ -1,7 +1,7 @@
 #include <iostream>
 #include "defs.h"
 #include <cstdint>
-
+#include "board.h"
 
 typedef uint64_t u64;
 using namespace std;
@@ -245,8 +245,14 @@ int getFileValue(char file)
     if(file=='g')return 6;
     if(file=='h')return 7;
 }
-u64 getHashKey(uint8_t board[], string castlePerms, string enPassantMove, int turn)
+u64 getHashKey(Board *boardObj)
 {
+    const int *board = boardObj->getBoard();
+    //TODO
+    string castlePerms = "KQkq";
+    string enPassantMove = "-";
+    int turn = 1 ;
+
     u64 finalKey = 0;
     for (int rnk = 0; rnk < 8; rnk++)
     {

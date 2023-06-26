@@ -35,6 +35,7 @@ enum Piece{
     Empty,whitePawn,whiteKnight,whiteBishop,whiteRook,whiteQueen,whiteKing,
     blackPawn,blackKnight,blackBishop,blackRook,blackQueen,blackKing,
     };
+enum Side{black,white};
 
 static unordered_map<Piece, char> pieceToChar({
 {whitePawn, 'P'},{whiteKnight, 'N'},{whiteBishop, 'B'},{whiteRook, 'R'},{whiteQueen, 'Q'},{whiteKing, 'K'},

@@ -2,38 +2,7 @@
 #include <iostream>
 Board::Board(string fen)
 {
-    for(int i=0;i<120;i++)board[i]=121;
-
-    for(int i=0;i<64;i++)
-    {
-        int sq120 = sq64to120[i];
-        board[sq120]= Empty;
-    }
-
-    int idx = 0;
-    for(int i=0;i<fen.length();i++)
-    {
-        if(fen[i]==' ')break;
-
-        if(fen[i]=='/')continue;
-
-        auto it = charToPiece.find(fen[i]);
-        if(it == charToPiece.end())
-        {
-            char c = fen[i];
-            int temp = int(c-48);
-            idx+=temp;
-        }
-        else {
-            uint8_t piece = it->second;
-            int sq120 = sq64to120[idx];
-            board[sq120]=piece;
-
-            idx++;
-        }
-
-
-    }
+    parseFen(fen);
 }
 
 void Board::printBoard()
@@ -70,4 +39,56 @@ void Board::printBoard()
         cout<<"  "<<c<<" ";
     }
     cout<<endl;
+}
+void Board::parseFen(string fen)
+{
+    for(int i=0;i<120;i++)board[i]=121;
+
+    for(int i=0;i<64;i++)
+    {
+        int sq120 = sq64to120[i];
+        board[sq120]= Empty;
+    }
+    for(int i=Empty;i<=blackKing;i++)numOfPieces[i]=0;
+
+    int idx = 0;
+    for(int i=0;i<fen.length();i++)
+    {
+        if(fen[i]==' ')break;
+
+        if(fen[i]=='/')continue;
+
+        auto it = charToPiece.find(fen[i]);
+        if(it == charToPiece.end())
+        {
+            char c = fen[i];
+            int temp = int(c-48);
+            idx+=temp;
+        }
+        else {
+            int piece = it->second;
+            int sq120 = sq64to120[idx];
+
+            board[sq120]=piece;
+
+
+            pieceList[piece][++numOfPieces[piece]]= sq120;
+
+            idx++;
+        }
+    }
+
+}
+const int * Board::getBoard()const{
+    return board;
+}
+void Board::printPieceLists(){
+     for(int i=1;i<=12;i++)
+    {
+        for(int j=1;j<=numOfPieces[i];j++)
+        {
+            cout<<pieceList[i][j]<<" ";
+        }
+        cout<<endl;
+    }
 }
