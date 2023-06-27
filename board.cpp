@@ -1,4 +1,7 @@
 #include "board.h"
+#include <vector>
+#include <sstream>
+#include <string>
 #include <iostream>
 Board::Board(string fen)
 {
@@ -40,7 +43,7 @@ void Board::printBoard()
     }
     cout<<endl;
 }
-void Board::parseFen(string fen)
+void Board::clearBoard()
 {
     for(int i=0;i<120;i++)board[i]=121;
 
@@ -50,9 +53,20 @@ void Board::parseFen(string fen)
         board[sq120]= Empty;
     }
     for(int i=Empty;i<=blackKing;i++)numOfPieces[i]=0;
+}
+void Board::parseFen(string fen)
+{
+    clearBoard();
+
+    istringstream iss(fen);
+    vector<string> parts;
+    string part;
+    while (std::getline(iss, part, ' ')) {
+        parts.push_back(part);
+    }
 
     int idx = 0;
-    for(int i=0;i<fen.length();i++)
+    for(int i=0;i<parts[0].length();i++)
     {
         if(fen[i]==' ')break;
 
@@ -76,6 +90,17 @@ void Board::parseFen(string fen)
 
             idx++;
         }
+    }
+    turn = parts[1][0]=='w'?white:black;
+
+    //castling rights
+    castlingRights = 0;
+    for(int i=0;i<parts[2].length();i++)
+    {
+        if(parts[2][i]=='K')castlingRights+=8;
+        else if(parts[2][i]=='Q')castlingRights+=4;
+        else if(parts[2][i]=='k')castlingRights+=2;
+        else if(parts[2][i]=='q')castlingRights+=1;
     }
 
 }

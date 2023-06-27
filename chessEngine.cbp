@@ -37,6 +37,8 @@
 		<Unit filename="defs.h" />
 		<Unit filename="helpers.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="movegen.cpp" />
+		<Unit filename="movegen.h" />
 		<Unit filename="polybook.cpp" />
 		<Unit filename="polybook.h" />
 		<Unit filename="zobrist.cpp" />

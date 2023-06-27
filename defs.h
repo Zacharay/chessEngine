@@ -53,4 +53,9 @@ extern int sq64to120[64];
 
 inline constexpr int fileRankToSq120(int file,int rnk){return 21+10*rnk+file;};
 
+typedef struct{
+    int move;
+    int score;
+}S_MOVE;
+
 
