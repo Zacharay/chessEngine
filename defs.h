@@ -5,6 +5,7 @@
 using namespace std;
 
 #define DEFAULT_POS std::string("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+#define TEST_1  std::string("2r3r1/1P2K2P/8/8/4k3/8/8/8 w - - 0 1")
 
 
 /*

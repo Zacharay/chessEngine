@@ -8,11 +8,12 @@ using namespace std;
 
 int main()
 {
-    Board board;
+    Board board(TEST_1);
     board.printBoard();
     uint64_t hashKey = getHashKey(&board);
 
     vector<S_MOVE> ans = generateAllMoves(&board);
+    cout<<ans.size()<<endl;
     for(int i=0;i<ans.size();i++)
     {
         int from = getMoveFrom(ans[i].move);
