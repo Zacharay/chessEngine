@@ -13,5 +13,14 @@ int main()
     uint64_t hashKey = getHashKey(&board);
 
     vector<S_MOVE> ans = generateAllMoves(&board);
+    for(int i=0;i<ans.size();i++)
+    {
+        int from = getMoveFrom(ans[i].move);
+        int to = getMoveTo(ans[i].move);
+        int dbPawn = getMoveDbPawn(ans[i].move);
+        int promotedPiece = getMovePromoted(ans[i].move);
+
+        cout<<from<<" "<<to<<" "<<dbPawn<<" "<<promotedPiece<<endl;
+    }
     return 0;
 }
