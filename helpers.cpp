@@ -24,3 +24,10 @@ int sq64to120[64] = {
     81, 82, 83, 84, 85, 86, 87, 88,
     91, 92, 93, 94, 95, 96, 97, 98
 };
+int pieceColor[13]={
+    -1,white,white,white,white,white,white,black,black,black,black,black,black
+};
+int knightOffsets[8]={-21,-12,-19,-8,21,12,19,8};
+int kingOffsets[8]={-1,1,-10,10,-11,11,-9,9};
+int bishopOffsets[4]={-11,11,-9,9};
+int rookOffsets[4]={-10,10,-1,1};

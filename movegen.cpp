@@ -87,6 +87,7 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
 {
     vector<S_MOVE>moves;
 
+    //Pawns
     if(boardObj->turn==white)
     {
         int numOfWhitePawns = boardObj->numOfPieces[whitePawn];
@@ -102,6 +103,15 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                 {
                     addQuietMove(&moves,setMove(pawnPos,pawnPos-20,0,0,0,0,1),boardObj);
                 }
+            }
+
+            if(boardObj-> board[pawnPos - 11]>=blackPawn&&boardObj-> board[pawnPos - 11]<blackKing)
+            {
+                addWhitePawnMove(boardObj,&moves,pawnPos,pawnPos-11,1);
+            }
+            if(boardObj-> board[pawnPos -9]>=blackPawn&&boardObj-> board[pawnPos - 9]<blackKing)
+            {
+                addWhitePawnMove(boardObj,&moves,pawnPos,pawnPos-9,1);
             }
         }
     }
@@ -120,8 +130,89 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                     addQuietMove(&moves,setMove(pawnPos,pawnPos+20,0,0,0,0,1),boardObj);
                 }
             }
+            //captures
+            if(boardObj-> board[pawnPos + 11]>=whitePawn&&boardObj-> board[pawnPos + 11]<whiteKing)
+            {
+                addBlackPawnMove(boardObj,&moves,pawnPos,pawnPos+ 11,1);
+            }
+            if(boardObj-> board[pawnPos +9]>=whitePawn&&boardObj-> board[pawnPos + 9]<whiteKing)
+            {
+                addBlackPawnMove(boardObj,&moves,pawnPos,pawnPos+9,1);
+            }
         }
     }
+
+    //Knights
+    int knight = boardObj->turn==white?whiteKnight:blackKnight;
+    int numOfKnights = boardObj->numOfPieces[knight];
+    for(int i=1;i<=numOfKnights;i++)
+    {
+        int knightPos = boardObj->pieceList[knight][i];
+        for(int offset:knightOffsets)
+        {
+            int newKnightPos = knightPos + offset;
+
+            if(boardObj->board[newKnightPos]==Offboard)continue;
+
+            if(boardObj->board[newKnightPos]==Empty)
+            {
+                addQuietMove(&moves,setMove(knightPos,newKnightPos,0,0,0,0,0),boardObj);
+            }
+            else if(pieceColor[boardObj->board[newKnightPos]]!=pieceColor[boardObj->board[knightPos]])
+            {
+                addCaptureMove(&moves,setMove(knightPos,newKnightPos,0,0,0,1,0),boardObj);
+            }
+        }
+    }
+
+    //King
+    int king = boardObj->turn==white?whiteKing:blackKing;
+    int kingPos = boardObj->pieceList[king][1];
+
+    for(int offset:kingOffsets)
+    {
+        int newKingPos = kingPos + offset;
+        if(boardObj->board[newKingPos]==Offboard)continue;
+
+        if(boardObj->board[newKingPos]==Empty)
+        {
+            addQuietMove(&moves,setMove(kingPos,newKingPos,0,0,0,0,0),boardObj);
+        }
+        else if(pieceColor[boardObj->board[newKingPos]]!=pieceColor[king])
+        {
+            addCaptureMove(&moves,setMove(kingPos,newKingPos,0,0,0,1,0),boardObj);
+        }
+    }
+    //Bishop
+    int bishop = boardObj->turn==white?whiteBishop:blackBishop;
+    int numOfBishops = boardObj->numOfPieces[bishop];
+    for(int i=1;i<=numOfBishops;i++)
+    {
+        int bishopPos = boardObj->pieceList[bishop][i];
+        for(int offset:bishopOffsets)
+        {
+            int newBishopPos = bishopPos + offset;
+            while(boardObj->board[newBishopPos]!=Offboard)
+            {
+                if(boardObj->board[newBishopPos]!=Empty)
+                {
+                    if(pieceColor[boardObj->board[newBishopPos]]!=pieceColor[bishop])
+                    {
+                        addCaptureMove(&moves,setMove(bishopPos,newBishopPos,0,0,0,1,0),boardObj);
+                    }
+                    break;
+                }
+                else if(boardObj->board[newBishopPos]==Empty)
+                {
+                    addQuietMove(&moves,setMove(bishopPos,newBishopPos,0,0,0,0,0),boardObj);
+                    newBishopPos+=offset;
+                }
+            }
+        }
+    }
+
+    //Rook
+    //Queen
 
     return moves;
 }

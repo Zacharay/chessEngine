@@ -4,7 +4,7 @@
 #include <unordered_map>
 using namespace std;
 
-#define DEFAULT_POS std::string("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1")
+#define DEFAULT_POS std::string("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
 
 /*
@@ -33,8 +33,7 @@ inline constexpr int getMoveDbPawn(int move){return (move>>21)&0X1;}
 
 enum Piece{
     Empty,whitePawn,whiteKnight,whiteBishop,whiteRook,whiteQueen,whiteKing,
-    blackPawn,blackKnight,blackBishop,blackRook,blackQueen,blackKing,
-    };
+    blackPawn,blackKnight,blackBishop,blackRook,blackQueen,blackKing,Offboard=121};
 enum Side{black,white};
 
 static unordered_map<Piece, char> pieceToChar({
@@ -48,8 +47,12 @@ static unordered_map<char, Piece> charToPiece({
 {' ', Empty}});
 
 extern int sq120to64[120];
-
+extern int pieceColor[13];
 extern int sq64to120[64];
+extern int knightOffsets[8];
+extern int kingOffsets[8];
+extern int bishopOffsets[4];
+extern int rookOffsets[4];
 
 inline constexpr int fileRankToSq120(int file,int rnk){return 21+10*rnk+file;};
 
