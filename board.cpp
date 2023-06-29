@@ -7,6 +7,93 @@ Board::Board(string fen)
 {
     parseFen(fen);
 }
+bool Board::isSquareAttacked(int sq,int bySide){
+
+    //Pawns attacks
+    if(bySide==white)
+    {
+        if(board[sq+9]==whitePawn||board[sq+11]==whitePawn)
+        {
+            return true;
+        }
+    }
+    else{
+
+        if(board[sq-9]==blackPawn||board[sq-11]==blackPawn)
+        {
+            return true;
+        }
+    }
+
+    //Knights
+    int knightPiece = bySide==white?whiteKnight:blackKnight;
+    for(int offset:knightOffsets)
+    {
+        int temp_sq = sq+offset;
+        if(board[temp_sq]==knightPiece)
+        {
+            return true;
+        }
+    }
+
+    //King
+    int kingPiece = bySide==white?whiteKing:blackKing;
+    for(int offset:kingOffsets)
+    {
+        int temp_sq = sq+offset;
+        if(board[temp_sq]==kingPiece)
+        {
+            return true;
+        }
+    }
+
+    //bishop
+    int bishopPiece =bySide==white?whiteBishop:blackBishop;
+    int queenPiece =bySide==white?whiteQueen:blackQueen;
+
+    for(int offset:bishopOffsets)
+    {
+        int temp_sq = sq + offset;
+        while(board[temp_sq]!=Offboard)
+        {
+            if(board[temp_sq]!=Empty)
+            {
+                if(board[temp_sq]==bishopPiece||board[temp_sq]==queenPiece)
+                {
+                    return true;
+                }
+                break;
+            }
+            else{
+                temp_sq+=offset;
+            }
+        }
+    }
+
+    //rook
+    int rookPiece =bySide==white?whiteRook:blackRook;
+    for(int offset:rookOffsets)
+    {
+        int temp_sq = sq + offset;
+        while(board[temp_sq]!=Offboard)
+        {
+            if(board[temp_sq]!=Empty)
+            {
+                if(board[temp_sq]==rookPiece||board[temp_sq]==queenPiece)
+                {
+                    return true;
+                }
+                break;
+            }
+            else{
+                temp_sq+=offset;
+            }
+        }
+    }
+
+    return false;
+}
+
 void Board::clearPiece(const int from,const int piece){
     board[from]=Empty;
     for(int i=1;i<=numOfPieces[piece];i++)
@@ -48,16 +135,20 @@ void Board::makeMove(int move){
     const int capturePiece = getMoveCapture(move);
     const int promotedPiece = getMovePromoted(move);
 
-    movePiece(from,to,board[from]);
+
 
     if(capturePiece)
     {
         clearPiece(to,capturePiece);
     }
+    movePiece(from,to,board[from]);
+
     if(promotedPiece)
     {
-
+        clearPiece(to,board[to]);
+        addPiece(to,promotedPiece);
     }
+
 
 
 
@@ -154,10 +245,10 @@ void Board::parseFen(string fen)
     castlingRights = 0;
     for(int i=0;i<parts[2].length();i++)
     {
-        if(parts[2][i]=='K')castlingRights+=8;
-        else if(parts[2][i]=='Q')castlingRights+=4;
-        else if(parts[2][i]=='k')castlingRights+=2;
-        else if(parts[2][i]=='q')castlingRights+=1;
+        if(parts[2][i]=='K')castlingRights+=WKCA;
+        else if(parts[2][i]=='Q')castlingRights+=WQCA;
+        else if(parts[2][i]=='k')castlingRights+=BKCA;
+        else if(parts[2][i]=='q')castlingRights+=BQCA;
     }
 
 }

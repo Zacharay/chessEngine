@@ -14,28 +14,32 @@ using namespace std;
     0000 0000 0000 0011 1111 1000 0000 to                0X3F80
     0000 0000 0011 1100 0000 0000 0000 promotedPiece     0X3C000
     0000 0000 0100 0000 0000 0000 0000 enPassant         0X40000
-    0000 0000 1000 0000 0000 0000 0000 castle            0X80000
-    0000 1111 0000 0000 0000 0000 0000 capturePiece      0XF00000
-    0001 0000 0000 0000 0000 0000 0000 doublePawn=       0X1000000
+    0000 0000 1000 0000 0000 0000 0000 doublePawn=       0X80000
+    0000 1111 0000 0000 0000 0000 0000 capturePiece      0XF0000
+    1111 0000 0000 0000 0000 0000 0000 castle            0XF00000
+
 */
 inline constexpr int setMove(int fromSq,int toSq,int promotedPiece,
 int enPassant,int castle,int capturePiece,int dbPawn)
 {
     return (fromSq|(toSq<<7)|(promotedPiece<<14)|(enPassant<<18)
-    |(castle<<19)|(capturePiece<<20)|(dbPawn<<24));
+    |(dbPawn<<19)|(capturePiece<<20)|(castle<<24));
 }
 inline constexpr int getMoveFrom(int move){return move&0X7F;}
 inline constexpr int getMoveTo(int move){return (move>>7)&0X7F;}
 inline constexpr int getMovePromoted(int move){return (move>>14)&0xF;}
 inline constexpr int getMoveEnPassant(int move){return (move>>18)&0X1;}
-inline constexpr int getMoveCastle(int move){return (move>>19)&0X1;}
+inline constexpr int getMoveDbPawn(int move){return (move>>19)&0X1;}
 inline constexpr int getMoveCapture(int move){return (move>>20)&0XF;}
-inline constexpr int getMoveDbPawn(int move){return (move>>24)&0X1;}
+inline constexpr int getMoveCastle(int move){return (move>>24)&0XF;}
+
+
 
 enum Piece{
     Empty,whitePawn,whiteKnight,whiteBishop,whiteRook,whiteQueen,whiteKing,
     blackPawn,blackKnight,blackBishop,blackRook,blackQueen,blackKing,Offboard=121};
 enum Side{black,white};
+enum CastlePerms{WKCA=8,WQCA=4,BKCA=2,BQCA=1};
 
 static unordered_map<Piece, char> pieceToChar({
 {whitePawn, 'P'},{whiteKnight, 'N'},{whiteBishop, 'B'},{whiteRook, 'R'},{whiteQueen, 'Q'},{whiteKing, 'K'},

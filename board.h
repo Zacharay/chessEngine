@@ -26,6 +26,7 @@ public:
     Board(string fen=DEFAULT_POS);
     void printBoard();
     void parseFen(string fen);
+    bool isSquareAttacked(int sq,int bySide);
     //Making/Unmaking Move
     void clearPiece(const int from,const int piece);
     void addPiece(const int to,const int piece);
@@ -33,7 +34,6 @@ public:
     void makeMove(int move);
     void unmakeMove(int move);
 
-    //Debuging
     void printPieceLists();
     void clearBoard();
 
