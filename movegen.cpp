@@ -20,21 +20,21 @@ void addQuietMove(vector<S_MOVE> *moves,int move,Board *boardObj)
 }
 
 
-void addWhitePawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int isCapture)
+void addWhitePawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int capturedPiece)
 {
     int rankFrom = from/10;
-    if(isCapture)
+    if(capturedPiece)
     {
         //Promotion Moves
         if(rankFrom==3)
         {
-            addCaptureMove(moves,setMove(from,to,whiteKnight,0,0,1,0),boardObj);
-            addCaptureMove(moves,setMove(from,to,whiteBishop,0,0,1,0),boardObj);
-            addCaptureMove(moves,setMove(from,to,whiteRook,0,0,1,0),boardObj);
-            addCaptureMove(moves,setMove(from,to,whiteQueen,0,0,1,0),boardObj);
+            addCaptureMove(moves,setMove(from,to,whiteKnight,0,0,capturedPiece,0),boardObj);
+            addCaptureMove(moves,setMove(from,to,whiteBishop,0,0,capturedPiece,0),boardObj);
+            addCaptureMove(moves,setMove(from,to,whiteRook,0,0,capturedPiece,0),boardObj);
+            addCaptureMove(moves,setMove(from,to,whiteQueen,0,0,capturedPiece,0),boardObj);
         }
         else{
-            addCaptureMove(moves,setMove(from,to,0,0,0,isCapture,0),boardObj);
+            addCaptureMove(moves,setMove(from,to,0,0,0,capturedPiece,0),boardObj);
         }
     }
     else {
@@ -51,20 +51,20 @@ void addWhitePawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int 
         }
     }
 }
-void addBlackPawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int isCapture){
+void addBlackPawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int capturedPiece){
     int rankFrom = from/10;
-    if(isCapture)
+    if(capturedPiece)
     {
         //Promotion Moves
         if(rankFrom==8)
         {
-            addCaptureMove(moves,setMove(from,to,blackKnight,0,0,1,0),boardObj);
-            addCaptureMove(moves,setMove(from,to,blackBishop,0,0,1,0),boardObj);
-            addCaptureMove(moves,setMove(from,to,blackRook,0,0,1,0),boardObj);
-            addCaptureMove(moves,setMove(from,to,blackQueen,0,0,1,0),boardObj);
+            addCaptureMove(moves,setMove(from,to,blackKnight,0,0,capturedPiece,0),boardObj);
+            addCaptureMove(moves,setMove(from,to,blackBishop,0,0,capturedPiece,0),boardObj);
+            addCaptureMove(moves,setMove(from,to,blackRook,0,0,capturedPiece,0),boardObj);
+            addCaptureMove(moves,setMove(from,to,blackQueen,0,0,capturedPiece,0),boardObj);
         }
         else{
-            addCaptureMove(moves,setMove(from,to,0,0,0,isCapture,0),boardObj);
+            addCaptureMove(moves,setMove(from,to,0,0,0,capturedPiece,0),boardObj);
         }
     }
     else {
@@ -107,11 +107,13 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
 
             if(boardObj-> board[pawnPos - 11]>=blackPawn&&boardObj-> board[pawnPos - 11]<blackKing)
             {
-                addWhitePawnMove(boardObj,&moves,pawnPos,pawnPos-11,1);
+                int capturedPiece = boardObj->board[pawnPos -11];
+                addWhitePawnMove(boardObj,&moves,pawnPos,pawnPos-11,capturedPiece);
             }
             if(boardObj-> board[pawnPos -9]>=blackPawn&&boardObj-> board[pawnPos - 9]<blackKing)
             {
-                addWhitePawnMove(boardObj,&moves,pawnPos,pawnPos-9,1);
+                int capturedPiece = boardObj->board[pawnPos -9];
+                addWhitePawnMove(boardObj,&moves,pawnPos,pawnPos-9,capturedPiece);
             }
         }
     }
@@ -133,11 +135,13 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
             //captures
             if(boardObj-> board[pawnPos + 11]>=whitePawn&&boardObj-> board[pawnPos + 11]<whiteKing)
             {
-                addBlackPawnMove(boardObj,&moves,pawnPos,pawnPos+ 11,1);
+                int capturedPiece = boardObj->board[pawnPos +11];
+                addBlackPawnMove(boardObj,&moves,pawnPos,pawnPos+ 11,capturedPiece);
             }
             if(boardObj-> board[pawnPos +9]>=whitePawn&&boardObj-> board[pawnPos + 9]<whiteKing)
             {
-                addBlackPawnMove(boardObj,&moves,pawnPos,pawnPos+9,1);
+                int capturedPiece = boardObj->board[pawnPos +9];
+                addBlackPawnMove(boardObj,&moves,pawnPos,pawnPos+9,capturedPiece);
             }
         }
     }
@@ -160,7 +164,8 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
             }
             else if(pieceColor[boardObj->board[newKnightPos]]!=pieceColor[boardObj->board[knightPos]])
             {
-                addCaptureMove(&moves,setMove(knightPos,newKnightPos,0,0,0,1,0),boardObj);
+                int capturedPiece = boardObj->board[newKnightPos];
+                addCaptureMove(&moves,setMove(knightPos,newKnightPos,0,0,0,capturedPiece,0),boardObj);
             }
         }
     }
@@ -180,7 +185,8 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
         }
         else if(pieceColor[boardObj->board[newKingPos]]!=pieceColor[king])
         {
-            addCaptureMove(&moves,setMove(kingPos,newKingPos,0,0,0,1,0),boardObj);
+            int capturedPiece = boardObj->board[newKingPos];
+            addCaptureMove(&moves,setMove(kingPos,newKingPos,0,0,0,capturedPiece,0),boardObj);
         }
     }
     //Bishop
@@ -198,7 +204,8 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                 {
                     if(pieceColor[boardObj->board[newBishopPos]]!=pieceColor[bishop])
                     {
-                        addCaptureMove(&moves,setMove(bishopPos,newBishopPos,0,0,0,1,0),boardObj);
+                        int capturedPiece = boardObj->board[newBishopPos];
+                        addCaptureMove(&moves,setMove(bishopPos,newBishopPos,0,0,0,capturedPiece,0),boardObj);
                     }
                     break;
                 }
@@ -227,7 +234,8 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                 {
                     if(pieceColor[boardObj->board[newRookPos]]!=pieceColor[rook])
                     {
-                        addCaptureMove(&moves,setMove(rookPos,newRookPos,0,0,0,1,0),boardObj);
+                        int capturedPiece = boardObj->board[newRookPos];
+                        addCaptureMove(&moves,setMove(rookPos,newRookPos,0,0,0,capturedPiece,0),boardObj);
                     }
                     break;
                 }
@@ -256,7 +264,8 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                 {
                     if(pieceColor[boardObj->board[newQueenPos]]!=pieceColor[queen])
                     {
-                        addCaptureMove(&moves,setMove(queenPos,newQueenPos,0,0,0,1,0),boardObj);
+                        int capturedPiece = boardObj->board[newQueenPos];
+                        addCaptureMove(&moves,setMove(queenPos,newQueenPos,0,0,0,capturedPiece,0),boardObj);
                     }
                     break;
                 }
@@ -277,7 +286,8 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                 {
                     if(pieceColor[boardObj->board[newQueenPos]]!=pieceColor[queen])
                     {
-                        addCaptureMove(&moves,setMove(queenPos,newQueenPos,0,0,0,1,0),boardObj);
+                        int capturedPiece = boardObj->board[newQueenPos];
+                        addCaptureMove(&moves,setMove(queenPos,newQueenPos,0,0,0,capturedPiece,0),boardObj);
                     }
                     break;
                 }

@@ -247,11 +247,10 @@ int getFileValue(char file)
 }
 u64 getHashKey(Board *boardObj)
 {
-    const int *board = boardObj->getBoard();
     //TODO
     string castlePerms = "KQkq";
     string enPassantMove = "-";
-    int turn = 1 ;
+    int turn = boardObj->turn;
 
     u64 finalKey = 0;
     for (int rnk = 0; rnk < 8; rnk++)
@@ -259,7 +258,7 @@ u64 getHashKey(Board *boardObj)
         for (int file = 0; file < 8; file++)
         {
             int sq120 = fileRankToSq120(file,rnk);
-            int piece = board[sq120];
+            int piece = boardObj->board[sq120];
             if (piece == Empty)
                 continue;
             int piece_offset = 64 * getPieceValue(piece) + 8 * (7-rnk) + file;

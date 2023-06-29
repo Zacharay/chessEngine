@@ -70,6 +70,6 @@ int getBookMove(uint64_t position)
     swapOrder64(entry.hash_pos);
     swapOrder16(entry.move);
     swapOrder16(entry.weight);
-    cout<<hex<<entry.move<<endl;
-    cout<<hex<<entry.weight<<endl;
+
+    return entry.move;
 }

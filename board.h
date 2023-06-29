@@ -26,13 +26,17 @@ public:
     Board(string fen=DEFAULT_POS);
     void printBoard();
     void parseFen(string fen);
-    //Getters
-    const int * getBoard()const;
+    //Making/Unmaking Move
+    void clearPiece(const int from,const int piece);
+    void addPiece(const int to,const int piece);
+    void movePiece(const int from,const int to,int piece);
+    void makeMove(int move);
+    void unmakeMove(int move);
 
-    //Setters
     //Debuging
     void printPieceLists();
     void clearBoard();
+
 };
 
 

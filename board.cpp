@@ -7,6 +7,63 @@ Board::Board(string fen)
 {
     parseFen(fen);
 }
+void Board::clearPiece(const int from,const int piece){
+    board[from]=Empty;
+    for(int i=1;i<=numOfPieces[piece];i++)
+    {
+        if(pieceList[piece][i]==from)
+        {
+            pieceList[piece][i]=pieceList[piece][numOfPieces[piece]];
+            numOfPieces[piece]--;
+        }
+    }
+}
+void Board::addPiece(const int to,const int piece)
+{
+    board[to]=piece;
+
+    pieceList[piece][++numOfPieces[piece]]=to;
+
+}
+void Board::movePiece(const int from,const int to,int piece){
+    board[to] = board[from];
+    board[from]= Empty;
+
+    for(int i=1;i<=numOfPieces[piece];i++)
+    {
+        if(pieceList[piece][i]==from)
+        {
+            pieceList[piece][i] = to;
+        }
+    }
+}
+
+void Board::makeMove(int move){
+
+    const int from = getMoveFrom(move);
+    const int to = getMoveTo(move);
+    const int enPassant = getMoveEnPassant(move);
+    const int castle = getMoveCastle(move);
+    const int dbPawn = getMoveDbPawn(move);
+    const int capturePiece = getMoveCapture(move);
+    const int promotedPiece = getMovePromoted(move);
+
+    movePiece(from,to,board[from]);
+
+    if(capturePiece)
+    {
+        clearPiece(to,capturePiece);
+    }
+    if(promotedPiece)
+    {
+
+    }
+
+
+
+}
+void Board::unmakeMove(int move){}
+
 
 void Board::printBoard()
 {
@@ -103,9 +160,6 @@ void Board::parseFen(string fen)
         else if(parts[2][i]=='q')castlingRights+=1;
     }
 
-}
-const int * Board::getBoard()const{
-    return board;
 }
 void Board::printPieceLists(){
      for(int i=1;i<=12;i++)

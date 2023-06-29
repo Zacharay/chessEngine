@@ -8,20 +8,27 @@ using namespace std;
 
 int main()
 {
-    Board board(TEST_1);
+    Board board;
     board.printBoard();
     uint64_t hashKey = getHashKey(&board);
 
-    vector<S_MOVE> ans = generateAllMoves(&board);
-    cout<<ans.size()<<endl;
-    for(int i=0;i<ans.size();i++)
-    {
-        int from = getMoveFrom(ans[i].move);
-        int to = getMoveTo(ans[i].move);
-        int dbPawn = getMoveDbPawn(ans[i].move);
-        int promotedPiece = getMovePromoted(ans[i].move);
+    vector<S_MOVE>moves = generateAllMoves(&board);
+    int move = moves[0].move;
 
-        cout<<from<<" "<<to<<" "<<dbPawn<<" "<<promotedPiece<<endl;
-    }
+
+
+    int from = getMoveFrom(move);
+    int to = getMoveTo(move);
+    int enPassant = getMoveEnPassant(move);
+    int castle = getMoveCastle(move);
+    int dbPawn = getMoveDbPawn(move);
+    int capture = getMoveCapture(move);
+    int promotedPiece = getMovePromoted(move);
+
+    //cout<<from<<" "<<to<<" "<<capture<<" "<<dbPawn<<" "<<castle<<" "<<enPassant<<" "<<promotedPiece<<endl;
+    board.makeMove(move);
+    cout<<endl<<endl;
+    board.printBoard();
+    board.printPieceLists();
     return 0;
 }
