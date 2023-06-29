@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-    Board board;
+    Board board(TEST_1);
     board.printBoard();
     uint64_t hashKey = getHashKey(&board);
 
@@ -26,7 +26,7 @@ int main()
         int capture = getMoveCapture(move);
         int promotedPiece = getMovePromoted(move);
 
-        //cout<<from<<" "<<to<<" "<<capture<<" "<<dbPawn<<" "<<castle<<" "<<enPassant<<" "<<promotedPiece<<endl;
+        cout<<from<<" "<<to<<" "<<capture<<" "<<dbPawn<<" "<<castle<<" "<<enPassant<<" "<<promotedPiece<<endl;
     }
     //int move = moves[0].move;
 

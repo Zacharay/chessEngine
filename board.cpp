@@ -7,7 +7,7 @@ Board::Board(string fen)
 {
     parseFen(fen);
 }
-bool Board::isSquareAttacked(int sq,int bySide){
+bool Board::isSquareAttacked(int sq,int bySide) const{
 
     //Pawns attacks
     if(bySide==white)

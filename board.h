@@ -7,7 +7,10 @@ using namespace std;
 
 class Board{
 private:
-
+    void clearPiece(const int from,const int piece);
+    void addPiece(const int to,const int piece);
+    void movePiece(const int from,const int to,int piece);
+    void clearBoard();
 
 public:
 //Square Centric
@@ -24,19 +27,15 @@ public:
     int fiftyMove;
 
     Board(string fen=DEFAULT_POS);
-    void printBoard();
     void parseFen(string fen);
-    bool isSquareAttacked(int sq,int bySide);
-    //Making/Unmaking Move
-    void clearPiece(const int from,const int piece);
-    void addPiece(const int to,const int piece);
-    void movePiece(const int from,const int to,int piece);
+
     void makeMove(int move);
     void unmakeMove(int move);
 
-    void printPieceLists();
-    void clearBoard();
+    bool isSquareAttacked(int sq,int bySide) const;
 
+    void printPieceLists();
+    void printBoard();
 };
 
 

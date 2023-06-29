@@ -87,9 +87,10 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
 {
     vector<S_MOVE>moves;
 
-    //Pawns
+
     if(boardObj->turn==white)
     {
+        //Pawns
         int numOfWhitePawns = boardObj->numOfPieces[whitePawn];
         for(int i=1;i<=numOfWhitePawns;i++)
         {
@@ -116,8 +117,34 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                 addWhitePawnMove(boardObj,&moves,pawnPos,pawnPos-9,capturedPiece);
             }
         }
+
+
+        //castling
+        int kingPos = boardObj->pieceList[whiteKing][1];
+        if(!boardObj->isSquareAttacked(kingPos,black))
+        {
+            if(boardObj->castlingRights&WKCA)
+            {
+                bool isKingSideEmpty = boardObj->board[96]==Empty&&boardObj->board[97]==Empty;
+                if(isKingSideEmpty&&!boardObj->isSquareAttacked(96,black)&&!boardObj->isSquareAttacked(97,black))
+                {
+                    addQuietMove(&moves,setMove(95,97,0,0,WKCA,0,0),boardObj);
+                }
+            }
+            if(boardObj->castlingRights&WQCA)
+            {
+                bool isQueenSideEmpty = boardObj->board[94]==Empty&&boardObj->board[93]==Empty&&boardObj->board[92]==Empty;
+                if(isQueenSideEmpty&&!boardObj->isSquareAttacked(94,black)&&!boardObj->isSquareAttacked(93,black)&&!boardObj->isSquareAttacked(92,black))
+                {
+                    addQuietMove(&moves,setMove(95,93,0,0,WQCA,0,0),boardObj);
+                }
+            }
+        }
+
+
     }
     else{
+        //Pawns
         int numOfBlackPawns = boardObj->numOfPieces[blackPawn];
         for(int i=1;i<=numOfBlackPawns;i++)
         {
@@ -144,6 +171,28 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                 addBlackPawnMove(boardObj,&moves,pawnPos,pawnPos+9,capturedPiece);
             }
         }
+        //castling
+        int kingPos = boardObj->pieceList[blackKing][1];
+        if(!boardObj->isSquareAttacked(kingPos,white))
+        {
+            if(boardObj->castlingRights&BKCA)
+            {
+                bool isKingSideEmpty = boardObj->board[26]==Empty&&boardObj->board[27]==Empty;
+                if(isKingSideEmpty&&!boardObj->isSquareAttacked(26,white)&&!boardObj->isSquareAttacked(27,white))
+                {
+                    addQuietMove(&moves,setMove(25,27,0,0,BKCA,0,0),boardObj);
+                }
+            }
+            if(boardObj->castlingRights&BQCA)
+            {
+                bool isQueenSideEmpty = boardObj->board[24]==Empty&&boardObj->board[23]==Empty&&boardObj->board[22]==Empty;
+                if(isQueenSideEmpty&&!boardObj->isSquareAttacked(24,white)&&!boardObj->isSquareAttacked(23,white)&&!boardObj->isSquareAttacked(22,white))
+                {
+                    addQuietMove(&moves,setMove(25,23,0,0,BQCA,0,0),boardObj);
+                }
+            }
+        }
+
     }
 
     //Knights
