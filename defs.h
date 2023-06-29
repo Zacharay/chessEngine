@@ -5,7 +5,7 @@
 using namespace std;
 
 #define DEFAULT_POS std::string("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-#define TEST_1  std::string("rnbqk2r/pppp1ppp/8/2b1p3/2B1Pn2/1NB1QN2/PPPP1PPP/R3K2R w KQkq - 0 1")
+#define TEST_1  std::string("r3k2r/ppp3pp/8/8/8/8/PPP3PP/R3K2R b KQkq - 0 1")
 
 
 /*
@@ -40,20 +40,25 @@ enum Piece{
     blackPawn,blackKnight,blackBishop,blackRook,blackQueen,blackKing,Offboard=121};
 enum Side{black,white};
 enum CastlePerms{WKCA=8,WQCA=4,BKCA=2,BQCA=1};
+enum {
+  A1 = 91, B1, C1, D1, E1, F1, G1, H1,
+  A2 = 81, B2, C2, D2, E2, F2, G2, H2,
+  A3 = 71, B3, C3, D3, E3, F3, G3, H3,
+  A4 = 61, B4, C4, D4, E4, F4, G4, H4,
+  A5 = 51, B5, C5, D5, E5, F5, G5, H5,
+  A6 = 41, B6, C6, D6, E6, F6, G6, H6,
+  A7 = 31, B7, C7, D7, E7, F7, G7, H7,
+  A8 = 21, B8, C8, D8, E8, F8, G8, H8};
 
-static unordered_map<Piece, char> pieceToChar({
-{whitePawn, 'P'},{whiteKnight, 'N'},{whiteBishop, 'B'},{whiteRook, 'R'},{whiteQueen, 'Q'},{whiteKing, 'K'},
-{blackPawn, 'p'},{blackKnight, 'n'},{blackBishop, 'b'},{blackRook, 'r'},{blackQueen, 'q'},{blackKing, 'k'},
-{Empty, ' '}});
-
-static unordered_map<char, Piece> charToPiece({
-{'P', whitePawn},{'N', whiteKnight},{'B', whiteBishop},{'R', whiteRook},{'Q', whiteQueen},{'K', whiteKing},
-{'p', blackPawn},{'n', blackKnight},{'b', blackBishop},{'r', blackRook},{'q', blackQueen},{'k', blackKing},
-{' ', Empty}});
+extern unordered_map<Piece, char> pieceToChar;
+extern unordered_map<char, Piece> charToPiece;
+extern unordered_map<string,int> sqNameToNumber;
+extern unordered_map<int,string> sqNumberToName;
 
 extern int sq120to64[120];
-extern int pieceColor[13];
 extern int sq64to120[64];
+extern int pieceColor[13];
+
 extern int knightOffsets[8];
 extern int kingOffsets[8];
 extern int bishopOffsets[4];

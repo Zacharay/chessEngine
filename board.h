@@ -7,9 +7,9 @@ using namespace std;
 
 class Board{
 private:
-    void clearPiece(const int from,const int piece);
+    void clearPiece(const int from);
     void addPiece(const int to,const int piece);
-    void movePiece(const int from,const int to,int piece);
+    void movePiece(const int from,const int to);
     void clearBoard();
 
 public:

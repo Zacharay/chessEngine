@@ -94,7 +94,8 @@ bool Board::isSquareAttacked(int sq,int bySide) const{
     return false;
 }
 
-void Board::clearPiece(const int from,const int piece){
+void Board::clearPiece(const int from){
+    int piece = board[from];
     board[from]=Empty;
     for(int i=1;i<=numOfPieces[piece];i++)
     {
@@ -112,7 +113,9 @@ void Board::addPiece(const int to,const int piece)
     pieceList[piece][++numOfPieces[piece]]=to;
 
 }
-void Board::movePiece(const int from,const int to,int piece){
+void Board::movePiece(const int from,const int to){
+    int piece = board[from];
+
     board[to] = board[from];
     board[from]= Empty;
 
@@ -135,17 +138,35 @@ void Board::makeMove(int move){
     const int capturePiece = getMoveCapture(move);
     const int promotedPiece = getMovePromoted(move);
 
-
+    if(castle)
+    {
+        if(castle&WKCA)
+        {
+            movePiece(H1,F1);
+        }
+        else if(castle&WQCA)
+        {
+            movePiece(A1,D1);
+        }
+        else if(castle&BKCA)
+        {
+            movePiece(H8,F8);
+        }
+        else if(castle&BQCA)
+        {
+            movePiece(A8,D8);
+        }
+    }
 
     if(capturePiece)
     {
-        clearPiece(to,capturePiece);
+        clearPiece(to);
     }
-    movePiece(from,to,board[from]);
+    movePiece(from,to);
 
     if(promotedPiece)
     {
-        clearPiece(to,board[to]);
+        clearPiece(to);
         addPiece(to,promotedPiece);
     }
 

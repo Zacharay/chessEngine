@@ -28,11 +28,10 @@ int main()
 
         cout<<from<<" "<<to<<" "<<capture<<" "<<dbPawn<<" "<<castle<<" "<<enPassant<<" "<<promotedPiece<<endl;
     }
-    //int move = moves[0].move;
-
-    //board.makeMove(move);
-    //cout<<endl<<endl;
-    ///board.printBoard();
-    //board.printPieceLists();
+    int move = moves[11].move;
+    board.makeMove(move);
+    cout<<endl<<endl;
+    board.printBoard();
+    board.printPieceLists();
     return 0;
 }
