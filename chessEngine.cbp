@@ -41,6 +41,8 @@
 		<Unit filename="movegen.h" />
 		<Unit filename="polybook.cpp" />
 		<Unit filename="polybook.h" />
+		<Unit filename="uci.cpp" />
+		<Unit filename="uci.h" />
 		<Unit filename="zobrist.cpp" />
 		<Unit filename="zobrist.h" />
 		<Extensions />

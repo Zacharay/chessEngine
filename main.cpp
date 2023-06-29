@@ -3,6 +3,7 @@
 #include "zobrist.h"
 #include "polybook.h"
 #include "movegen.h"
+#include "uci.h"
 using namespace std;
 
 
@@ -26,12 +27,13 @@ int main()
         int capture = getMoveCapture(move);
         int promotedPiece = getMovePromoted(move);
 
-        cout<<from<<" "<<to<<" "<<capture<<" "<<dbPawn<<" "<<castle<<" "<<enPassant<<" "<<promotedPiece<<endl;
+        //cout<<from<<" "<<to<<" "<<capture<<" "<<dbPawn<<" "<<castle<<" "<<enPassant<<" "<<promotedPiece<<endl;
     }
-    int move = moves[11].move;
-    board.makeMove(move);
-    cout<<endl<<endl;
-    board.printBoard();
-    board.printPieceLists();
+    //int move = moves[11].move;
+    //board.makeMove(move);
+    //cout<<endl<<endl;
+    //board.printBoard();
+    ///board.printPieceLists();
+    uciLoop();
     return 0;
 }
