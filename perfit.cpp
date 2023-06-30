@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 
+
 u64 perfit(int depth,Board *boardObj){
     vector<S_MOVE>movesList = generateAllMoves(boardObj);
     u64 nodes=0;
@@ -31,6 +32,7 @@ void perfitTest(int depth,Board *boardObj){
         int numOfMs = 0;
         u64 numOfNodes = perfit(i,boardObj);
         std::cout<<"Depth: "<<i<<" ply  Result: "<<numOfNodes<<" Time: "<<numOfMs<<" ms"<<std::endl;
+
         boardObj->printBoard();
         boardObj->printPieceLists();
         cout<<endl;

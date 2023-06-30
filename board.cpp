@@ -397,6 +397,13 @@ void Board::parseFen(string fen)
         else if(parts[2][i]=='k')castlingRights+=BKCA;
         else if(parts[2][i]=='q')castlingRights+=BQCA;
     }
+    if(parts[3][0]=='-')
+    {
+        enPassantSq = Offboard;
+    }
+    else{
+
+    }
 
     fiftyMove = int(parts[4][0])*2;
 
