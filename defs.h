@@ -58,7 +58,7 @@ extern unordered_map<int,string> sqNumberToName;
 extern int sq120to64[120];
 extern int sq64to120[64];
 extern int pieceColor[13];
-
+extern const int castlePerms[120];
 extern int knightOffsets[8];
 extern int kingOffsets[8];
 extern int bishopOffsets[4];
@@ -70,5 +70,12 @@ typedef struct{
     int move;
     int score;
 }S_MOVE;
+typedef struct{
+    int move;
+    int castlePerms;
+    int enPassant;
+    uint64_t posKey;
+    int fiftyMove;
 
+}S_UNDO;
 

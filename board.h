@@ -22,9 +22,15 @@ public:
 
     int turn;
     int castlingRights;
-    int enPassant;
-    int ply;
+    int enPassantSq;
+
+    uint64_t pos;
+
     int fiftyMove;
+
+    int ply;
+    int historyPly;
+    S_UNDO history[2047];
 
     Board(string fen=DEFAULT_POS);
     void parseFen(string fen);

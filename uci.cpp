@@ -1,6 +1,7 @@
 #include <iostream>
 #include "defs.h"
-
+#include "board.h"
+#include "movegen.h"
 
 struct uciMove{
     int from;
@@ -33,6 +34,8 @@ uciMove parseMoveString(std::string moveString)
         uMove.to = it_to->second;
     }
 
+    uMove.promotedPiece=0;
+
     if(moveString.length()==5)
     {
         char promotedPieceChar = moveString[4];
@@ -40,12 +43,17 @@ uciMove parseMoveString(std::string moveString)
         else if(promotedPieceChar=='b')uMove.promotedPiece = 3;
         else if(promotedPieceChar=='r')uMove.promotedPiece = 4;
         else if(promotedPieceChar=='q')uMove.promotedPiece = 5;
+        else uMove.promotedPiece = -1;
     }
 
     return uMove;
 }
 
 void uciLoop(){
+
+    Board boardObj;
+
+
     std::string input;
     while(true)
     {
@@ -61,6 +69,33 @@ void uciLoop(){
                 std::cout<<"Invalid move format"<<std::endl;
                 continue;
             }
+
+            if(uMove.promotedPiece)
+            {
+                uMove.promotedPiece = boardObj.turn==black?uMove.promotedPiece+6:uMove.promotedPiece;
+            }
+
+            vector<S_MOVE>moves = generateAllMoves(&boardObj);
+            int playerMove=0;
+            for(S_MOVE s_move:moves)
+            {
+                int moveFrom = getMoveFrom(s_move.move);
+                int moveTo = getMoveTo(s_move.move);
+                int movePromotedPiece = getMovePromoted(s_move.move);
+
+                if(uMove.from==moveFrom&&uMove.to ==moveTo &&movePromotedPiece==uMove.promotedPiece)
+                {
+                    playerMove = s_move.move;
+                }
+            }
+            if(playerMove==0)
+            {
+                std::cout<<"Invalid move"<<std::endl;
+                continue;
+            }
+            boardObj.makeMove(playerMove);
+            boardObj.printBoard();
+
 
 
         }

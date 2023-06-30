@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 Board::Board(string fen)
+:ply(0),historyPly(0),enPassantSq(Offboard)
 {
     parseFen(fen);
 }
@@ -138,6 +139,9 @@ void Board::makeMove(int move){
     const int capturePiece = getMoveCapture(move);
     const int promotedPiece = getMovePromoted(move);
 
+    castlingRights &= castlePerms[from];
+    castlingRights &= castlePerms[to];
+
     if(castle)
     {
         if(castle&WKCA)
@@ -162,6 +166,33 @@ void Board::makeMove(int move){
     {
         clearPiece(to);
     }
+
+    if(dbPawn)
+    {
+        if(turn==white)
+        {
+            enPassantSq = from -10;
+        }
+        else{
+            enPassantSq = from +10;
+        }
+    }
+    else{
+        enPassantSq = Offboard;
+    }
+
+
+    if(enPassant)
+    {
+        if(turn==white)
+        {
+            clearPiece(to+10);
+        }
+        else{
+            clearPiece(to-10);
+        }
+    }
+
     movePiece(from,to);
 
     if(promotedPiece)
@@ -169,12 +200,43 @@ void Board::makeMove(int move){
         clearPiece(to);
         addPiece(to,promotedPiece);
     }
-
-
+    turn=turn==white?black:white;
 
 
 }
-void Board::unmakeMove(int move){}
+void Board::unmakeMove(S_UNDO history){
+
+    const int move  = history[historyPly].move;
+    const int from = getMoveFrom(move);
+    const int to = getMoveTo(move);
+    const int enPassant = getMoveEnPassant(move);
+    const int castle = getMoveCastle(move);
+    const int dbPawn = getMoveDbPawn(move);
+    const int capturePiece = getMoveCapture(move);
+    const int promotedPiece = getMovePromoted(move);
+
+
+
+    if(castle)
+    {
+        if(castle&WKCA)
+        {
+            movePiece(F1,H1);
+        }
+        else if(castle&WQCA)
+        {
+            movePiece(D1,A1);
+        }
+        else if(castle&BKCA)
+        {
+            movePiece(F8,H8);
+        }
+        else if(castle&BQCA)
+        {
+            movePiece(D8,A8);
+        }
+    }
+}
 
 
 void Board::printBoard()
@@ -271,6 +333,9 @@ void Board::parseFen(string fen)
         else if(parts[2][i]=='k')castlingRights+=BKCA;
         else if(parts[2][i]=='q')castlingRights+=BQCA;
     }
+
+    fiftyMove = int(parts[4][0])*2;
+
 
 }
 void Board::printPieceLists(){

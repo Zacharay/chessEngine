@@ -140,7 +140,19 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                 }
             }
         }
-
+        //enPassant
+        int enPassantSq = boardObj->enPassantSq;
+        if(enPassantSq!=Offboard)
+        {
+            if(boardObj->board[enPassantSq+9]==whitePawn)
+            {
+                addCaptureMove(&moves,setMove(enPassantSq+9,enPassantSq,0,1,0,1,0),boardObj);
+            }
+            if(boardObj->board[boardObj->enPassantSq+11]==whitePawn)
+            {
+                addCaptureMove(&moves,setMove(enPassantSq+11,enPassantSq,0,1,0,1,0),boardObj);
+            }
+        }
 
     }
     else{
@@ -192,7 +204,19 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                 }
             }
         }
-
+        //enPassant
+        int enPassantSq = boardObj->enPassantSq;
+        if(enPassantSq!=Offboard)
+        {
+            if(boardObj->board[enPassantSq-9]==whitePawn)
+            {
+                addCaptureMove(&moves,setMove(enPassantSq-9,enPassantSq,0,1,0,1,0),boardObj);
+            }
+            if(boardObj->board[boardObj->enPassantSq-11]==whitePawn)
+            {
+                addCaptureMove(&moves,setMove(enPassantSq-11,enPassantSq,0,1,0,1,0),boardObj);
+            }
+        }
     }
 
     //Knights
