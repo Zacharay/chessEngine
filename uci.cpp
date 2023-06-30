@@ -95,7 +95,9 @@ void uciLoop(){
             }
             boardObj.makeMove(playerMove);
             boardObj.printBoard();
-
+            cout<<endl;
+            boardObj.unmakeMove();
+            boardObj.printBoard();
 
 
         }

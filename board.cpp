@@ -139,6 +139,15 @@ void Board::makeMove(int move){
     const int capturePiece = getMoveCapture(move);
     const int promotedPiece = getMovePromoted(move);
 
+    history[historyPly].move = move;
+    history[historyPly].castlingRights = castlingRights;
+    history[historyPly].enPassant = enPassantSq;
+    history[historyPly].fiftyMove = fiftyMove;
+    history[historyPly].posKey = pos;
+
+    historyPly++;
+    ply++;
+
     castlingRights &= castlePerms[from];
     castlingRights &= castlePerms[to];
 
@@ -204,14 +213,15 @@ void Board::makeMove(int move){
 
 
 }
-void Board::unmakeMove(S_UNDO history){
+void Board::unmakeMove(){
+    historyPly--;
+    ply--;
 
     const int move  = history[historyPly].move;
     const int from = getMoveFrom(move);
     const int to = getMoveTo(move);
     const int enPassant = getMoveEnPassant(move);
     const int castle = getMoveCastle(move);
-    const int dbPawn = getMoveDbPawn(move);
     const int capturePiece = getMoveCapture(move);
     const int promotedPiece = getMovePromoted(move);
 
@@ -236,6 +246,43 @@ void Board::unmakeMove(S_UNDO history){
             movePiece(D8,A8);
         }
     }
+
+
+
+    if(promotedPiece)
+    {
+        clearPiece(to);
+        if(turn==white)
+        {
+            addPiece(to,blackPawn);
+        }
+        else{
+            addPiece(to,whitePawn);
+        }
+    }
+    if(enPassant)
+    {
+        if(turn==white)
+        {
+            addPiece(to-10,whitePawn);
+        }
+        else{
+            addPiece(to+10,blackPawn);
+        }
+    }
+    movePiece(to,from);
+    if(capturePiece&&!enPassant)
+    {
+        addPiece(to,capturePiece);
+    }
+
+    castlingRights = history[historyPly].castlingRights;
+    enPassantSq = history[historyPly].enPassant;
+    pos = history[historyPly].posKey;
+    fiftyMove = history[historyPly].fiftyMove;
+
+
+    turn=turn==white?black:white;
 }
 
 

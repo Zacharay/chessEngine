@@ -36,7 +36,7 @@ public:
     void parseFen(string fen);
 
     void makeMove(int move);
-    void unmakeMove(int move);
+    void unmakeMove();
 
     bool isSquareAttacked(int sq,int bySide) const;
 

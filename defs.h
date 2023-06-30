@@ -72,7 +72,7 @@ typedef struct{
 }S_MOVE;
 typedef struct{
     int move;
-    int castlePerms;
+    int castlingRights;
     int enPassant;
     uint64_t posKey;
     int fiftyMove;
