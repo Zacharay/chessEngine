@@ -39,7 +39,7 @@ public:
     void unmakeMove();
 
     bool isSquareAttacked(int sq,int bySide) const;
-
+    bool isMoveLegal();
     void printPieceLists();
     void printBoard();
 };

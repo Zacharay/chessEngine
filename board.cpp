@@ -8,6 +8,23 @@ Board::Board(string fen)
 {
     parseFen(fen);
 }
+bool Board::isMoveLegal()
+{
+    if(turn==white)
+    {
+        if(isSquareAttacked(pieceList[blackKing][1],white))
+        {
+            return false;
+        }
+    }
+    else{
+        if(isSquareAttacked(pieceList[whiteKing][1],black))
+        {
+            return false;
+        }
+    }
+    return true;
+}
 bool Board::isSquareAttacked(int sq,int bySide) const{
 
     //Pawns attacks
