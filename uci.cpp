@@ -49,6 +49,11 @@ uciMove parseMoveString(std::string moveString)
     return uMove;
 }
 
+void ReceiveCommand(std::string command)
+{
+
+}
+
 void uciLoop(){
 
     Board boardObj;

@@ -20,7 +20,6 @@ int SearchPosition(Board *boardObj,int depth){
         boardObj->unmakeMove();
         if(moveScore>bestEval)
         {
-            std::cout<<"xd";
             bestEval = moveScore;
             bestMove = moves[i].move;
         }
@@ -32,7 +31,6 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta)
     if(depth==0)
     {
         int score = evaluatePosition(boardObj);
-        cout<<score<<endl;
         return score;
     }
 
@@ -41,14 +39,16 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta)
     {
         boardObj->makeMove(moves[i].move);
         int moveScore = INT_MIN;
-        if(boardObj->isMoveLegal())
+        if(!boardObj->isMoveLegal())
         {
-            moveScore = -negaMax(boardObj,depth-1,-beta,-alpha);
+            boardObj->unmakeMove();
+            continue;
         }
+        moveScore = -negaMax(boardObj,depth-1,-beta,-alpha);
         boardObj->unmakeMove();
         if(moveScore>=beta)
         {
-            return moveScore;
+            return beta;
         }
         if(moveScore>alpha)
         {

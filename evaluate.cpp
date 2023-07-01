@@ -1,15 +1,17 @@
 #include "defs.h"
 #include "board.h"
+
 const int PawnTable[64]={
     0,  0 ,  0,  0,  0,  0,  0,  0,
     50, 50, 50, 50, 50, 50, 50, 50,
     10, 10, 20, 30, 30, 20, 10, 10,
     5 ,  5, 10, 25, 25, 10,  5,  5,
-    0,  0 ,  0, 20, 20,  0,  0,  0,
+    0,  0 ,  0, 40, 20,  0,  0,  0,
     5, -5 ,-10,  0,  0,-10, -5,  5,
     5, 10 , 10,-20,-20, 10, 10,  5,
     0,  0 ,  0,  0,  0,  0,  0,  0
 };
+
 const int KnightTable[64]={
     -50,-40,-30,-30,-30,-30,-40,-50,
     -40,-20,  0,  0,  0,  0,-20,-40,
@@ -177,7 +179,7 @@ int evaluatePosition(Board *boardObj){
 
     //Kings
     materialWhite += PieceValue[whiteKing];
-    materialBlack += PieceValue[whiteKing];
+    materialBlack += PieceValue[blackKing];
 
     //white king
     int whiteKingPos = boardObj->pieceList[whiteKing][1];
@@ -207,5 +209,8 @@ int evaluatePosition(Board *boardObj){
     {
         score-=BishopPairBonus;
     }
-    return score;
+    score+=(materialWhite-materialBlack);
+    if(boardObj->turn==white)return score;
+    else return -score;
+
 };
