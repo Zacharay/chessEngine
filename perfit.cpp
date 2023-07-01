@@ -3,6 +3,7 @@
 #include "defs.h"
 #include <iostream>
 #include <vector>
+#include <chrono>
 
 
 u64 perfit(int depth,Board *boardObj){
@@ -29,12 +30,13 @@ void perfitTest(int depth,Board *boardObj){
 
     for(int i=1;i<=depth;i++)
     {
-        int numOfMs = 0;
-        u64 numOfNodes = perfit(i,boardObj);
-        std::cout<<"Depth: "<<i<<" ply  Result: "<<numOfNodes<<" Time: "<<numOfMs<<" ms"<<std::endl;
+        auto start = std::chrono::high_resolution_clock::now();
 
-        boardObj->printBoard();
-        boardObj->printPieceLists();
-        cout<<endl;
+        u64 numOfNodes = perfit(i,boardObj);
+
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+        double milliseconds = duration.count() * 1000.0;
+        std::cout<<"Depth: "<<i<<" ply  Result: "<<numOfNodes<<" Time: "<<milliseconds<<" ms"<<std::endl;
     }
 };

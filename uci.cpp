@@ -74,8 +74,9 @@ void uciLoop(){
             {
                 uMove.promotedPiece = boardObj.turn==black?uMove.promotedPiece+6:uMove.promotedPiece;
             }
-
             vector<S_MOVE>moves = generateAllMoves(&boardObj);
+
+
             int playerMove=0;
             for(S_MOVE s_move:moves)
             {
@@ -96,8 +97,6 @@ void uciLoop(){
             boardObj.makeMove(playerMove);
             boardObj.printBoard();
             cout<<endl;
-            boardObj.unmakeMove();
-            boardObj.printBoard();
 
 
         }

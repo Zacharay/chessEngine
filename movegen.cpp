@@ -86,8 +86,6 @@ void addBlackPawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int 
 vector<S_MOVE> generateAllMoves(Board *boardObj)
 {
     vector<S_MOVE>moves;
-
-
     if(boardObj->turn==white)
     {
         //Pawns

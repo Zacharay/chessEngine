@@ -4,8 +4,9 @@
 #include <string>
 #include <iostream>
 Board::Board(string fen)
-:ply(0),historyPly(0),enPassantSq(Offboard)
+:ply(0),historyPly(0),enPassantSq(Offboard),material({0,0})
 {
+    std::cout<<material[black]<<" "<<material[white]<<std::endl;
     parseFen(fen);
 }
 bool Board::isMoveLegal()

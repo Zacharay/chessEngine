@@ -11,8 +11,7 @@ using namespace std;
 int main()
 {
     Board boardObj;
-    boardObj.printBoard();
-    perfitTest(5,&boardObj);
+    perfitTest(4,&boardObj);
     //uciLoop();
     return 0;
 }
