@@ -62,12 +62,33 @@ const int MirrorSq[64]={
     8 , 9 , 10, 11, 12, 13, 14, 15,
     0 , 1 , 2 , 3 , 4 , 5 , 6 , 7
 };
+const int KingTableOpening[64]={
+    -30,-40,-40,-50,-50,-40,-40,-30,
+    -30,-40,-40,-50,-50,-40,-40,-30,
+    -30,-40,-40,-50,-50,-40,-40,-30,
+    -30,-40,-40,-50,-50,-40,-40,-30,
+    -20,-30,-30,-40,-40,-30,-30,-20,
+    -10,-20,-20,-20,-20,-20,-20,-10,
+     20, 20,  0,  0,  0,  0, 20, 20,
+     20, 30, 10,  0,  0, 10, 30, 20
+};
+const int KingTableEndgame[64]={
+    -50,-40,-30,-20,-20,-30,-40,-50,
+    -30,-20,-10,  0,  0,-10,-20,-30,
+    -30,-10, 20, 30, 30, 20,-10,-30,
+    -30,-10, 30, 40, 40, 30,-10,-30,
+    -30,-10, 30, 40, 40, 30,-10,-30,
+    -30,-10, 20, 30, 30, 20,-10,-30,
+    -30,-30,  0,  0,  0,  0,-30,-30,
+    -50,-30,-30,-30,-30,-30,-30,-50
+};
 
 const int PieceValue[13] = {
     0,100,320,330,500,900,20000,100,320,330,500,900,20000
 };
 
 const int BishopPairBonus = 30;
+const int EndGameThreshold = 20000+500+200+640;
 
 int evaluatePosition(Board *boardObj){
     int score=0;
@@ -154,7 +175,37 @@ int evaluatePosition(Board *boardObj){
         score-=QueenTable[MirrorSq[sq120to64[queenPos]]];
     }
 
+    //Kings
+    materialWhite += PieceValue[whiteKing];
+    materialBlack += PieceValue[whiteKing];
 
+    //white king
+    int whiteKingPos = boardObj->pieceList[whiteKing][1];
+    if(materialBlack<=EndGameThreshold)
+    {
+        score+= KingTableEndgame[sq120to64[whiteKingPos]];
+    }
+    else{
+        score+= KingTableOpening[sq120to64[whiteKingPos]];
+    }
+    //black king
+    int blackKingPos = boardObj->pieceList[blackKing][1];
+    if(materialWhite<=EndGameThreshold)
+    {
+        score-= KingTableEndgame[MirrorSq[sq120to64[blackKingPos]]];
+    }
+    else{
+        score-= KingTableOpening[MirrorSq[sq120to64[blackKingPos]]];
+    }
 
-
+    //Bishop Pair bonuses
+    if(boardObj->numOfPieces[whiteBishop]>=2)
+    {
+        score+=BishopPairBonus;
+    }
+    if(boardObj->numOfPieces[blackBishop]>=2)
+    {
+        score-=BishopPairBonus;
+    }
+    return score;
 };
