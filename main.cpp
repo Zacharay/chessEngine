@@ -9,11 +9,11 @@ using namespace std;
 
 int main()
 {
-    Board boardObj;
+    /*Board boardObj;
 
-    /*for(int i=0;i<10;i++)
+    for(int i=0;i<10;i++)
     {
-         int move = SearchPosition(&boardObj,2);
+         int move = SearchPosition(&boardObj,3);
          boardObj.makeMove(move);
          boardObj.printBoard();
     }*/

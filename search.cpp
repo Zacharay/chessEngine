@@ -5,17 +5,20 @@
 #include "climits"
 #include <iostream>
 
+#define INFINITY 10000000
+
 int SearchPosition(Board *boardObj,int depth){
     int bestMove=0;
-    int bestEval=INT_MIN;
+    int bestEval=-INFINITY;
+
     vector<S_MOVE>moves = generateAllMoves(boardObj);
     for(int i=0;i<moves.size();i++)
     {
         boardObj->makeMove(moves[i].move);
-        int moveScore = INT_MIN;
+        int moveScore = -INFINITY;
         if(boardObj->isMoveLegal())
         {
-            moveScore = -negaMax(boardObj,depth-1,INT_MIN,INT_MAX);
+            moveScore = -negaMax(boardObj,depth-1,-INFINITY,INFINITY);
         }
         boardObj->unmakeMove();
         if(moveScore>bestEval)
@@ -28,17 +31,17 @@ int SearchPosition(Board *boardObj,int depth){
 }
 int negaMax(Board *boardObj,int depth,int alpha,int beta)
 {
+
     if(depth==0)
     {
-        int score = evaluatePosition(boardObj);
-        return score;
+        return evaluatePosition(boardObj);
     }
 
     vector<S_MOVE> moves= generateAllMoves(boardObj);
     for(int i=0;i<moves.size();i++)
     {
         boardObj->makeMove(moves[i].move);
-        int moveScore = INT_MIN;
+        int moveScore = -INFINITY;
         if(!boardObj->isMoveLegal())
         {
             boardObj->unmakeMove();
@@ -48,7 +51,7 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta)
         boardObj->unmakeMove();
         if(moveScore>=beta)
         {
-            return beta;
+            return moveScore;
         }
         if(moveScore>alpha)
         {

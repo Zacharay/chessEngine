@@ -317,10 +317,7 @@ void Board::printBoard()
         for(int file=0;file<8;file++)
         {
             int sq120 = fileRankToSq120(file,rnk);
-
-            Piece piece = static_cast<Piece>(board[sq120]);
-
-            char pieceChar = pieceToChar.at(piece);
+            char pieceChar = pieceToChar.at(board[sq120]);
             cout<<"| "<<pieceChar<<" ";
 
         }

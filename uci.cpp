@@ -5,15 +5,11 @@
 #include "search.h"
 #include <sstream>
 
-struct uciMove{
+int parseMoveString(std::string moveString,Board *boardObj)
+{
     int from;
     int to;
     int promotedPiece;
-};
-
-uciMove parseMoveString(std::string moveString)
-{
-    uciMove uMove;
 
     std::string firstSqName = moveString.substr(0,2);
     std::string secondSqName = moveString.substr(2,2);
@@ -22,33 +18,76 @@ uciMove parseMoveString(std::string moveString)
     auto it_to =  sqNameToNumber.find(secondSqName);
     if(it_from==sqNameToNumber.end())
     {
-        uMove.from = -1;
+       from = -1;
     }
     else {
-        uMove.from = it_from->second;
+        from = it_from->second;
     }
 
     if(it_to==sqNameToNumber.end())
     {
-        uMove.to = -1;
+        to = -1;
     }
     else {
-        uMove.to = it_to->second;
+        to = it_to->second;
     }
 
-    uMove.promotedPiece=0;
+    promotedPiece=0;
 
     if(moveString.length()==5)
     {
+        int addColorValue = boardObj->turn==white?0:6;
         char promotedPieceChar = moveString[4];
-        if(promotedPieceChar=='n')uMove.promotedPiece = 2;
-        else if(promotedPieceChar=='b')uMove.promotedPiece = 3;
-        else if(promotedPieceChar=='r')uMove.promotedPiece = 4;
-        else if(promotedPieceChar=='q')uMove.promotedPiece = 5;
-        else uMove.promotedPiece = -1;
+        if(promotedPieceChar=='n')promotedPiece = 2+addColorValue;
+        else if(promotedPieceChar=='b')promotedPiece = 3+addColorValue;
+        else if(promotedPieceChar=='r')promotedPiece = 4+addColorValue;
+        else if(promotedPieceChar=='q')promotedPiece = 5+addColorValue;
+        else promotedPiece = -1;
+
+    }
+    vector<S_MOVE> moves = generateAllMoves(boardObj);
+    for(S_MOVE smove:moves)
+    {
+        int move = smove.move;
+        if(getMoveFrom(move)==from&&getMoveTo(move)==to)
+        {
+            if(promotedPiece>0)
+            {
+                if(getMovePromoted(move)==promotedPiece)
+                {
+                    return move;
+                }
+            }
+            return move;
+        }
+    }
+}
+string convertMoveToString(int bestMove)
+{
+    int moveFrom = getMoveFrom(bestMove);
+    int moveTo = getMoveTo(bestMove);
+    int promotedPiece = getMovePromoted(bestMove);
+
+    auto it_first = sqNumberToName.find(moveFrom);
+    auto it_second = sqNumberToName.find(moveTo);
+    string fromSq = it_first->second;
+    string toSq = it_second->second;
+
+    if(promotedPiece!=0)
+    {
+        promotedPiece = promotedPiece<blackPawn?promotedPiece+6:promotedPiece;
+        auto it_third = pieceToChar.find(promotedPiece);
+        char promotedChar = it_third->second;
+        string ans = fromSq+toSq+promotedChar;
+        return ans;
+    }
+    else{
+        string ans = fromSq+toSq;
+        return ans;
     }
 
-    return uMove;
+
+
 }
 void handleUCICommand(const string& command,Board *boardObj) {
     if (command == "uci")
@@ -76,13 +115,14 @@ void handleUCICommand(const string& command,Board *boardObj) {
         {
             std::string allMoves = command.substr(movesPos+6);
             std::istringstream iss(allMoves);
-            std::string word;
-            while (iss >> word) {
+            std::string moveStr;
+            while (iss >> moveStr) {
                 // Output each word
-                std::cout << "Word: " << word << std::endl;
+                int move = parseMoveString(moveStr,boardObj);
+                boardObj->makeMove(move);
             }
-        }
 
+        }
     }
     else if (command.substr(0, 2) == "go")
     {
@@ -98,7 +138,10 @@ void handleUCICommand(const string& command,Board *boardObj) {
             int btime = stoi(command.substr(pos + 6));
 
         }
+
         int bestMove = SearchPosition(boardObj,6);
+        std::string bestMoveStr = convertMoveToString(bestMove);
+        std::cout<<"bestmove "<<bestMoveStr<<std::endl;
     }
     else if (command == "stop")
     {

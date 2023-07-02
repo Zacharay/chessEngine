@@ -1,11 +1,11 @@
 #include "defs.h"
 
-unordered_map<Piece, char> pieceToChar({
+unordered_map<int, char> pieceToChar({
 {whitePawn, 'P'},{whiteKnight, 'N'},{whiteBishop, 'B'},{whiteRook, 'R'},{whiteQueen, 'Q'},{whiteKing, 'K'},
 {blackPawn, 'p'},{blackKnight, 'n'},{blackBishop, 'b'},{blackRook, 'r'},{blackQueen, 'q'},{blackKing, 'k'},
 {Empty, ' '}});
 
-unordered_map<char, Piece> charToPiece({
+unordered_map<char, int> charToPiece({
 {'P', whitePawn},{'N', whiteKnight},{'B', whiteBishop},{'R', whiteRook},{'Q', whiteQueen},{'K', whiteKing},
 {'p', blackPawn},{'n', blackKnight},{'b', blackBishop},{'r', blackRook},{'q', blackQueen},{'k', blackKing},
 {' ', Empty}});
