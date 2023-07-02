@@ -27,7 +27,6 @@ public:
     uint64_t pos;
 
     int fiftyMove;
-    int material[2];
     int ply;
     int historyPly;
     S_UNDO history[2047];

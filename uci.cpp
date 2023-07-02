@@ -2,6 +2,8 @@
 #include "defs.h"
 #include "board.h"
 #include "movegen.h"
+#include "search.h"
+#include <sstream>
 
 struct uciMove{
     int from;
@@ -48,10 +50,67 @@ uciMove parseMoveString(std::string moveString)
 
     return uMove;
 }
+void handleUCICommand(const string& command,Board *boardObj) {
+    if (command == "uci")
+    {
+        std::cout << "id name ZacharyChessEngine" << std::endl;
+        std::cout << "id author Zachary" << std::endl;
 
-void ReceiveCommand(std::string command)
-{
+        std::cout << "uciok" << std::endl;
+    }
+    else if (command == "isready")
+    {
+        std::cout << "readyok" << std::endl;
+    }
+    else if (command.substr(0, 8) == "position")
+    {
+        size_t pos = command.find("startpos");
 
+        if(pos!=string::npos)
+        {
+            boardObj->parseFen(DEFAULT_POS);
+        }
+
+        size_t movesPos = command.find("moves");
+        if(movesPos!=string::npos)
+        {
+            std::string allMoves = command.substr(movesPos+6);
+            std::istringstream iss(allMoves);
+            std::string word;
+            while (iss >> word) {
+                // Output each word
+                std::cout << "Word: " << word << std::endl;
+            }
+        }
+
+    }
+    else if (command.substr(0, 2) == "go")
+    {
+
+        size_t pos = command.find("wtime");
+        if (pos != string::npos) {
+            int wtime = stoi(command.substr(pos + 6));
+        }
+
+        pos = command.find("btime");
+        if (pos != string::npos) {
+
+            int btime = stoi(command.substr(pos + 6));
+
+        }
+        int bestMove = SearchPosition(boardObj,6);
+    }
+    else if (command == "stop")
+    {
+
+    }
+    else if (command == "quit") {
+
+        exit(0);
+    }
+    else{
+        return;
+    }
 }
 
 void uciLoop(){
@@ -59,12 +118,14 @@ void uciLoop(){
     Board boardObj;
 
 
-    std::string input;
+    std::string command;
     while(true)
     {
-        getline(std::cin, input);
+        getline(std::cin, command);
 
 
+        handleUCICommand(command,&boardObj);
+        /*
         if(input.length()==4||input.length()==5)
         {
             uciMove uMove = parseMoveString(input);
@@ -104,11 +165,7 @@ void uciLoop(){
             cout<<endl;
 
 
-        }
-        //Exit on enter
-        if (input.empty()) {
-            break;
-        }
+        }*/
     }
 
 }

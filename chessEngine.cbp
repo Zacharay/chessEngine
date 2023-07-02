@@ -20,6 +20,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -35,6 +36,8 @@
 		<Unit filename="board.cpp" />
 		<Unit filename="board.h" />
 		<Unit filename="defs.h" />
+		<Unit filename="evaluate.cpp" />
+		<Unit filename="evaluate.h" />
 		<Unit filename="helpers.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="movegen.cpp" />
@@ -43,6 +46,8 @@
 		<Unit filename="perfit.h" />
 		<Unit filename="polybook.cpp" />
 		<Unit filename="polybook.h" />
+		<Unit filename="search.cpp" />
+		<Unit filename="search.h" />
 		<Unit filename="uci.cpp" />
 		<Unit filename="uci.h" />
 		<Unit filename="zobrist.cpp" />
