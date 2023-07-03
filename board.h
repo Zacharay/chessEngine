@@ -24,7 +24,7 @@ public:
     int castlingRights;
     int enPassantSq;
 
-    uint64_t pos;
+    uint64_t posHashKey;
 
     int fiftyMove;
     int ply;

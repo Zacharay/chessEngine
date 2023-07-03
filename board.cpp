@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include "zobrist.h"
 Board::Board(string fen)
 :ply(0),historyPly(0),enPassantSq(Offboard)
 {
@@ -114,6 +115,8 @@ bool Board::isSquareAttacked(int sq,int bySide) const{
 
 void Board::clearPiece(const int from){
     int piece = board[from];
+    updatePieceHash(from,posHashKey,piece);
+
     board[from]=Empty;
     for(int i=1;i<=numOfPieces[piece];i++)
     {
@@ -126,13 +129,16 @@ void Board::clearPiece(const int from){
 }
 void Board::addPiece(const int to,const int piece)
 {
-    board[to]=piece;
+    updatePieceHash(to,posHashKey,piece);
 
+    board[to]=piece;
     pieceList[piece][++numOfPieces[piece]]=to;
 
 }
 void Board::movePiece(const int from,const int to){
     int piece = board[from];
+    updatePieceHash(to,posHashKey,piece);
+    updatePieceHash(from,posHashKey,piece);
 
     board[to] = board[from];
     board[from]= Empty;
@@ -160,7 +166,7 @@ void Board::makeMove(int move){
     history[historyPly].castlingRights = castlingRights;
     history[historyPly].enPassant = enPassantSq;
     history[historyPly].fiftyMove = fiftyMove;
-    history[historyPly].posKey = pos;
+    history[historyPly].posKey = posHashKey;
 
     historyPly++;
     ply++;
@@ -218,7 +224,6 @@ void Board::makeMove(int move){
             clearPiece(to-10);
         }
     }
-
     movePiece(from,to);
 
     if(promotedPiece)
@@ -227,7 +232,7 @@ void Board::makeMove(int move){
         addPiece(to,promotedPiece);
     }
     turn=turn==white?black:white;
-
+    updateSideHash(posHashKey);
 
 }
 void Board::unmakeMove(){
@@ -288,6 +293,7 @@ void Board::unmakeMove(){
         }
     }
     movePiece(to,from);
+
     if(capturePiece&&!enPassant)
     {
         addPiece(to,capturePiece);
@@ -295,7 +301,7 @@ void Board::unmakeMove(){
 
     castlingRights = history[historyPly].castlingRights;
     enPassantSq = history[historyPly].enPassant;
-    pos = history[historyPly].posKey;
+    posHashKey = history[historyPly].posKey;
     fiftyMove = history[historyPly].fiftyMove;
 
 
@@ -403,7 +409,7 @@ void Board::parseFen(string fen)
     }
 
     fiftyMove = int(parts[4][0])*2;
-
+    posHashKey = getHashKey(this);
 
 }
 void Board::printPieceLists(){

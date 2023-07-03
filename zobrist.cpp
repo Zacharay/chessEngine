@@ -2,8 +2,8 @@
 #include "defs.h"
 #include <cstdint>
 #include "board.h"
+#include "zobrist.h"
 
-typedef uint64_t u64;
 using namespace std;
 #ifdef _MSC_VER
 #  define U64(u) (u##ui64)
@@ -11,7 +11,7 @@ using namespace std;
 #  define U64(u) (u##ULL)
 #endif
 
-const u64 Random64[781] = {
+const uint64_t Random64[781] = {
    U64(0x9D39247E33776D41), U64(0x2AF7398005AAA5C7), U64(0x44DB015024623547), U64(0x9C15F73E62A76AE2),
    U64(0x75834465489C0C89), U64(0x3290AC3A203001BF), U64(0x0FBBAD1F61042279), U64(0xE83A908FF2FB60CA),
    U64(0x0D7E765D58755C10), U64(0x1A083822CEAFE02D), U64(0x9605D5F0E25EC3B0), U64(0xD021FF5CD13A2ED5),
@@ -210,14 +210,6 @@ const u64 Random64[781] = {
    U64(0xF8D626AAAF278509)};
 
 
-int getCastleOffset(char castleRight)
-{
-  if(castleRight=='K')return 0;
-  if(castleRight=='Q')return 1;
-  if(castleRight=='k')return 2;
-  if(castleRight=='q')return 3;
-}
-
 int getPieceValue(int piece)
 {
   if(piece==blackPawn)return 0;
@@ -245,14 +237,13 @@ int getFileValue(char file)
     if(file=='g')return 6;
     if(file=='h')return 7;
 }
-u64 getHashKey(Board *boardObj)
+uint64_t getHashKey(Board *boardObj)
 {
     //TODO
-    string castlePerms = "KQkq";
     string enPassantMove = "-";
     int turn = boardObj->turn;
 
-    u64 finalKey = 0;
+    uint64_t finalKey = 0;
     for (int rnk = 0; rnk < 8; rnk++)
     {
         for (int file = 0; file < 8; file++)
@@ -261,20 +252,15 @@ u64 getHashKey(Board *boardObj)
             int piece = boardObj->board[sq120];
             if (piece == Empty)
                 continue;
-            int piece_offset = 64 * getPieceValue(piece) + 8 * (7-rnk) + file;
+            int pieceOffset = 64 * getPieceValue(piece) + 8 * (7-rnk) + file;
 
-            finalKey ^=Random64[piece_offset];
+            finalKey ^=Random64[pieceOffset];
         }
     }
 
-    int baseCastleOffset = 768;
-    for (int i = 0; i < castlePerms.length(); i++)
-    {
-        int offset = baseCastleOffset + getCastleOffset(castlePerms[i]);
-         finalKey^=Random64[offset];
-    }
+    updateHashCastling(finalKey,boardObj->castlingRights);
 
-    int baseEnOffset = 772;
+    const int baseEnOffset = 772;
     if (enPassantMove != "-")
     {
          finalKey^=Random64[baseEnOffset + getFileValue(enPassantMove[0])];
@@ -286,6 +272,29 @@ u64 getHashKey(Board *boardObj)
     }
 
     return finalKey;
+}
+void updatePieceHash(int sq ,uint64_t &hashKey,int piece)
+{
+    int file = getFileFromSq(sq)-1;
+    int rank = 7-getRankFromSq(sq);
+
+    std::cout<<file<<rank<<std::endl;
+
+    int pieceOffset = 64 * getPieceValue(piece) + 8 * rank + file;
+    hashKey^=Random64[pieceOffset];
+
+}
+void updateSideHash(uint64_t &hashkey)
+{
+    hashkey^= Random64[780];
+}
+void updateHashCastling(uint64_t &hashKey,int castlingRights)
+{
+    const int baseCastleOffset = 768;
+    if(castlingRights&WKCA) hashKey^=Random64[baseCastleOffset];
+    if(castlingRights&WQCA) hashKey^=Random64[baseCastleOffset+1];
+    if(castlingRights&BKCA) hashKey^=Random64[baseCastleOffset+2];
+    if(castlingRights&BQCA) hashKey^=Random64[baseCastleOffset+3];
 }
 
 

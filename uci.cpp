@@ -139,6 +139,7 @@ void handleUCICommand(const string& command,Board *boardObj) {
             }
 
         }
+        cout<<hex<<boardObj->posHashKey;
     }
     else if (command.substr(0, 2) == "go")
     {
