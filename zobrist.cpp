@@ -210,6 +210,29 @@ const uint64_t Random64[781] = {
    U64(0xF8D626AAAF278509)};
 
 
+bool isEnPassantPossible(Board *boardObj)
+{
+    int enPassantSq = boardObj->enPassantSq;
+    if(boardObj->turn==white)
+    {
+        if(boardObj->board[enPassantSq+9]==whitePawn||
+           boardObj->board[enPassantSq+11]==whitePawn)
+        {
+            return true;
+        }
+    }
+    else
+    {
+        if(boardObj->board[enPassantSq-9]==blackPawn||
+           boardObj->board[enPassantSq-11]==blackPawn)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 int getPieceValue(int piece)
 {
   if(piece==blackPawn)return 0;
@@ -226,23 +249,8 @@ int getPieceValue(int piece)
   if(piece==whiteKing)return 11;
 }
 
-int getFileValue(char file)
-{
-    if(file=='a')return 0;
-    if(file=='b')return 1;
-    if(file=='c')return 2;
-    if(file=='d')return 3;
-    if(file=='e')return 4;
-    if(file=='f')return 5;
-    if(file=='g')return 6;
-    if(file=='h')return 7;
-}
 uint64_t getHashKey(Board *boardObj)
 {
-    //TODO
-    string enPassantMove = "-";
-    int turn = boardObj->turn;
-
     uint64_t finalKey = 0;
     for (int rnk = 0; rnk < 8; rnk++)
     {
@@ -261,12 +269,13 @@ uint64_t getHashKey(Board *boardObj)
     updateHashCastling(finalKey,boardObj->castlingRights);
 
     const int baseEnOffset = 772;
-    if (enPassantMove != "-")
+    if (boardObj->enPassantSq!=Offboard&&isEnPassantPossible(boardObj))
     {
-         finalKey^=Random64[baseEnOffset + getFileValue(enPassantMove[0])];
+        int file = getFileFromSq(boardObj->enPassantSq)-1;
+        finalKey^=Random64[baseEnOffset + file];
     }
 
-    if (turn == 1)
+    if (boardObj->turn == 1)
     {
         finalKey ^= Random64[780];
     }
@@ -277,8 +286,6 @@ void updatePieceHash(int sq ,uint64_t &hashKey,int piece)
 {
     int file = getFileFromSq(sq)-1;
     int rank = 7-getRankFromSq(sq);
-
-    std::cout<<file<<rank<<std::endl;
 
     int pieceOffset = 64 * getPieceValue(piece) + 8 * rank + file;
     hashKey^=Random64[pieceOffset];
@@ -296,5 +303,9 @@ void updateHashCastling(uint64_t &hashKey,int castlingRights)
     if(castlingRights&BKCA) hashKey^=Random64[baseCastleOffset+2];
     if(castlingRights&BQCA) hashKey^=Random64[baseCastleOffset+3];
 }
-
+void updateHashEnPassant(int enPassantSq,uint64_t &hashKey){
+    int file = getFileFromSq(enPassantSq)-1;
+    const int enPassantOffset = 772;
+    hashKey^= Random64[enPassantOffset+file];
+}
 

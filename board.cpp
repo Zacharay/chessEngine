@@ -26,6 +26,26 @@ bool Board::isMoveLegal()
     }
     return true;
 }
+bool Board::isEnPassantPossible()
+{
+    if(turn==white)
+    {
+        if(board[enPassantSq-9]==blackPawn||
+           board[enPassantSq-11]==blackPawn)
+        {
+            return true;
+        }
+    }
+    else
+    {
+        if(board[enPassantSq+9]==whitePawn||
+           board[enPassantSq+11]==whitePawn)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 bool Board::isSquareAttacked(int sq,int bySide) const{
 
     //Pawns attacks
@@ -208,8 +228,14 @@ void Board::makeMove(int move){
         else{
             enPassantSq = from +10;
         }
+        if(isEnPassantPossible())
+        {
+            cout<<"xd";
+            updateHashEnPassant(enPassantSq,posHashKey);
+        }
     }
     else{
+        updateHashEnPassant(enPassantSq,posHashKey);
         enPassantSq = Offboard;
     }
 
@@ -405,7 +431,14 @@ void Board::parseFen(string fen)
         enPassantSq = Offboard;
     }
     else{
-
+        std::string temp;
+        temp.append(1, parts[3][0]);
+        temp.append(1, parts[3][1]);
+        auto it = sqNameToNumber.find(temp);
+        if(it!=sqNameToNumber.end())
+        {
+            enPassantSq = it->second;
+        }
     }
 
     fiftyMove = int(parts[4][0])*2;

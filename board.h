@@ -11,6 +11,7 @@ private:
     void addPiece(const int to,const int piece);
     void movePiece(const int from,const int to);
     void clearBoard();
+    bool isEnPassantPossible();
 
 public:
 //Square Centric

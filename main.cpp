@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-    Board boardObj("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1");
+    /*Board boardObj("rnbqkbnr/ppp1p1pp/8/3pPp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3");
     cout<<hex<<boardObj.posHashKey;
     /*for(int i=0;i<10;i++)
     {
@@ -20,7 +20,7 @@ int main()
 
 
 
-    ///perfitTest(4,&boardObj);
+    //perfitTest(4,&boardObj);
     uciLoop();
     return 0;
 }
