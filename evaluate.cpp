@@ -214,3 +214,21 @@ int evaluatePosition(Board *boardObj){
     else return -score;
 
 };
+
+int evaluateGameOver(Board *boardObj){
+    int kingIdx = boardObj->turn==white?whiteKing:blackKing;
+    int kingPiecePos = boardObj->pieceList[kingIdx][1];
+    if(boardObj->isSquareAttacked(kingPiecePos,!boardObj->turn))
+    {
+        if(boardObj->turn==white)
+        {
+            return -900000;
+        }
+        else{
+            return 900000;
+        }
+    }
+    else{
+        return 0;
+    }
+}

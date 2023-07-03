@@ -103,11 +103,27 @@ void handleUCICommand(const string& command,Board *boardObj) {
     }
     else if (command.substr(0, 8) == "position")
     {
-        size_t pos = command.find("startpos");
+        size_t startPos = command.find("startpos");
+        size_t fen = command.find("fen");
 
-        if(pos!=string::npos)
+        if(startPos!=string::npos)
         {
             boardObj->parseFen(DEFAULT_POS);
+        }
+        else if(fen!= string::npos)
+        {
+            std::string temp = command.substr(fen+4);
+            std::istringstream iss(temp);
+            std::string fenStr="";
+            std::string tempStr;
+            for(int i=0;i<5;i++)
+            {
+                iss>>tempStr;
+                fenStr+= tempStr+" ";
+            }
+            iss>>tempStr;
+            fenStr+= tempStr;
+            boardObj->parseFen(fenStr);
         }
 
         size_t movesPos = command.find("moves");

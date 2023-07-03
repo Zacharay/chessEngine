@@ -38,16 +38,16 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta)
     }
 
     vector<S_MOVE> moves= generateAllMoves(boardObj);
+    int legalMoves = 0;
     for(int i=0;i<moves.size();i++)
     {
         boardObj->makeMove(moves[i].move);
         int moveScore = -INFINITY;
-        if(!boardObj->isMoveLegal())
+        if(boardObj->isMoveLegal())
         {
-            boardObj->unmakeMove();
-            continue;
+            legalMoves++;
+            moveScore = -negaMax(boardObj,depth-1,-beta,-alpha);
         }
-        moveScore = -negaMax(boardObj,depth-1,-beta,-alpha);
         boardObj->unmakeMove();
         if(moveScore>=beta)
         {
@@ -57,6 +57,10 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta)
         {
             alpha=moveScore;
         }
+    }
+    if(legalMoves==0)
+    {
+        return evaluateGameOver(boardObj);
     }
     return alpha;
 }
