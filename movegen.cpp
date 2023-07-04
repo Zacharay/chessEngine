@@ -5,18 +5,18 @@
 
 void addCaptureMove(vector<S_MOVE> *moves,int move,Board *boardObj)
 {
-    S_MOVE s_move;
-    s_move.move = move;
-    s_move.score = 10;
+    S_MOVE s_move(move,10);
     moves->push_back(s_move);
+
+    //moves->emplace_back(move,10);
 }
 
 void addQuietMove(vector<S_MOVE> *moves,int move,Board *boardObj)
 {
-    S_MOVE s_move;
-    s_move.move = move;
-    s_move.score = 0;
+    S_MOVE s_move(move,0);
     moves->push_back(s_move);
+
+    //moves->emplace_back(move,0);
 }
 
 
@@ -83,9 +83,9 @@ void addBlackPawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int 
 }
 
 
-vector<S_MOVE> generateAllMoves(Board *boardObj)
+void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
 {
-    vector<S_MOVE>moves;
+    moves->reserve(60);
     if(boardObj->turn==white)
     {
         //Pawns
@@ -96,23 +96,23 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
             //One square move
             if(boardObj->board[pawnPos - 10]==Empty)
             {
-                addWhitePawnMove(boardObj,&moves,pawnPos,pawnPos - 10,0);
+                addWhitePawnMove(boardObj,moves,pawnPos,pawnPos - 10,0);
                 //two Square move
                 if(boardObj->board[pawnPos - 20]==Empty&&pawnPos/10==8)
                 {
-                    addQuietMove(&moves,setMove(pawnPos,pawnPos-20,0,0,0,0,1),boardObj);
+                    addQuietMove(moves,setMove(pawnPos,pawnPos-20,0,0,0,0,1),boardObj);
                 }
             }
 
             if(boardObj-> board[pawnPos - 11]>=blackPawn&&boardObj-> board[pawnPos - 11]<blackKing)
             {
                 int capturedPiece = boardObj->board[pawnPos -11];
-                addWhitePawnMove(boardObj,&moves,pawnPos,pawnPos-11,capturedPiece);
+                addWhitePawnMove(boardObj,moves,pawnPos,pawnPos-11,capturedPiece);
             }
             if(boardObj-> board[pawnPos -9]>=blackPawn&&boardObj-> board[pawnPos - 9]<blackKing)
             {
                 int capturedPiece = boardObj->board[pawnPos -9];
-                addWhitePawnMove(boardObj,&moves,pawnPos,pawnPos-9,capturedPiece);
+                addWhitePawnMove(boardObj,moves,pawnPos,pawnPos-9,capturedPiece);
             }
         }
 
@@ -126,7 +126,7 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                 bool isKingSideEmpty = boardObj->board[F1]==Empty&&boardObj->board[G1]==Empty;
                 if(isKingSideEmpty&&!boardObj->isSquareAttacked(F1,black)&&!boardObj->isSquareAttacked(G1,black))
                 {
-                    addQuietMove(&moves,setMove(E1,G1,0,0,WKCA,0,0),boardObj);
+                    addQuietMove(moves,setMove(E1,G1,0,0,WKCA,0,0),boardObj);
                 }
             }
             if(boardObj->castlingRights&WQCA)
@@ -134,7 +134,7 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                 bool isQueenSideEmpty = boardObj->board[D1]==Empty&&boardObj->board[C1]==Empty&&boardObj->board[B1]==Empty;
                 if(isQueenSideEmpty&&!boardObj->isSquareAttacked(D1,black)&&!boardObj->isSquareAttacked(C1,black)&&!boardObj->isSquareAttacked(B1,black))
                 {
-                    addQuietMove(&moves,setMove(E1,C1,0,0,WQCA,0,0),boardObj);
+                    addQuietMove(moves,setMove(E1,C1,0,0,WQCA,0,0),boardObj);
                 }
             }
         }
@@ -144,11 +144,11 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
         {
             if(boardObj->board[enPassantSq+9]==whitePawn)
             {
-                addCaptureMove(&moves,setMove(enPassantSq+9,enPassantSq,0,1,0,1,0),boardObj);
+                addCaptureMove(moves,setMove(enPassantSq+9,enPassantSq,0,1,0,1,0),boardObj);
             }
             if(boardObj->board[boardObj->enPassantSq+11]==whitePawn)
             {
-                addCaptureMove(&moves,setMove(enPassantSq+11,enPassantSq,0,1,0,1,0),boardObj);
+                addCaptureMove(moves,setMove(enPassantSq+11,enPassantSq,0,1,0,1,0),boardObj);
             }
         }
 
@@ -162,23 +162,23 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
             //One square move
             if(boardObj->board[pawnPos + 10]==Empty)
             {
-                addBlackPawnMove(boardObj,&moves,pawnPos,pawnPos + 10,0);
+                addBlackPawnMove(boardObj,moves,pawnPos,pawnPos + 10,0);
                 //two Square move
                 if(boardObj->board[pawnPos + 20]==Empty&&pawnPos/10==3)
                 {
-                    addQuietMove(&moves,setMove(pawnPos,pawnPos+20,0,0,0,0,1),boardObj);
+                    addQuietMove(moves,setMove(pawnPos,pawnPos+20,0,0,0,0,1),boardObj);
                 }
             }
             //captures
             if(boardObj-> board[pawnPos + 11]>=whitePawn&&boardObj-> board[pawnPos + 11]<whiteKing)
             {
                 int capturedPiece = boardObj->board[pawnPos +11];
-                addBlackPawnMove(boardObj,&moves,pawnPos,pawnPos+ 11,capturedPiece);
+                addBlackPawnMove(boardObj,moves,pawnPos,pawnPos+ 11,capturedPiece);
             }
             if(boardObj-> board[pawnPos +9]>=whitePawn&&boardObj-> board[pawnPos + 9]<whiteKing)
             {
                 int capturedPiece = boardObj->board[pawnPos +9];
-                addBlackPawnMove(boardObj,&moves,pawnPos,pawnPos+9,capturedPiece);
+                addBlackPawnMove(boardObj,moves,pawnPos,pawnPos+9,capturedPiece);
             }
         }
         //castling
@@ -190,7 +190,7 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                 bool isKingSideEmpty = boardObj->board[F8]==Empty&&boardObj->board[G8]==Empty;
                 if(isKingSideEmpty&&!boardObj->isSquareAttacked(F8,white)&&!boardObj->isSquareAttacked(G8,white))
                 {
-                    addQuietMove(&moves,setMove(E8,G8,0,0,BKCA,0,0),boardObj);
+                    addQuietMove(moves,setMove(E8,G8,0,0,BKCA,0,0),boardObj);
                 }
             }
             if(boardObj->castlingRights&BQCA)
@@ -198,7 +198,7 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                 bool isQueenSideEmpty = boardObj->board[D8]==Empty&&boardObj->board[C8]==Empty&&boardObj->board[B8]==Empty;
                 if(isQueenSideEmpty&&!boardObj->isSquareAttacked(D8,white)&&!boardObj->isSquareAttacked(C8,white)&&!boardObj->isSquareAttacked(B8,white))
                 {
-                    addQuietMove(&moves,setMove(E8,C8,0,0,BQCA,0,0),boardObj);
+                    addQuietMove(moves,setMove(E8,C8,0,0,BQCA,0,0),boardObj);
                 }
             }
         }
@@ -209,11 +209,11 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
 
             if(boardObj->board[enPassantSq-9]==blackPawn)
             {
-                addCaptureMove(&moves,setMove(enPassantSq-9,enPassantSq,0,1,0,1,0),boardObj);
+                addCaptureMove(moves,setMove(enPassantSq-9,enPassantSq,0,1,0,1,0),boardObj);
             }
             if(boardObj->board[enPassantSq-11]==blackPawn)
             {
-                addCaptureMove(&moves,setMove(enPassantSq-11,enPassantSq,0,1,0,1,0),boardObj);
+                addCaptureMove(moves,setMove(enPassantSq-11,enPassantSq,0,1,0,1,0),boardObj);
             }
         }
 
@@ -233,12 +233,12 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
 
             if(boardObj->board[newKnightPos]==Empty)
             {
-                addQuietMove(&moves,setMove(knightPos,newKnightPos,0,0,0,0,0),boardObj);
+                addQuietMove(moves,setMove(knightPos,newKnightPos,0,0,0,0,0),boardObj);
             }
             else if(pieceColor[boardObj->board[newKnightPos]]!=pieceColor[boardObj->board[knightPos]])
             {
                 int capturedPiece = boardObj->board[newKnightPos];
-                addCaptureMove(&moves,setMove(knightPos,newKnightPos,0,0,0,capturedPiece,0),boardObj);
+                addCaptureMove(moves,setMove(knightPos,newKnightPos,0,0,0,capturedPiece,0),boardObj);
             }
         }
     }
@@ -254,12 +254,12 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
 
         if(boardObj->board[newKingPos]==Empty)
         {
-            addQuietMove(&moves,setMove(kingPos,newKingPos,0,0,0,0,0),boardObj);
+            addQuietMove(moves,setMove(kingPos,newKingPos,0,0,0,0,0),boardObj);
         }
         else if(pieceColor[boardObj->board[newKingPos]]!=pieceColor[king])
         {
             int capturedPiece = boardObj->board[newKingPos];
-            addCaptureMove(&moves,setMove(kingPos,newKingPos,0,0,0,capturedPiece,0),boardObj);
+            addCaptureMove(moves,setMove(kingPos,newKingPos,0,0,0,capturedPiece,0),boardObj);
         }
     }
     //Bishop
@@ -278,13 +278,13 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                     if(pieceColor[boardObj->board[newBishopPos]]!=pieceColor[bishop])
                     {
                         int capturedPiece = boardObj->board[newBishopPos];
-                        addCaptureMove(&moves,setMove(bishopPos,newBishopPos,0,0,0,capturedPiece,0),boardObj);
+                        addCaptureMove(moves,setMove(bishopPos,newBishopPos,0,0,0,capturedPiece,0),boardObj);
                     }
                     break;
                 }
                 else if(boardObj->board[newBishopPos]==Empty)
                 {
-                    addQuietMove(&moves,setMove(bishopPos,newBishopPos,0,0,0,0,0),boardObj);
+                    addQuietMove(moves,setMove(bishopPos,newBishopPos,0,0,0,0,0),boardObj);
                     newBishopPos+=offset;
                 }
             }
@@ -308,13 +308,13 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                     if(pieceColor[boardObj->board[newRookPos]]!=pieceColor[rook])
                     {
                         int capturedPiece = boardObj->board[newRookPos];
-                        addCaptureMove(&moves,setMove(rookPos,newRookPos,0,0,0,capturedPiece,0),boardObj);
+                        addCaptureMove(moves,setMove(rookPos,newRookPos,0,0,0,capturedPiece,0),boardObj);
                     }
                     break;
                 }
                 else if(boardObj->board[newRookPos]==Empty)
                 {
-                    addQuietMove(&moves,setMove(rookPos,newRookPos,0,0,0,0,0),boardObj);
+                    addQuietMove(moves,setMove(rookPos,newRookPos,0,0,0,0,0),boardObj);
                     newRookPos+=offset;
                 }
             }
@@ -338,13 +338,13 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                     if(pieceColor[boardObj->board[newQueenPos]]!=pieceColor[queen])
                     {
                         int capturedPiece = boardObj->board[newQueenPos];
-                        addCaptureMove(&moves,setMove(queenPos,newQueenPos,0,0,0,capturedPiece,0),boardObj);
+                        addCaptureMove(moves,setMove(queenPos,newQueenPos,0,0,0,capturedPiece,0),boardObj);
                     }
                     break;
                 }
                 else if(boardObj->board[newQueenPos]==Empty)
                 {
-                    addQuietMove(&moves,setMove(queenPos,newQueenPos,0,0,0,0,0),boardObj);
+                    addQuietMove(moves,setMove(queenPos,newQueenPos,0,0,0,0,0),boardObj);
                     newQueenPos+=offset;
                 }
             }
@@ -360,17 +360,16 @@ vector<S_MOVE> generateAllMoves(Board *boardObj)
                     if(pieceColor[boardObj->board[newQueenPos]]!=pieceColor[queen])
                     {
                         int capturedPiece = boardObj->board[newQueenPos];
-                        addCaptureMove(&moves,setMove(queenPos,newQueenPos,0,0,0,capturedPiece,0),boardObj);
+                        addCaptureMove(moves,setMove(queenPos,newQueenPos,0,0,0,capturedPiece,0),boardObj);
                     }
                     break;
                 }
                 else if(boardObj->board[newQueenPos]==Empty)
                 {
-                    addQuietMove(&moves,setMove(queenPos,newQueenPos,0,0,0,0,0),boardObj);
+                    addQuietMove(moves,setMove(queenPos,newQueenPos,0,0,0,0,0),boardObj);
                     newQueenPos+=offset;
                 }
             }
         }
     }
-    return moves;
 }

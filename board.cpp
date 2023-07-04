@@ -191,9 +191,10 @@ void Board::makeMove(int move){
     historyPly++;
     ply++;
 
+    updateHashCastling(posHashKey,castlingRights);
     castlingRights &= castlePerms[from];
     castlingRights &= castlePerms[to];
-
+    updateHashCastling(posHashKey,castlingRights);
     if(castle)
     {
         if(castle&WKCA)
@@ -214,32 +215,6 @@ void Board::makeMove(int move){
         }
     }
 
-    if(capturePiece)
-    {
-        clearPiece(to);
-    }
-
-    if(dbPawn)
-    {
-        if(turn==white)
-        {
-            enPassantSq = from -10;
-        }
-        else{
-            enPassantSq = from +10;
-        }
-        if(isEnPassantPossible())
-        {
-            cout<<"xd";
-            updateHashEnPassant(enPassantSq,posHashKey);
-        }
-    }
-    else{
-        updateHashEnPassant(enPassantSq,posHashKey);
-        enPassantSq = Offboard;
-    }
-
-
     if(enPassant)
     {
         if(turn==white)
@@ -249,7 +224,43 @@ void Board::makeMove(int move){
         else{
             clearPiece(to-10);
         }
+        updateHashEnPassant(enPassantSq,posHashKey);
+        enPassantSq = Offboard;
     }
+    else if(capturePiece)
+    {
+        clearPiece(to);
+    }
+
+    if(dbPawn)
+    {
+
+            if(turn==white)
+            {
+                enPassantSq = from -10;
+            }
+            else{
+                enPassantSq = from +10;
+            }
+
+            if(isEnPassantPossible())
+            {
+                    updateHashEnPassant(enPassantSq,posHashKey);
+            }
+            else{
+                enPassantSq=Offboard;
+            }
+    }
+    else{
+        if(enPassantSq!=Offboard)
+        {
+            updateHashEnPassant(enPassantSq,posHashKey);
+        }
+        enPassantSq = Offboard;
+    }
+
+
+
     movePiece(from,to);
 
     if(promotedPiece)

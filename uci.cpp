@@ -45,7 +45,9 @@ int parseMoveString(std::string moveString,Board *boardObj)
         else promotedPiece = -1;
 
     }
-    vector<S_MOVE> moves = generateAllMoves(boardObj);
+
+    vector<S_MOVE>moves;
+    generateAllMoves(boardObj,&moves);
     for(S_MOVE smove:moves)
     {
         int move = smove.move;

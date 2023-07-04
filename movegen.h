@@ -3,4 +3,4 @@
 #include <defs.h>
 #include <board.h>
 
-vector<S_MOVE> generateAllMoves(Board *boardObj);
+void generateAllMoves(Board *boardObj,vector<S_MOVE>*moves);

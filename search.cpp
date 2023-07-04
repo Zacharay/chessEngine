@@ -11,7 +11,8 @@ int SearchPosition(Board *boardObj,int depth){
     int bestMove=0;
     int bestEval=-INFINITY;
 
-    vector<S_MOVE>moves = generateAllMoves(boardObj);
+    vector<S_MOVE>moves;
+    generateAllMoves(boardObj,&moves);
     for(int i=0;i<moves.size();i++)
     {
         boardObj->makeMove(moves[i].move);
@@ -37,7 +38,8 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta)
         return evaluatePosition(boardObj);
     }
 
-    vector<S_MOVE> moves= generateAllMoves(boardObj);
+    vector<S_MOVE>moves;
+    generateAllMoves(boardObj,&moves);
     int legalMoves = 0;
     for(int i=0;i<moves.size();i++)
     {

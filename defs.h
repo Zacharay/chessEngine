@@ -69,16 +69,21 @@ inline constexpr int fileRankToSq120(int file,int rnk){return 21+10*rnk+file;};
 inline constexpr int getFileFromSq(int sq){return sq%10;};
 inline constexpr int getRankFromSq(int sq){return (sq/10)-2;};
 
-typedef struct{
+struct S_MOVE{
     int move;
     int score;
-}S_MOVE;
-typedef struct{
+    S_MOVE(int move,int score)
+    : move(move),score(score)
+    {
+    }
+
+};
+struct S_UNDO{
     int move;
     int castlingRights;
     int enPassant;
     uint64_t posKey;
     int fiftyMove;
 
-}S_UNDO;
+};
 

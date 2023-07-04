@@ -7,7 +7,9 @@
 
 
 u64 perfit(int depth,Board *boardObj){
-    vector<S_MOVE>movesList = generateAllMoves(boardObj);
+    vector<S_MOVE>movesList;
+    generateAllMoves(boardObj,&movesList);
+
     u64 nodes=0;
 
     if(depth==0)
