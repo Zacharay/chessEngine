@@ -36,14 +36,15 @@ int parseMoveString(std::string moveString,Board *boardObj)
 
     if(moveString.length()==5)
     {
+
         int addColorValue = boardObj->turn==white?0:6;
         char promotedPieceChar = moveString[4];
+
         if(promotedPieceChar=='n')promotedPiece = 2+addColorValue;
         else if(promotedPieceChar=='b')promotedPiece = 3+addColorValue;
         else if(promotedPieceChar=='r')promotedPiece = 4+addColorValue;
         else if(promotedPieceChar=='q')promotedPiece = 5+addColorValue;
         else promotedPiece = -1;
-
     }
 
     vector<S_MOVE>moves;
@@ -60,7 +61,10 @@ int parseMoveString(std::string moveString,Board *boardObj)
                     return move;
                 }
             }
-            return move;
+            else{
+                return move;
+            }
+
         }
     }
 }
@@ -135,13 +139,12 @@ void handleUCICommand(const string& command,Board *boardObj) {
             std::istringstream iss(allMoves);
             std::string moveStr;
             while (iss >> moveStr) {
-                // Output each word
+
                 int move = parseMoveString(moveStr,boardObj);
                 boardObj->makeMove(move);
             }
 
         }
-        cout<<hex<<boardObj->posHashKey;
     }
     else if (command.substr(0, 2) == "go")
     {
@@ -158,7 +161,7 @@ void handleUCICommand(const string& command,Board *boardObj) {
 
         }
 
-        int bestMove = SearchPosition(boardObj,6);
+        int bestMove = SearchPosition(boardObj,7);
         std::string bestMoveStr = convertMoveToString(bestMove);
         std::cout<<"bestmove "<<bestMoveStr<<std::endl;
     }

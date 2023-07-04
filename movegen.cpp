@@ -27,10 +27,13 @@ void addWhitePawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int 
         //Promotion Moves
         if(rankFrom==3)
         {
-            addCaptureMove(moves,setMove(from,to,whiteKnight,0,0,capturedPiece,0),boardObj);
-            addCaptureMove(moves,setMove(from,to,whiteBishop,0,0,capturedPiece,0),boardObj);
-            addCaptureMove(moves,setMove(from,to,whiteRook,0,0,capturedPiece,0),boardObj);
-            addCaptureMove(moves,setMove(from,to,whiteQueen,0,0,capturedPiece,0),boardObj);
+            for(int promotedPiece=whiteKnight;promotedPiece<=whiteQueen;promotedPiece++)
+            {
+                int score = 0;
+                moves->emplace_back(setMove(from,to,promotedPiece,0,0,capturedPiece,0),score);
+
+            }
+
         }
         else{
             addCaptureMove(moves,setMove(from,to,0,0,0,capturedPiece,0),boardObj);

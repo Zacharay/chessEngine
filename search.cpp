@@ -44,7 +44,8 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta)
 
     vector<S_MOVE>moves;
     generateAllMoves(boardObj,&moves);
-    //std::sort(moves.begin(),moves.end(),compareScoreDescending);
+
+    std::sort(moves.begin(),moves.end(),compareScoreDescending);
     int legalMoves = 0;
     for(int i=0;i<moves.size();i++)
     {
@@ -67,7 +68,10 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta)
     }
     if(legalMoves==0)
     {
-        return evaluateGameOver(boardObj);
+        int ply = boardObj->turn==white?depth:-depth;
+
+        int score = evaluateGameOver(boardObj)+ply;
+        return score;
     }
     return alpha;
 }

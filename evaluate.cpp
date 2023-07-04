@@ -219,10 +219,10 @@ int evaluateGameOver(Board *boardObj){
     {
         if(boardObj->turn==white)
         {
-            return -900000;
+            return 900000;
         }
         else{
-            return 900000;
+            return -900000;
         }
     }
     else{
