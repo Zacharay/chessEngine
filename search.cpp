@@ -4,6 +4,7 @@
 #include "movegen.h"
 #include "climits"
 #include <iostream>
+#include <algorithm>
 
 #define INFINITY 10000000
 
@@ -30,6 +31,9 @@ int SearchPosition(Board *boardObj,int depth){
     }
     return bestMove;
 }
+bool compareScoreDescending(const S_MOVE& a, const S_MOVE& b) {
+    return a.score > b.score;
+}
 int negaMax(Board *boardObj,int depth,int alpha,int beta)
 {
 
@@ -40,6 +44,7 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta)
 
     vector<S_MOVE>moves;
     generateAllMoves(boardObj,&moves);
+    //std::sort(moves.begin(),moves.end(),compareScoreDescending);
     int legalMoves = 0;
     for(int i=0;i<moves.size();i++)
     {

@@ -85,9 +85,6 @@ const int KingTableEndgame[64]={
     -50,-30,-30,-30,-30,-30,-30,-50
 };
 
-const int PieceValue[13] = {
-    0,100,320,330,500,900,20000,100,320,330,500,900,20000
-};
 
 const int BishopPairBonus = 30;
 const int EndGameThreshold = 20000+500+200+640;

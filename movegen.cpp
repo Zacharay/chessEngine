@@ -19,7 +19,6 @@ void addQuietMove(vector<S_MOVE> *moves,int move,Board *boardObj)
     //moves->emplace_back(move,0);
 }
 
-
 void addWhitePawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int capturedPiece)
 {
     int rankFrom = from/10;
@@ -233,12 +232,16 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
 
             if(boardObj->board[newKnightPos]==Empty)
             {
-                addQuietMove(moves,setMove(knightPos,newKnightPos,0,0,0,0,0),boardObj);
+                int move  = setMove(knightPos,newKnightPos,0,0,0,0,0);
+                int score = 0;
+                moves->emplace_back(move,score);
             }
             else if(pieceColor[boardObj->board[newKnightPos]]!=pieceColor[boardObj->board[knightPos]])
             {
                 int capturedPiece = boardObj->board[newKnightPos];
-                addCaptureMove(moves,setMove(knightPos,newKnightPos,0,0,0,capturedPiece,0),boardObj);
+                int move = setMove(knightPos,newKnightPos,0,0,0,capturedPiece,0);
+                int score = PieceValue[knight]-PieceValue[capturedPiece];
+                moves->emplace_back(move,score);
             }
         }
     }
@@ -254,12 +257,16 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
 
         if(boardObj->board[newKingPos]==Empty)
         {
-            addQuietMove(moves,setMove(kingPos,newKingPos,0,0,0,0,0),boardObj);
+            int move = setMove(kingPos,newKingPos,0,0,0,0,0);
+            int score = 0;
+            moves->emplace_back(move,score);
         }
         else if(pieceColor[boardObj->board[newKingPos]]!=pieceColor[king])
         {
             int capturedPiece = boardObj->board[newKingPos];
-            addCaptureMove(moves,setMove(kingPos,newKingPos,0,0,0,capturedPiece,0),boardObj);
+            int move = setMove(kingPos,newKingPos,0,0,0,capturedPiece,0);
+            int score = PieceValue[king]-PieceValue[capturedPiece];
+            moves->emplace_back(move,score);
         }
     }
     //Bishop
@@ -278,13 +285,16 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
                     if(pieceColor[boardObj->board[newBishopPos]]!=pieceColor[bishop])
                     {
                         int capturedPiece = boardObj->board[newBishopPos];
-                        addCaptureMove(moves,setMove(bishopPos,newBishopPos,0,0,0,capturedPiece,0),boardObj);
+                        int move = setMove(bishopPos,newBishopPos,0,0,0,capturedPiece,0);
+                        int score = PieceValue[bishop]-PieceValue[capturedPiece];
+                        moves->emplace_back(move,score);
                     }
                     break;
                 }
                 else if(boardObj->board[newBishopPos]==Empty)
                 {
-                    addQuietMove(moves,setMove(bishopPos,newBishopPos,0,0,0,0,0),boardObj);
+                    int move = setMove(bishopPos,newBishopPos,0,0,0,0,0);
+                    moves->emplace_back(move,0);
                     newBishopPos+=offset;
                 }
             }
@@ -308,13 +318,16 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
                     if(pieceColor[boardObj->board[newRookPos]]!=pieceColor[rook])
                     {
                         int capturedPiece = boardObj->board[newRookPos];
-                        addCaptureMove(moves,setMove(rookPos,newRookPos,0,0,0,capturedPiece,0),boardObj);
+                        int move = setMove(rookPos,newRookPos,0,0,0,capturedPiece,0);
+                        int score = PieceValue[rook]-PieceValue[capturedPiece];
+                        moves->emplace_back(move,score);
                     }
                     break;
                 }
                 else if(boardObj->board[newRookPos]==Empty)
                 {
-                    addQuietMove(moves,setMove(rookPos,newRookPos,0,0,0,0,0),boardObj);
+                    int move = setMove(rookPos,newRookPos,0,0,0,0,0);
+                    moves->emplace_back(move,0);
                     newRookPos+=offset;
                 }
             }
@@ -338,13 +351,15 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
                     if(pieceColor[boardObj->board[newQueenPos]]!=pieceColor[queen])
                     {
                         int capturedPiece = boardObj->board[newQueenPos];
-                        addCaptureMove(moves,setMove(queenPos,newQueenPos,0,0,0,capturedPiece,0),boardObj);
+                        int move = setMove(queenPos,newQueenPos,0,0,0,capturedPiece,0);
+                        int score = PieceValue[queen]-PieceValue[capturedPiece];
+                        moves->emplace_back(move,score);
                     }
                     break;
                 }
                 else if(boardObj->board[newQueenPos]==Empty)
                 {
-                    addQuietMove(moves,setMove(queenPos,newQueenPos,0,0,0,0,0),boardObj);
+                    moves->emplace_back(setMove(queenPos,newQueenPos,0,0,0,0,0),0);
                     newQueenPos+=offset;
                 }
             }
@@ -360,13 +375,15 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
                     if(pieceColor[boardObj->board[newQueenPos]]!=pieceColor[queen])
                     {
                         int capturedPiece = boardObj->board[newQueenPos];
-                        addCaptureMove(moves,setMove(queenPos,newQueenPos,0,0,0,capturedPiece,0),boardObj);
+                        int move = setMove(queenPos,newQueenPos,0,0,0,capturedPiece,0);
+                        int score = PieceValue[queen]-PieceValue[capturedPiece];
+                        moves->emplace_back(move,score);
                     }
                     break;
                 }
                 else if(boardObj->board[newQueenPos]==Empty)
                 {
-                    addQuietMove(moves,setMove(queenPos,newQueenPos,0,0,0,0,0),boardObj);
+                    moves->emplace_back(setMove(queenPos,newQueenPos,0,0,0,0,0),0);
                     newQueenPos+=offset;
                 }
             }

@@ -63,7 +63,7 @@ extern int knightOffsets[8];
 extern int kingOffsets[8];
 extern int bishopOffsets[4];
 extern int rookOffsets[4];
-
+extern const int PieceValue[13];
 
 inline constexpr int fileRankToSq120(int file,int rnk){return 21+10*rnk+file;};
 inline constexpr int getFileFromSq(int sq){return sq%10;};

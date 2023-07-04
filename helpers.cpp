@@ -73,6 +73,9 @@ const int castlePerms[120] = {
 int pieceColor[13]={
     -1,white,white,white,white,white,white,black,black,black,black,black,black
 };
+const int PieceValue[13]= {
+    0,100,320,330,500,900,20000,100,320,330,500,900,20000
+};
 int knightOffsets[8]={-21,-12,-19,-8,21,12,19,8};
 int kingOffsets[8]={-1,1,-10,10,-11,11,-9,9};
 int bishopOffsets[4]={-11,11,-9,9};
