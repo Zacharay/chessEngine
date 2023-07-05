@@ -2,7 +2,7 @@
 
 #include "defs.h"
 #include <string.h>
-
+#include "bitboards.h"
 using namespace std;
 
 class Board{
@@ -26,6 +26,7 @@ public:
     int enPassantSq;
 
     uint64_t posHashKey;
+    uint64_t bitboards[13];
 
     int fiftyMove;
     int ply;

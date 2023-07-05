@@ -35,6 +35,7 @@
 		</Compiler>
 		<Unit filename="board.cpp" />
 		<Unit filename="board.h" />
+		<Unit filename="debug.cpp" />
 		<Unit filename="defs.h" />
 		<Unit filename="evaluate.cpp" />
 		<Unit filename="evaluate.h" />

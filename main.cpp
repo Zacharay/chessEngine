@@ -1,11 +1,10 @@
-
 #include "uci.h"
 
 
 void test();
 int main()
 {
-    test();
+    //test();
     uciLoop();
     return 0;
 }

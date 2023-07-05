@@ -161,7 +161,7 @@ void handleUCICommand(const string& command,Board *boardObj) {
 
         }
 
-        int bestMove = SearchPosition(boardObj,7);
+        int bestMove = SearchPosition(boardObj,6);
         std::string bestMoveStr = convertMoveToString(bestMove);
         std::cout<<"bestmove "<<bestMoveStr<<std::endl;
     }

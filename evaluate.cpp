@@ -1,5 +1,6 @@
 #include "defs.h"
 #include "board.h"
+#include "bitboards.h"
 
 const int PawnTable[64]={
     0,  0 ,  0,  0,  0,  0,  0,  0,
@@ -85,7 +86,8 @@ const int KingTableEndgame[64]={
     -50,-30,-30,-30,-30,-30,-30,-50
 };
 
-
+const int RookOpenBonus = 10;
+const int RookSemiOpenBonus = 5;
 const int BishopPairBonus = 30;
 const int EndGameThreshold = 20000+500+200+640;
 
@@ -124,6 +126,15 @@ int evaluatePosition(Board *boardObj){
         materialWhite+= PieceValue[whiteRook];
         int rookPos = boardObj->pieceList[whiteRook][i];
         score+=RookTable[sq120to64[rookPos]];
+        uint64_t rookFileMask = getFileMask(getFileFromSq(rookPos)-1);
+        if(!(rookFileMask&boardObj->bitboards[whitePawn])&&!(rookFileMask&boardObj->bitboards[blackPawn]))
+        {
+            score+=RookOpenBonus;
+        }
+        else if(!(rookFileMask&boardObj->bitboards[whitePawn]))
+        {
+            score+=RookSemiOpenBonus;
+        }
     }
 
     //white Queen
@@ -164,6 +175,17 @@ int evaluatePosition(Board *boardObj){
         materialBlack += PieceValue[blackRook];
         int rookPos = boardObj->pieceList[blackRook][i];
         score-=RookTable[MirrorSq[sq120to64[rookPos]]];
+
+        uint64_t rookFileMask = getFileMask(getFileFromSq(rookPos)-1);
+        if(!(rookFileMask&boardObj->bitboards[whitePawn])&&!(rookFileMask&boardObj->bitboards[blackPawn]))
+        {
+            score-=RookOpenBonus;
+        }
+        else if(!(rookFileMask&boardObj->bitboards[blackPawn]))
+        {
+            score-=RookSemiOpenBonus;
+        }
+
     }
 
     //black Queen

@@ -4,13 +4,16 @@
 #include <string>
 #include <iostream>
 #include "zobrist.h"
+#include "bitboards.h"
 Board::Board(string fen)
 :ply(0),historyPly(0),enPassantSq(Offboard)
 {
     parseFen(fen);
+    initBitboards(bitboards,board);
 }
 bool Board::isMoveLegal()
 {
+
     if(turn==white)
     {
         if(isSquareAttacked(pieceList[blackKing][1],white))
@@ -137,6 +140,8 @@ void Board::clearPiece(const int from){
     int piece = board[from];
     updatePieceHash(from,posHashKey,piece);
 
+    clearBit(sq120to64[from],bitboards[piece]);
+
     board[from]=Empty;
     for(int i=1;i<=numOfPieces[piece];i++)
     {
@@ -150,6 +155,7 @@ void Board::clearPiece(const int from){
 void Board::addPiece(const int to,const int piece)
 {
     updatePieceHash(to,posHashKey,piece);
+    setBit(sq120to64[to],bitboards[piece]);
 
     board[to]=piece;
     pieceList[piece][++numOfPieces[piece]]=to;
@@ -162,6 +168,9 @@ void Board::movePiece(const int from,const int to){
 
     board[to] = board[from];
     board[from]= Empty;
+
+    clearBit(sq120to64[from],bitboards[piece]);
+    setBit(sq120to64[to],bitboards[piece]);
 
     for(int i=1;i<=numOfPieces[piece];i++)
     {
