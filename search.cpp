@@ -31,11 +31,28 @@ int SearchPosition(Board *boardObj,int depth){
     }
     return bestMove;
 }
+bool isRepetition(Board *boardObj)
+{
+    for(int i=0;i<boardObj->historyPly;i++)
+    {
+        if(boardObj->posHashKey==boardObj->history[i].posKey)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 bool compareScoreDescending(const S_MOVE& a, const S_MOVE& b) {
     return a.score > b.score;
 }
 int negaMax(Board *boardObj,int depth,int alpha,int beta)
 {
+    if(isRepetition(boardObj))
+    {
+        return 0;
+    }
+    int kingIdx = boardObj->turn==white?whiteKing:blackKing;
+    bool isInCheck = boardObj->isSquareAttacked(boardObj->pieceList[kingIdx][1],boardObj->turn^1);
 
     if(depth==0)
     {
@@ -68,10 +85,11 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta)
     }
     if(legalMoves==0)
     {
-        int ply = boardObj->turn==white?depth:-depth;
-
-        int score = evaluateGameOver(boardObj)+ply;
-        return score;
+        if(isInCheck)
+        {
+            return -(INFINITY + depth);
+        }
+        else return 0;
     }
     return alpha;
 }

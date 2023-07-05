@@ -7,10 +7,10 @@
 using namespace std;
 void test()
 {
-    Board boardObj;
-    int move = SearchPosition(&boardObj,5);
+    Board boardObj("3K4/8/3k4/8/2q5/6q1/8/8 b - - 55 117");
+    int move = SearchPosition(&boardObj,6);
     boardObj.makeMove(move);
-    cout<<getMoveFrom(move)<<" "<<getMoveTo(move)<<endl;
-    printAllBitboards(boardObj.bitboards);
+    boardObj.printBoard();
+
 
 }

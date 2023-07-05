@@ -33,6 +33,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="bitboards.cpp" />
+		<Unit filename="bitboards.h" />
 		<Unit filename="board.cpp" />
 		<Unit filename="board.h" />
 		<Unit filename="debug.cpp" />
