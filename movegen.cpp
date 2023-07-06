@@ -243,7 +243,7 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
             {
                 int capturedPiece = boardObj->board[newKnightPos];
                 int move = setMove(knightPos,newKnightPos,0,0,0,capturedPiece,0);
-                int score = PieceValue[knight]-PieceValue[capturedPiece];
+                int score = PieceValue[capturedPiece]-PieceValue[knight];
                 moves->emplace_back(move,score);
             }
         }
@@ -268,7 +268,7 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
         {
             int capturedPiece = boardObj->board[newKingPos];
             int move = setMove(kingPos,newKingPos,0,0,0,capturedPiece,0);
-            int score = PieceValue[king]-PieceValue[capturedPiece];
+            int score = PieceValue[capturedPiece]-PieceValue[king];
             moves->emplace_back(move,score);
         }
     }
@@ -289,7 +289,7 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
                     {
                         int capturedPiece = boardObj->board[newBishopPos];
                         int move = setMove(bishopPos,newBishopPos,0,0,0,capturedPiece,0);
-                        int score = PieceValue[bishop]-PieceValue[capturedPiece];
+                        int score = PieceValue[capturedPiece]-PieceValue[bishop];
                         moves->emplace_back(move,score);
                     }
                     break;
@@ -322,7 +322,7 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
                     {
                         int capturedPiece = boardObj->board[newRookPos];
                         int move = setMove(rookPos,newRookPos,0,0,0,capturedPiece,0);
-                        int score = PieceValue[rook]-PieceValue[capturedPiece];
+                        int score = PieceValue[capturedPiece]-PieceValue[rook];
                         moves->emplace_back(move,score);
                     }
                     break;
@@ -355,7 +355,7 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
                     {
                         int capturedPiece = boardObj->board[newQueenPos];
                         int move = setMove(queenPos,newQueenPos,0,0,0,capturedPiece,0);
-                        int score = PieceValue[queen]-PieceValue[capturedPiece];
+                        int score = PieceValue[capturedPiece]-PieceValue[queen];
                         moves->emplace_back(move,score);
                     }
                     break;
@@ -379,7 +379,7 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
                     {
                         int capturedPiece = boardObj->board[newQueenPos];
                         int move = setMove(queenPos,newQueenPos,0,0,0,capturedPiece,0);
-                        int score = PieceValue[queen]-PieceValue[capturedPiece];
+                        int score = PieceValue[capturedPiece]-PieceValue[queen];
                         moves->emplace_back(move,score);
                     }
                     break;

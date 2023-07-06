@@ -7,5 +7,5 @@
 using namespace std;
 void test()
 {
-    perfitSearch(4);
+    perfitSearch(5,true,"Changed way of calculating heuristicts in movegen");
 }

@@ -1,0 +1,141 @@
+
+[DATE] Thu Jul  6 22:38:04 2023
+
+[DESCRIPTION]    First test with release mode
+[DEPTH           5
+[OPENING]        14057.1ms
+[MIDDLE]         5979.95ms
+[END]            5307.69ms
+[OVERALL]        25344.7ms
+
+
+[DATE] Thu Jul  6 22:39:08 2023
+
+[DESCRIPTION]    Second test with release mode
+[DEPTH           5
+[OPENING]        13754.6ms
+[MIDDLE]         5857.19ms
+[END]            5204.16ms
+[OVERALL]        24816ms
+
+
+[DATE] Thu Jul  6 22:43:01 2023
+
+[DESCRIPTION]    Test without reserving space in vector in movegen
+[DEPTH           5
+[OPENING]        14800.4ms
+[MIDDLE]         6352.91ms
+[END]            5729.84ms
+[OVERALL]        26883.2ms
+
+
+[DATE] Thu Jul  6 22:43:52 2023
+
+[DESCRIPTION]    Test without reserving space in vector in movegen
+[DEPTH           5
+[OPENING]        14913.4ms
+[MIDDLE]         6411.4ms
+[END]            5790.33ms
+[OVERALL]        27115.1ms
+
+
+[DATE] Thu Jul  6 22:46:56 2023
+
+[DESCRIPTION]    Test without any move ordering
+[DEPTH           5
+[OPENING]        13234.9ms
+[MIDDLE]         10645.8ms
+[END]            8461.81ms
+[OVERALL]        32342.5ms
+
+
+[DATE] Thu Jul  6 22:48:22 2023
+
+[DESCRIPTION]    Test without any move ordering
+[DEPTH           5
+[OPENING]        13289.1ms
+[MIDDLE]         10693.9ms
+[END]            8478.94ms
+[OVERALL]        32462ms
+
+
+[DATE] Thu Jul  6 22:49:47 2023
+
+[DESCRIPTION]    Test without any move ordering
+[DEPTH           5
+[OPENING]        13395.4ms
+[MIDDLE]         13801.1ms
+[END]            12916.4ms
+[OVERALL]        40112.9ms
+
+
+[DATE] Thu Jul  6 22:50:35 2023
+
+[DESCRIPTION]    Test without any move ordering
+[DEPTH           5
+[OPENING]        13928.9ms
+[MIDDLE]         5934.76ms
+[END]            5284.27ms
+[OVERALL]        25147.9ms
+
+
+[DATE] Thu Jul  6 22:54:02 2023
+
+[DESCRIPTION]    Changed way of calculating heuristicts in movegen
+[DEPTH           5
+[OPENING]        6338.29ms
+[MIDDLE]         6998.46ms
+[END]            5976.28ms
+[OVERALL]        19313ms
+
+
+[DATE] Thu Jul  6 22:54:42 2023
+
+[DESCRIPTION]    Changed way of calculating heuristicts in movegen
+[DEPTH           5
+[OPENING]        6300.81ms
+[MIDDLE]         7016.57ms
+[END]            5988.33ms
+[OVERALL]        19305.7ms
+
+
+[DATE] Thu Jul  6 22:56:04 2023
+
+[DESCRIPTION]    Changed way of calculating heuristicts in movegen
+[DEPTH           5
+[OPENING]        13799ms
+[MIDDLE]         5893.09ms
+[END]            5250.62ms
+[OVERALL]        24942.7ms
+
+
+[DATE] Thu Jul  6 22:57:17 2023
+
+[DESCRIPTION]    Changed way of calculating heuristicts in movegen
+[DEPTH           5
+[OPENING]        6347.21ms
+[MIDDLE]         6995.86ms
+[END]            5974.61ms
+[OVERALL]        19317.7ms
+
+
+[DATE] Thu Jul  6 23:16:21 2023
+
+[DESCRIPTION]    Changed way of calculating heuristicts in movegen
+[DEPTH           5
+[OPENING]        6510.72ms
+[MIDDLE]         7126.14ms
+[END]            6097.79ms
+[OVERALL]        19734.7ms
+
+
+[DATE] Thu Jul  6 23:16:57 2023
+
+[DESCRIPTION]    Changed way of calculating heuristicts in movegen
+[DEPTH           5
+[OPENING]        6358.18ms
+[MIDDLE]         7055.7ms
+[END]            6023.94ms
+[OVERALL]        19437.8ms
+
+

@@ -6,7 +6,7 @@
 #include <chrono>
 #include "search.h"
 #include <fstream>
-
+#include <ctime>
 
 u64 perfit(int depth,Board *boardObj){
     vector<S_MOVE>movesList;
@@ -45,11 +45,11 @@ void perfitTest(int depth,Board *boardObj){
     }
 };
 
-void perfitSearch(int depth)
+void perfitSearch(int depth,bool logToFile,std::string description)
 {
-    std::ifstream file("test_positions.txt");
+    std::ifstream input("test_positions.txt");
 
-    if (!file) {
+    if (!input) {
         std::cerr << "Failed to open the file." << std::endl;
         return;
     }
@@ -57,7 +57,7 @@ void perfitSearch(int depth)
     //opening phase
     for(int i=0;i<100;i++)
     {
-        std::getline(file,fen[i]);
+        std::getline(input,fen[i]);
     }
 
     //opening phase(28pieces)
@@ -95,11 +95,37 @@ void perfitSearch(int depth)
 
     std::chrono::duration<double> durationOverall = endPhaseEnd - openingStart;
     double timeOverallMs = durationOverall.count() * 1000.0;
+    input.close();
 
-    cout<<timeOpeningMs<<endl;
-    cout<<timeMiddleMs<<endl;
-    cout<<timeEndMs<<endl;
-    cout<<timeOverallMs<<endl;
 
-    file.close();
+
+
+
+    if(logToFile)
+    {
+        std::ofstream output("search_logs.txt", std::ios::app);
+
+        if (!output) {
+            std::cerr << "Failed to open the file." << std::endl;
+        }
+        std::time_t currentTime = std::time(nullptr);
+        std::string dateString = std::ctime(&currentTime);
+
+        output  << "[DATE] "        <<dateString    <<std::endl;
+        output  <<"[DESCRIPTION]    "<<description   <<std::endl;
+        output  <<"[DEPTH           "<<depth         <<std::endl;
+        output  <<"[OPENING]        "<<timeOpeningMs <<"ms"<<std::endl;
+        output  <<"[MIDDLE]         "<<timeMiddleMs  <<"ms"<<std::endl;
+        output  <<"[END]            "<<timeEndMs     <<"ms"<<std::endl;
+        output  <<"[OVERALL]        "<<timeOverallMs <<"ms"<<std::endl;
+        output  <<std::endl         <<std::endl;
+        output.close();
+    }
+    else
+    {
+        cout<<timeOpeningMs<<endl;
+        cout<<timeMiddleMs<<endl;
+        cout<<timeEndMs<<endl;
+        cout<<timeOverallMs<<endl;
+    }
 }
