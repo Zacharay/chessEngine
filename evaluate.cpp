@@ -126,7 +126,7 @@ int evaluatePosition(Board *boardObj){
         materialWhite+= PieceValue[whiteRook];
         int rookPos = boardObj->pieceList[whiteRook][i];
         score+=RookTable[sq120to64[rookPos]];
-        uint64_t rookFileMask = getFileMask(getFileFromSq(rookPos)-1);
+        uint64_t rookFileMask = fileMask[getFileFromSq(rookPos)-1];
         if(!(rookFileMask&boardObj->bitboards[whitePawn])&&!(rookFileMask&boardObj->bitboards[blackPawn]))
         {
             score+=RookOpenBonus;
@@ -176,7 +176,7 @@ int evaluatePosition(Board *boardObj){
         int rookPos = boardObj->pieceList[blackRook][i];
         score-=RookTable[MirrorSq[sq120to64[rookPos]]];
 
-        uint64_t rookFileMask = getFileMask(getFileFromSq(rookPos)-1);
+        uint64_t rookFileMask = fileMask[getFileFromSq(rookPos)-1];
         if(!(rookFileMask&boardObj->bitboards[whitePawn])&&!(rookFileMask&boardObj->bitboards[blackPawn]))
         {
             score-=RookOpenBonus;
