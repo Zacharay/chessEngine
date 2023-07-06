@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <chrono>
+#include "search.h"
+#include <fstream>
 
 
 u64 perfit(int depth,Board *boardObj){
@@ -42,3 +44,62 @@ void perfitTest(int depth,Board *boardObj){
         std::cout<<"Depth: "<<i<<" ply  Result: "<<numOfNodes<<" Time: "<<milliseconds<<" ms"<<std::endl;
     }
 };
+
+void perfitSearch(int depth)
+{
+    std::ifstream file("test_positions.txt");
+
+    if (!file) {
+        std::cerr << "Failed to open the file." << std::endl;
+        return;
+    }
+    std::string fen[100];
+    //opening phase
+    for(int i=0;i<100;i++)
+    {
+        std::getline(file,fen[i]);
+    }
+
+    //opening phase(28pieces)
+    auto openingStart = std::chrono::high_resolution_clock::now();
+    for(int i=0;i<30;i++)
+    {
+        Board boardObj(fen[i]);
+        int move = SearchPosition(&boardObj,depth);
+    }
+    auto openingEnd =  std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> durationOpening = openingEnd - openingStart;
+    double timeOpeningMs = durationOpening.count() * 1000.0;
+
+    //middle phase(20 pieces)
+    auto middleStart = std::chrono::high_resolution_clock::now();
+    for(int i=30;i<60;i++)
+    {
+        Board boardObj(fen[i]);
+        int move = SearchPosition(&boardObj,depth);
+    }
+    auto middleEnd  =std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> durationMiddle = middleEnd - middleStart;
+    double timeMiddleMs = durationMiddle.count() * 1000.0;
+
+    //end phase(16 pieces)
+    auto endPhaseStart = std::chrono::high_resolution_clock::now();
+    for(int i=60;i<100;i++)
+    {
+        Board boardObj(fen[i]);
+        int move = SearchPosition(&boardObj,depth);
+    }
+    auto endPhaseEnd = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> durationEnd = endPhaseEnd - endPhaseStart;
+    double timeEndMs = durationEnd.count() * 1000.0;
+
+    std::chrono::duration<double> durationOverall = endPhaseEnd - openingStart;
+    double timeOverallMs = durationOverall.count() * 1000.0;
+
+    cout<<timeOpeningMs<<endl;
+    cout<<timeMiddleMs<<endl;
+    cout<<timeEndMs<<endl;
+    cout<<timeOverallMs<<endl;
+
+    file.close();
+}
