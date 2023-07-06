@@ -55,16 +55,7 @@ const int QueenTable[64] = {
     -20,-10,-10, -5, -5,-10,-10,-20
 };
 
-const int MirrorSq[64]={
-    56, 57, 58, 59, 60, 61, 62, 63,
-    48, 49, 50, 51, 52, 53, 54, 55,
-    40, 41, 42, 43, 44, 45, 46, 47,
-    32, 33, 34, 35, 36, 37, 38, 39,
-    24, 25, 26, 27, 28, 29, 30, 31,
-    16, 17, 18, 19, 20, 21, 22, 23,
-    8 , 9 , 10, 11, 12, 13, 14, 15,
-    0 , 1 , 2 , 3 , 4 , 5 , 6 , 7
-};
+
 const int KingTableOpening[64]={
     -30,-40,-40,-50,-50,-40,-40,-30,
     -30,-40,-40,-50,-50,-40,-40,-30,
@@ -85,7 +76,8 @@ const int KingTableEndgame[64]={
     -30,-30,  0,  0,  0,  0,-30,-30,
     -50,-30,-30,-30,-30,-30,-30,-50
 };
-
+const int PawnPassedBonus[8] = { 0, 5, 10, 20, 35, 60, 100, 200 };
+const int PawnIsolated = -10;
 const int RookOpenBonus = 10;
 const int RookSemiOpenBonus = 5;
 const int BishopPairBonus = 30;
@@ -102,6 +94,20 @@ int evaluatePosition(Board *boardObj){
         materialWhite+= PieceValue[whitePawn];
         int pawnPos = boardObj->pieceList[whitePawn][i];
         score+=PawnTable[sq120to64[pawnPos]];
+
+        int pawnPos64 = sq120to64[pawnPos];
+        //passedPawn
+        if(!(whitePassedPawn[pawnPos64]&boardObj->bitboards[blackPawn]))
+        {
+            int pawnRank = 7-getRankFromSq(pawnPos);
+            score+=PawnPassedBonus[pawnRank];
+        }
+        //isolatedPawn
+        if(!(isolatedMask[pawnPos64]&boardObj->bitboards[whitePawn]))
+        {
+            score+=PawnIsolated;
+        }
+
     }
 
     //whiteKnight
@@ -151,6 +157,20 @@ int evaluatePosition(Board *boardObj){
         materialBlack += PieceValue[blackPawn];
         int pawnPos = boardObj->pieceList[blackPawn][i];
         score-=PawnTable[MirrorSq[sq120to64[pawnPos]]];
+
+        //passedPawn
+        int pawnPos64 = sq120to64[pawnPos];
+        if(!(blackPassedPawn[pawnPos64]&boardObj->bitboards[whitePawn]))
+        {
+            int pawnRank = getRankFromSq(pawnPos);
+            score-=PawnPassedBonus[pawnRank];
+        }
+        //isolatedPawn
+        if(!(isolatedMask[pawnPos64]&boardObj->bitboards[blackPawn]))
+        {
+            score-=PawnIsolated;
+        }
+
     }
 
     //black knight

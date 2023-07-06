@@ -39,22 +39,46 @@ void initBitboardsMasks()
     {
         rankMask[i]=rankA <<(i*8);
     }
+
     //white passed pawn
-    int i = 42;
-    int sqRank = 7-getRankFromSq(i);
+    /*for(int i=0;i<64;i++)
+    {
+        int sq120 = sq64to120[i];
+        int sqRank = 7-getRankFromSq(sq120);
+        uint64_t forwardMask = LONG_MAX >> (sqRank+1)*8-1;
 
-    uint64_t forwardMask = LONG_MAX >> (sqRank+1)*8-1;
+        int sqFile = getFileFromSq(sq120)-1;
+        uint64_t leftFileMask = fileMask[max(0,sqFile-1)];
+        uint64_t middleFileMask = fileMask[sqFile];
+        uint64_t rightFileMask = fileMask[min(7,sqFile+1)];;
+        uint64_t trippleFileMask = leftFileMask| middleFileMask|rightFileMask;
 
-    int sqFile = getFileFromSq(i)-1;
-    uint64_t leftFileMask = fileMask[max(0,sqFile-1)];
-    uint64_t middleFileMask = fileMask[sqFile];
-    uint64_t rightFileMask = fileMask[min(7,sqFile+1)];;
+        whitePassedPawn[i] = trippleFileMask&forwardMask;
+        printBitboard(whitePassedPawn[i]);
+    }*/
+    //10000000
+    for(int rnk=0;rnk<8;rnk++)
+    {
+        uint64_t whiteForwardMask = LONG_MAX >> (7-rnk+1)*8-1;
+        uint64_t blackForwardMask = 0LL;
 
-    uint64_t trippleFileMask = leftFileMask| middleFileMask|rightFileMask;
-    uint64_t finalMask = trippleFileMask & forwardMask;
+        if(rnk!=7)blackForwardMask = LONG_MAX<< (rnk+1)*8;;
 
-    printBitboard(finalMask);
+        for(int file=0;file<8;file++)
+        {
+            int sq64 = fileRankToSq64(file,rnk);
 
+            uint64_t leftFileMask = fileMask[max(0,file-1)];
+            uint64_t middleFileMask = fileMask[file];
+            uint64_t rightFileMask = fileMask[min(7,file+1)];;
+            uint64_t trippleFileMask = leftFileMask| middleFileMask|rightFileMask;
+
+            whitePassedPawn[sq64] = trippleFileMask&whiteForwardMask;
+            blackPassedPawn[sq64] = trippleFileMask&blackForwardMask;
+            isolatedMask[sq64]= leftFileMask!=middleFileMask ? isolatedMask[sq64]|leftFileMask:isolatedMask[sq64];
+            isolatedMask[sq64]= rightFileMask!=middleFileMask ? isolatedMask[sq64]|rightFileMask:isolatedMask[sq64];
+        }
+    }
 }
 void printBitboard(uint64_t bitboard)
 {

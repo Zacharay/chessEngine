@@ -57,6 +57,7 @@ extern unordered_map<int,string> sqNumberToName;
 
 extern int sq120to64[120];
 extern int sq64to120[64];
+extern const int MirrorSq[64];
 extern int pieceColor[13];
 extern const int castlePerms[120];
 extern int knightOffsets[8];
