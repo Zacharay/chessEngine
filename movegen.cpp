@@ -134,7 +134,7 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
             if(boardObj->castlingRights&WQCA)
             {
                 bool isQueenSideEmpty = boardObj->board[D1]==Empty&&boardObj->board[C1]==Empty&&boardObj->board[B1]==Empty;
-                if(isQueenSideEmpty&&!boardObj->isSquareAttacked(D1,black)&&!boardObj->isSquareAttacked(C1,black)&&!boardObj->isSquareAttacked(B1,black))
+                if(isQueenSideEmpty&&!boardObj->isSquareAttacked(D1,black)&&!boardObj->isSquareAttacked(C1,black))
                 {
                     addQuietMove(moves,setMove(E1,C1,0,0,WQCA,0,0),boardObj);
                 }
@@ -198,7 +198,7 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
             if(boardObj->castlingRights&BQCA)
             {
                 bool isQueenSideEmpty = boardObj->board[D8]==Empty&&boardObj->board[C8]==Empty&&boardObj->board[B8]==Empty;
-                if(isQueenSideEmpty&&!boardObj->isSquareAttacked(D8,white)&&!boardObj->isSquareAttacked(C8,white)&&!boardObj->isSquareAttacked(B8,white))
+                if(isQueenSideEmpty&&!boardObj->isSquareAttacked(D8,white)&&!boardObj->isSquareAttacked(C8,white))
                 {
                     addQuietMove(moves,setMove(E8,C8,0,0,BQCA,0,0),boardObj);
                 }

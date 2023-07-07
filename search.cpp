@@ -7,6 +7,7 @@
 #include <algorithm>
 
 #define INFINITY 10000000
+#define MATE 9000000
 
 int SearchPosition(Board *boardObj,int depth){
     int bestMove=0;
@@ -20,8 +21,10 @@ int SearchPosition(Board *boardObj,int depth){
         int moveScore = -INFINITY;
         if(boardObj->isMoveLegal())
         {
+
             moveScore = -negaMax(boardObj,depth-1,-INFINITY,INFINITY);
         }
+
         boardObj->unmakeMove();
         if(moveScore>bestEval)
         {
@@ -87,7 +90,7 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta)
     {
         if(isInCheck)
         {
-            return -(INFINITY + depth);
+            return -(MATE + depth);
         }
         else return 0;
     }
