@@ -159,3 +159,163 @@
 [OVERALL]        19805.4ms
 
 
+[DATE] Fri Jul  7 17:30:46 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        6630.99ms
+[MIDDLE]         7249.57ms
+[END]            6231.84ms
+[OVERALL]        20112.4ms
+
+
+[DATE] Fri Jul  7 17:44:37 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        6434.25ms
+[MIDDLE]         7110.59ms
+[END]            6129.37ms
+[OVERALL]        19674.2ms
+
+
+[DATE] Fri Jul  7 18:05:10 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        7268.73ms
+[MIDDLE]         7416.41ms
+[END]            7277.96ms
+[OVERALL]        21963.1ms
+
+
+[DATE] Fri Jul  7 18:10:38 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        7296.9ms
+[MIDDLE]         7518.93ms
+[END]            7379.99ms
+[OVERALL]        22195.8ms
+
+
+[DATE] Fri Jul  7 18:11:34 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        7361.12ms
+[MIDDLE]         7455.81ms
+[END]            7283.26ms
+[OVERALL]        22100.2ms
+
+
+[DATE] Fri Jul  7 18:13:14 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        7407.13ms
+[MIDDLE]         7452.55ms
+[END]            7289.51ms
+[OVERALL]        22149.2ms
+
+
+[DATE] Fri Jul  7 18:13:53 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        7344.36ms
+[MIDDLE]         7465.24ms
+[END]            7307.33ms
+[OVERALL]        22116.9ms
+
+
+[DATE] Fri Jul  7 18:15:17 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        7368.95ms
+[MIDDLE]         7420.98ms
+[END]            7246.84ms
+[OVERALL]        22036.8ms
+
+
+[DATE] Fri Jul  7 18:15:57 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        7379.37ms
+[MIDDLE]         7413.03ms
+[END]            7258.62ms
+[OVERALL]        22051ms
+
+
+[DATE] Fri Jul  7 18:18:00 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        6481.51ms
+[MIDDLE]         7237.57ms
+[END]            6131.92ms
+[OVERALL]        19851ms
+
+
+[DATE] Fri Jul  7 18:20:16 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        7547.91ms
+[MIDDLE]         7578.28ms
+[END]            7427.79ms
+[OVERALL]        22554ms
+
+
+[DATE] Fri Jul  7 18:23:40 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        8485.11ms
+[MIDDLE]         8430.92ms
+[END]            7835.09ms
+[OVERALL]        24751.1ms
+
+
+[DATE] Fri Jul  7 18:26:33 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        8401.7ms
+[MIDDLE]         8341.73ms
+[END]            7783.92ms
+[OVERALL]        24527.3ms
+
+
+[DATE] Fri Jul  7 18:28:23 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        8812.29ms
+[MIDDLE]         8769.31ms
+[END]            7974.92ms
+[OVERALL]        25556.5ms
+
+
+[DATE] Fri Jul  7 18:31:15 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        5779.19ms
+[MIDDLE]         6094.28ms
+[END]            5082.16ms
+[OVERALL]        16955.6ms
+
+
+[DATE] Fri Jul  7 18:34:07 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        6560.57ms
+[MIDDLE]         7404.88ms
+[END]            6136.92ms
+[OVERALL]        20102.4ms
+
+

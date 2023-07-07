@@ -18,4 +18,5 @@ class TT{
     TT(int hashTableSizeMB);
     ~TT();
     void storeHashEntry(uint64_t posHashKey,int depth,int bestMove,int score,int typeOfNode);
+    bool getHashEntry(uint64_t posHashKey,int depth,int &bestMove,int &score,int alpha,int beta);
 };

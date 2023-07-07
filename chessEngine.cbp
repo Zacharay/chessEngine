@@ -51,6 +51,8 @@
 		<Unit filename="polybook.h" />
 		<Unit filename="search.cpp" />
 		<Unit filename="search.h" />
+		<Unit filename="tt.cpp" />
+		<Unit filename="tt.h" />
 		<Unit filename="uci.cpp" />
 		<Unit filename="uci.h" />
 		<Unit filename="zobrist.cpp" />

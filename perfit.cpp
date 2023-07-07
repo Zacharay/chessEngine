@@ -59,12 +59,12 @@ void perfitSearch(int depth,bool logToFile,std::string description)
     {
         std::getline(input,fen[i]);
     }
-
+    Board boardObj;
     //opening phase(28pieces)
     auto openingStart = std::chrono::high_resolution_clock::now();
     for(int i=0;i<30;i++)
     {
-        Board boardObj(fen[i]);
+        boardObj.parseFen(fen[i]);
         int move = SearchPosition(&boardObj,depth);
     }
     auto openingEnd =  std::chrono::high_resolution_clock::now();
@@ -75,7 +75,7 @@ void perfitSearch(int depth,bool logToFile,std::string description)
     auto middleStart = std::chrono::high_resolution_clock::now();
     for(int i=30;i<60;i++)
     {
-        Board boardObj(fen[i]);
+        boardObj.parseFen(fen[i]);
         int move = SearchPosition(&boardObj,depth);
     }
     auto middleEnd  =std::chrono::high_resolution_clock::now();
@@ -86,7 +86,7 @@ void perfitSearch(int depth,bool logToFile,std::string description)
     auto endPhaseStart = std::chrono::high_resolution_clock::now();
     for(int i=60;i<100;i++)
     {
-        Board boardObj(fen[i]);
+        boardObj.parseFen(fen[i]);
         int move = SearchPosition(&boardObj,depth);
     }
     auto endPhaseEnd = std::chrono::high_resolution_clock::now();

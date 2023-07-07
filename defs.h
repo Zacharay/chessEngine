@@ -50,7 +50,7 @@ enum {
   A6 = 41, B6, C6, D6, E6, F6, G6, H6,
   A7 = 31, B7, C7, D7, E7, F7, G7, H7,
   A8 = 21, B8, C8, D8, E8, F8, G8, H8};
-
+enum {hashFlagExact,hashFlagAlpha,hashFlagBeta};
 extern unordered_map<int, char> pieceToChar;
 extern unordered_map<char, int> charToPiece;
 extern unordered_map<string,int> sqNameToNumber;

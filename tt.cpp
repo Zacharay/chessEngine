@@ -1,4 +1,5 @@
 #include "tt.h"
+#include "defs.h"
 #include <iostream>
 TT::TT(int hashTableSizeMB)
 {
@@ -7,8 +8,6 @@ TT::TT(int hashTableSizeMB)
 
     numOfEntires = sizeB / entrySize;
     entries = new TT_Entry[numOfEntires];
-    entries[200000].pos  = 2;
-    std::cout<<entries[200000].pos;
 }
 TT::~TT()
 {
@@ -23,4 +22,31 @@ void TT::storeHashEntry(uint64_t posHashKey,int depth,int bestMove,int score,int
     entries[index].score = score;
     entries[index].typeOfNode = typeOfNode;
 
+};
+bool TT::getHashEntry(uint64_t posHashKey,int depth,int &bestMove,int &score,int alpha,int beta)
+{
+    int index = posHashKey%numOfEntires;
+    if(entries[index].pos==posHashKey)
+    {
+        bestMove = entries[index].bestMove;
+        if(depth<=entries[index].depth)
+        {
+            score = entries[index].score;
+            if(entries[index].typeOfNode==hashFlagAlpha && score<=alpha)
+            {
+                score = alpha;
+                return true;
+            }
+            else if(entries[index].typeOfNode==hashFlagBeta&& score>=beta)
+            {
+                score = beta;
+                return true;
+            }
+            else if(entries[index].typeOfNode==hashFlagExact)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 };
