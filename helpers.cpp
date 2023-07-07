@@ -1,5 +1,7 @@
 #include "defs.h"
 
+const int hashTableSizeMB = 64;
+
 unordered_map<int, char> pieceToChar({
 {whitePawn, 'P'},{whiteKnight, 'N'},{whiteBishop, 'B'},{whiteRook, 'R'},{whiteQueen, 'Q'},{whiteKing, 'K'},
 {blackPawn, 'p'},{blackKnight, 'n'},{blackBishop, 'b'},{blackRook, 'r'},{blackQueen, 'q'},{blackKing, 'k'},

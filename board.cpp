@@ -6,8 +6,9 @@
 #include "zobrist.h"
 #include "bitboards.h"
 Board::Board(string fen)
-:ply(0),historyPly(0),enPassantSq(Offboard)
+:ply(0),historyPly(0),enPassantSq(Offboard),transpositionTable(256)
 {
+
     parseFen(fen);
     initBitboards(bitboards,board);
 }

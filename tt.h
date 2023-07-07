@@ -1,15 +1,21 @@
 #pragma once
-
-struct hashEntry
+#include <cstdint>
+#include <cstddef>
+struct TT_Entry
 {
-    uint8_t depth
+    uint64_t pos;
+    int depth;
     int bestMove;
-    int evalScore;
-    uint8_t typeOfNode;
-}
+    int score;
+    int typeOfNode;
+};
 
 
-class hashTable{
+class TT{
+    TT_Entry* entries;
+    size_t numOfEntires;
     public:
-    hashTable()
+    TT(int hashTableSizeMB);
+    ~TT();
+    void storeHashEntry(uint64_t posHashKey,int depth,int bestMove,int score,int typeOfNode);
 };

@@ -139,3 +139,23 @@
 [OVERALL]        19437.8ms
 
 
+[DATE] Fri Jul  7 13:29:30 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        6657.92ms
+[MIDDLE]         7344.6ms
+[END]            6119.08ms
+[OVERALL]        20121.6ms
+
+
+[DATE] Fri Jul  7 13:30:50 2023
+
+[DESCRIPTION]    test with allocated tt
+[DEPTH           5
+[OPENING]        6486.79ms
+[MIDDLE]         7196.86ms
+[END]            6121.78ms
+[OVERALL]        19805.4ms
+
+

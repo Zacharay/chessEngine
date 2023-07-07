@@ -3,6 +3,7 @@
 #include "defs.h"
 #include <string.h>
 #include "bitboards.h"
+#include "tt.h"
 using namespace std;
 
 class Board{
@@ -32,6 +33,7 @@ public:
     int ply;
     int historyPly;
     S_UNDO history[2047];
+    TT transpositionTable;
 
     Board(string fen=DEFAULT_POS);
     void parseFen(string fen);
