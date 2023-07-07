@@ -9,25 +9,31 @@
 #define INFINITY 10000000
 #define MATE 9000000
 
-int SearchPosition(Board *boardObj,int depth){
+int SearchPosition(Board *boardObj,searchInfo *SearchInfo){
     int bestMove=0;
     int bestEval=-INFINITY;
 
-    for(int i=0;i<depth;i++)
+    for(int depth=1;depth<40;depth++)
     {
         vector<S_MOVE>moves;
         generateAllMoves(boardObj,&moves);
         for(int i=0;i<moves.size();i++)
         {
+
             boardObj->makeMove(moves[i].move);
             int moveScore = -INFINITY;
             if(boardObj->isMoveLegal())
             {
 
-                moveScore = -negaMax(boardObj,depth-1,-INFINITY,INFINITY);
+                moveScore = -negaMax(boardObj,depth-1,-INFINITY,INFINITY,SearchInfo);
+            }
+            boardObj->unmakeMove();
+            if(SearchInfo->stop==true)
+            {
+                cout<<depth<<endl;
+                return bestMove;
             }
 
-            boardObj->unmakeMove();
             if(moveScore>bestEval)
             {
                 bestEval = moveScore;
@@ -48,11 +54,19 @@ bool isRepetition(Board *boardObj)
     }
     return false;
 }
+void isTimeForSearchEnded(searchInfo *SearchInfo)
+{
+    if(SearchInfo->stopTime<=std::chrono::steady_clock::now())
+    {
+        SearchInfo->stop= true;
+    }
+}
 bool compareScoreDescending(const S_MOVE& a, const S_MOVE& b) {
     return a.score > b.score;
 }
-int negaMax(Board *boardObj,int depth,int alpha,int beta)
+int negaMax(Board *boardObj,int depth,int alpha,int beta,searchInfo *SearchInfo)
 {
+    isTimeForSearchEnded(SearchInfo);
     if(isRepetition(boardObj))
     {
         return 0;
@@ -95,12 +109,17 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta)
     int bestMove = 0;
     for(int i=0;i<moves.size();i++)
     {
+        if(SearchInfo->stop==true)
+        {
+            return 0;
+        }
+
         boardObj->makeMove(moves[i].move);
 
         if(boardObj->isMoveLegal())
         {
             legalMoves++;
-            moveScore = -negaMax(boardObj,depth-1,-beta,-alpha);
+            moveScore = -negaMax(boardObj,depth-1,-beta,-alpha,SearchInfo);
         }
         boardObj->unmakeMove();
         if(moveScore> bestScore)

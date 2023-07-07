@@ -3,6 +3,7 @@
 #include "board.h"
 #include "movegen.h"
 #include "search.h"
+#include <chrono>
 #include <sstream>
 
 int parseMoveString(std::string moveString,Board *boardObj)
@@ -95,7 +96,7 @@ string convertMoveToString(int bestMove)
 
 
 }
-void handleUCICommand(const string& command,Board *boardObj) {
+void handleUCICommand(const string& command,Board *boardObj,searchInfo *SearchInfo) {
     if (command == "uci")
     {
         std::cout << "id name ZacharyChessEngine" << std::endl;
@@ -150,18 +151,30 @@ void handleUCICommand(const string& command,Board *boardObj) {
     {
 
         size_t pos = command.find("wtime");
-        if (pos != string::npos) {
-            int wtime = stoi(command.substr(pos + 6));
-        }
+        int time = -1;
+        int inc = 0;
+        int movesToGo = 40;
+        if (pos != string::npos&&boardObj->turn==white) {
 
+
+            time = stoi(command.substr(pos + 6));
+        }
         pos = command.find("btime");
-        if (pos != string::npos) {
+        if (pos != string::npos&&boardObj->turn==black) {
 
-            int btime = stoi(command.substr(pos + 6));
-
+            time = stoi(command.substr(pos + 6));
+        }
+        SearchInfo->stop = false;
+        SearchInfo->startTime = std::chrono::steady_clock::now();
+        if(time!=-1)
+        {
+            time/=movesToGo;
+            time -=50;
+            auto searchDuration = std::chrono::milliseconds(time+inc);
+            SearchInfo->stopTime  = SearchInfo->startTime + searchDuration;
         }
 
-        int bestMove = SearchPosition(boardObj,25);
+        int bestMove = SearchPosition(boardObj,SearchInfo);
         std::string bestMoveStr = convertMoveToString(bestMove);
         std::cout<<"bestmove "<<bestMoveStr<<std::endl;
     }
@@ -173,15 +186,12 @@ void handleUCICommand(const string& command,Board *boardObj) {
 
         exit(0);
     }
-    else{
-        return;
-    }
 }
 
 void uciLoop(){
 
     Board boardObj;
-
+    searchInfo SearchInfo;
 
     std::string command;
     while(true)
@@ -189,48 +199,7 @@ void uciLoop(){
         getline(std::cin, command);
 
 
-        handleUCICommand(command,&boardObj);
-        /*
-        if(input.length()==4||input.length()==5)
-        {
-            uciMove uMove = parseMoveString(input);
-
-            if(uMove.from==-1||uMove.to==-1||uMove.promotedPiece==-1)
-            {
-                std::cout<<"Invalid move format"<<std::endl;
-                continue;
-            }
-
-            if(uMove.promotedPiece)
-            {
-                uMove.promotedPiece = boardObj.turn==black?uMove.promotedPiece+6:uMove.promotedPiece;
-            }
-            vector<S_MOVE>moves = generateAllMoves(&boardObj);
-
-
-            int playerMove=0;
-            for(S_MOVE s_move:moves)
-            {
-                int moveFrom = getMoveFrom(s_move.move);
-                int moveTo = getMoveTo(s_move.move);
-                int movePromotedPiece = getMovePromoted(s_move.move);
-
-                if(uMove.from==moveFrom&&uMove.to ==moveTo &&movePromotedPiece==uMove.promotedPiece)
-                {
-                    playerMove = s_move.move;
-                }
-            }
-            if(playerMove==0)
-            {
-                std::cout<<"Invalid move"<<std::endl;
-                continue;
-            }
-            boardObj.makeMove(playerMove);
-            boardObj.printBoard();
-            cout<<endl;
-
-
-        }*/
+        handleUCICommand(command,&boardObj,&SearchInfo);
     }
 
 }

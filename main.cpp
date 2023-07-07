@@ -1,10 +1,10 @@
 #include "uci.h"
-
+#include <iostream>
 
 void test();
 int main()
 {
-    test();
-    //uciLoop();
+    //test();
+    uciLoop();
     return 0;
 }

@@ -65,7 +65,7 @@ void perfitSearch(int depth,bool logToFile,std::string description)
     for(int i=0;i<30;i++)
     {
         boardObj.parseFen(fen[i]);
-        int move = SearchPosition(&boardObj,depth);
+        //int move = SearchPosition(&boardObj,depth);
     }
     auto openingEnd =  std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> durationOpening = openingEnd - openingStart;
@@ -76,7 +76,7 @@ void perfitSearch(int depth,bool logToFile,std::string description)
     for(int i=30;i<60;i++)
     {
         boardObj.parseFen(fen[i]);
-        int move = SearchPosition(&boardObj,depth);
+        //int move = SearchPosition(&boardObj,depth);
     }
     auto middleEnd  =std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> durationMiddle = middleEnd - middleStart;
@@ -87,7 +87,7 @@ void perfitSearch(int depth,bool logToFile,std::string description)
     for(int i=60;i<100;i++)
     {
         boardObj.parseFen(fen[i]);
-        int move = SearchPosition(&boardObj,depth);
+        //int move = SearchPosition(&boardObj,depth);
     }
     auto endPhaseEnd = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> durationEnd = endPhaseEnd - endPhaseStart;
