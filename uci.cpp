@@ -49,7 +49,7 @@ int parseMoveString(std::string moveString,Board *boardObj)
     }
 
     vector<S_MOVE>moves;
-    generateAllMoves(boardObj,&moves);
+    generateAllMoves(boardObj,&moves,false);
     for(S_MOVE smove:moves)
     {
         int move = smove.move;
@@ -96,98 +96,6 @@ string convertMoveToString(int bestMove)
 
 
 }
-void handleUCICommand(const string& command,Board *boardObj,searchInfo *SearchInfo) {
-    if (command == "uci")
-    {
-        std::cout << "id name ZacharyChessEngine" << std::endl;
-        std::cout << "id author Zachary" << std::endl;
-
-        std::cout << "uciok" << std::endl;
-    }
-    else if (command == "isready")
-    {
-        std::cout << "readyok" << std::endl;
-    }
-    else if (command.substr(0, 8) == "position")
-    {
-        size_t startPos = command.find("startpos");
-        size_t fen = command.find("fen");
-
-        if(startPos!=string::npos)
-        {
-            boardObj->parseFen(DEFAULT_POS);
-        }
-        else if(fen!= string::npos)
-        {
-            std::string temp = command.substr(fen+4);
-            std::istringstream iss(temp);
-            std::string fenStr="";
-            std::string tempStr;
-            for(int i=0;i<5;i++)
-            {
-                iss>>tempStr;
-                fenStr+= tempStr+" ";
-            }
-            iss>>tempStr;
-            fenStr+= tempStr;
-            boardObj->parseFen(fenStr);
-        }
-
-        size_t movesPos = command.find("moves");
-        if(movesPos!=string::npos)
-        {
-            std::string allMoves = command.substr(movesPos+6);
-            std::istringstream iss(allMoves);
-            std::string moveStr;
-            while (iss >> moveStr) {
-
-                int move = parseMoveString(moveStr,boardObj);
-                boardObj->makeMove(move);
-            }
-
-        }
-    }
-    else if (command.substr(0, 2) == "go")
-    {
-
-        size_t pos = command.find("wtime");
-        int time = -1;
-        int inc = 0;
-        int movesToGo = 40;
-        if (pos != string::npos&&boardObj->turn==white) {
-
-
-            time = stoi(command.substr(pos + 6));
-        }
-        pos = command.find("btime");
-        if (pos != string::npos&&boardObj->turn==black) {
-
-            time = stoi(command.substr(pos + 6));
-        }
-        SearchInfo->stop = false;
-        SearchInfo->startTime = std::chrono::steady_clock::now();
-        if(time!=-1)
-        {
-            time/=movesToGo;
-            time -=50;
-            auto searchDuration = std::chrono::milliseconds(time+inc);
-            SearchInfo->stopTime  = SearchInfo->startTime + searchDuration;
-        }
-
-        int bestMove = SearchPosition(boardObj,SearchInfo);
-        std::string bestMoveStr = convertMoveToString(bestMove);
-        std::cout<<"bestmove "<<bestMoveStr<<std::endl;
-    }
-    else if (command == "stop")
-    {
-
-    }
-    else if (command == "quit") {
-
-        exit(0);
-    }
-}
-
 void uciLoop(){
 
     Board boardObj;
@@ -196,10 +104,95 @@ void uciLoop(){
     std::string command;
     while(true)
     {
-        getline(std::cin, command);
+            getline(std::cin, command);
+            if (command == "uci")
+            {
+                std::cout << "id name oldSearch" << std::endl;
+                std::cout << "id author Zachary" << std::endl;
+
+                std::cout << "uciok" << std::endl;
+            }
+            else if (command == "isready")
+            {
+                std::cout << "readyok" << std::endl;
+            }
+            else if (command.substr(0, 8) == "position")
+            {
+                size_t startPos = command.find("startpos");
+                size_t fen = command.find("fen");
+
+                if(startPos!=string::npos)
+                {
+                    boardObj.parseFen(DEFAULT_POS);
+                }
+                else if(fen!= string::npos)
+                {
+                    std::string temp = command.substr(fen+4);
+                    std::istringstream iss(temp);
+                    std::string fenStr="";
+                    std::string tempStr;
+                    for(int i=0;i<5;i++)
+                    {
+                        iss>>tempStr;
+                        fenStr+= tempStr+" ";
+                    }
+                    iss>>tempStr;
+                    fenStr+= tempStr;
+                    boardObj.parseFen(fenStr);
+                }
+
+                size_t movesPos = command.find("moves");
+                if(movesPos!=string::npos)
+                {
+                    std::string allMoves = command.substr(movesPos+6);
+                    std::istringstream iss(allMoves);
+                    std::string moveStr;
+                    while (iss >> moveStr) {
+
+                        int move = parseMoveString(moveStr,&boardObj);
+                        boardObj.makeMove(move);
+                    }
+
+                }
+            }
+            else if (command.substr(0, 2) == "go")
+            {
+
+                size_t pos = command.find("wtime");
+                int time = -1;
+                int inc = 0;
+                int movesToGo = 40;
+                if (pos != string::npos&&boardObj.turn==white) {
 
 
-        handleUCICommand(command,&boardObj,&SearchInfo);
-    }
+                    time = stoi(command.substr(pos + 6));
+                }
+                pos = command.find("btime");
+                if (pos != string::npos&&boardObj.turn==black) {
+
+                    time = stoi(command.substr(pos + 6));
+                }
+                SearchInfo.stop = false;
+                SearchInfo.startTime = std::chrono::steady_clock::now();
+                if(time!=-1)
+                {
+                    time/=movesToGo;
+                    time -=50;
+                    auto searchDuration = std::chrono::milliseconds(time+inc);
+                    SearchInfo.stopTime  = SearchInfo.startTime + searchDuration;
+                }
+
+                int bestMove = testSearch(&boardObj,5,&SearchInfo);
+                std::string bestMoveStr = convertMoveToString(bestMove);
+                std::cout<<"bestmove "<<bestMoveStr<<std::endl;
+            }
+            else if (command == "stop")
+            {
+
+            }
+            else if (command == "quit") {
+                break;
+            }
+        }
 
 }

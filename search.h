@@ -8,3 +8,4 @@ struct searchInfo{
 };
 int SearchPosition(Board *board,searchInfo *SearchInfo);
 int negaMax(Board *boardObj,int depth,int alpha,int beta,searchInfo *SearchInfo);
+int testSearch(Board *boardObj,int depth,searchInfo *SearchInfo);

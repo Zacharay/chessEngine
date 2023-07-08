@@ -85,7 +85,7 @@ void addBlackPawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int 
 }
 
 
-void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
+void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves,bool onlyCaptures)
 {
     moves->reserve(60);
     if(boardObj->turn==white)
@@ -96,8 +96,9 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
         {
             int pawnPos = boardObj->pieceList[whitePawn][i];
             //One square move
-            if(boardObj->board[pawnPos - 10]==Empty)
+            if(boardObj->board[pawnPos - 10]==Empty&&onlyCaptures==false)
             {
+
                 addWhitePawnMove(boardObj,moves,pawnPos,pawnPos - 10,0);
                 //two Square move
                 if(boardObj->board[pawnPos - 20]==Empty&&pawnPos/10==8)
@@ -121,7 +122,7 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
 
         //castling
         int kingPos = boardObj->pieceList[whiteKing][1];
-        if(!boardObj->isSquareAttacked(kingPos,black))
+        if(!boardObj->isSquareAttacked(kingPos,black)&&onlyCaptures==false)
         {
             if(boardObj->castlingRights&WKCA)
             {
@@ -162,7 +163,7 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
         {
             int pawnPos = boardObj->pieceList[blackPawn][i];
             //One square move
-            if(boardObj->board[pawnPos + 10]==Empty)
+            if(boardObj->board[pawnPos + 10]==Empty&&onlyCaptures==false)
             {
                 addBlackPawnMove(boardObj,moves,pawnPos,pawnPos + 10,0);
                 //two Square move
@@ -185,7 +186,7 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
         }
         //castling
         int kingPos = boardObj->pieceList[blackKing][1];
-        if(!boardObj->isSquareAttacked(kingPos,white))
+        if(!boardObj->isSquareAttacked(kingPos,white)&&onlyCaptures==false)
         {
             if(boardObj->castlingRights&BKCA)
             {
@@ -233,13 +234,13 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
 
             if(boardObj->board[newKnightPos]==Offboard)continue;
 
-            if(boardObj->board[newKnightPos]==Empty)
+            if(boardObj->board[newKnightPos]==Empty&&onlyCaptures==false)
             {
                 int move  = setMove(knightPos,newKnightPos,0,0,0,0,0);
                 int score = 0;
                 moves->emplace_back(move,score);
             }
-            else if(pieceColor[boardObj->board[newKnightPos]]!=pieceColor[boardObj->board[knightPos]])
+            if(boardObj->board[newKnightPos]!=Empty&&pieceColor[boardObj->board[newKnightPos]]!=pieceColor[boardObj->board[knightPos]])
             {
                 int capturedPiece = boardObj->board[newKnightPos];
                 int move = setMove(knightPos,newKnightPos,0,0,0,capturedPiece,0);
@@ -258,13 +259,13 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
         int newKingPos = kingPos + offset;
         if(boardObj->board[newKingPos]==Offboard)continue;
 
-        if(boardObj->board[newKingPos]==Empty)
+        if(boardObj->board[newKingPos]==Empty&&onlyCaptures==false)
         {
             int move = setMove(kingPos,newKingPos,0,0,0,0,0);
             int score = 0;
             moves->emplace_back(move,score);
         }
-        else if(pieceColor[boardObj->board[newKingPos]]!=pieceColor[king])
+        if(boardObj->board[newKingPos]!=Empty&&pieceColor[boardObj->board[newKingPos]]!=pieceColor[king])
         {
             int capturedPiece = boardObj->board[newKingPos];
             int move = setMove(kingPos,newKingPos,0,0,0,capturedPiece,0);
@@ -294,12 +295,13 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
                     }
                     break;
                 }
-                else if(boardObj->board[newBishopPos]==Empty)
+                if(boardObj->board[newBishopPos]==Empty&&onlyCaptures==false)
                 {
                     int move = setMove(bishopPos,newBishopPos,0,0,0,0,0);
                     moves->emplace_back(move,0);
-                    newBishopPos+=offset;
+
                 }
+                newBishopPos+=offset;
             }
         }
     }
@@ -327,12 +329,12 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
                     }
                     break;
                 }
-                else if(boardObj->board[newRookPos]==Empty)
+                if(boardObj->board[newRookPos]==Empty&&onlyCaptures==false)
                 {
                     int move = setMove(rookPos,newRookPos,0,0,0,0,0);
                     moves->emplace_back(move,0);
-                    newRookPos+=offset;
                 }
+                newRookPos+=offset;
             }
         }
     }
@@ -360,11 +362,11 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
                     }
                     break;
                 }
-                else if(boardObj->board[newQueenPos]==Empty)
+                if(boardObj->board[newQueenPos]==Empty&&onlyCaptures==false)
                 {
                     moves->emplace_back(setMove(queenPos,newQueenPos,0,0,0,0,0),0);
-                    newQueenPos+=offset;
                 }
+                newQueenPos+=offset;
             }
         }
         //horizontal and vertical
@@ -384,11 +386,11 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves)
                     }
                     break;
                 }
-                else if(boardObj->board[newQueenPos]==Empty)
+                if(boardObj->board[newQueenPos]==Empty&&onlyCaptures==false)
                 {
                     moves->emplace_back(setMove(queenPos,newQueenPos,0,0,0,0,0),0);
-                    newQueenPos+=offset;
                 }
+                newQueenPos+=offset;
             }
         }
     }

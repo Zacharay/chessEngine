@@ -16,11 +16,12 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="../lichess-bot/engines/chessEngine" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/chessEngine" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
+				<Option parameters="position startpos go wtime 300000 btime 300000" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>

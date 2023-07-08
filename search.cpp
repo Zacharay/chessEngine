@@ -16,7 +16,7 @@ int SearchPosition(Board *boardObj,searchInfo *SearchInfo){
     for(int depth=1;depth<40;depth++)
     {
         vector<S_MOVE>moves;
-        generateAllMoves(boardObj,&moves);
+        generateAllMoves(boardObj,&moves,false);
         for(int i=0;i<moves.size();i++)
         {
 
@@ -43,6 +43,9 @@ int SearchPosition(Board *boardObj,searchInfo *SearchInfo){
     }
     return bestMove;
 }
+
+
+
 bool isRepetition(Board *boardObj)
 {
     for(int i=0;i<boardObj->historyPly;i++)
@@ -64,6 +67,56 @@ void isTimeForSearchEnded(searchInfo *SearchInfo)
 bool compareScoreDescending(const S_MOVE& a, const S_MOVE& b) {
     return a.score > b.score;
 }
+int Quiescence(int alpha,int beta,Board *boardObj, searchInfo *SearchInfo)
+{
+    isTimeForSearchEnded(SearchInfo);
+    if(isRepetition(boardObj))
+    {
+        return 0;
+    }
+    int Score = evaluatePosition(boardObj);
+
+    if(Score>=beta)
+    {
+        return beta;
+    }
+    if(Score>alpha)
+    {
+        alpha = Score;
+    }
+    vector<S_MOVE>moves;
+    generateAllMoves(boardObj,&moves,true);
+    std::sort(moves.begin(),moves.end(),compareScoreDescending);
+
+    int legalMoves = 0;
+    Score = -INFINITY;
+    for(int i=0;i<moves.size();i++)
+    {
+        boardObj->makeMove(moves[i].move);
+        if(boardObj->isMoveLegal())
+        {
+            legalMoves++;
+            Score = -Quiescence(-beta,-alpha,boardObj,SearchInfo);
+        }
+        boardObj->unmakeMove();
+
+        if(SearchInfo->stop==true)
+        {
+            return 0;
+        }
+        if(Score>alpha)
+        {
+            if(Score>=beta)
+            {
+                return beta;
+            }
+            alpha = Score;
+        }
+    }
+    return alpha;
+}
+
+
 int negaMax(Board *boardObj,int depth,int alpha,int beta,searchInfo *SearchInfo)
 {
     isTimeForSearchEnded(SearchInfo);
@@ -76,17 +129,17 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta,searchInfo *SearchInfo)
 
     if(depth==0)
     {
-        return evaluatePosition(boardObj);
+        return Quiescence(alpha,beta,boardObj,SearchInfo);
     }
     int moveScore = -INFINITY;
     int pvMove = 0;
     if(boardObj->transpositionTable.getHashEntry(boardObj->posHashKey,depth,pvMove,moveScore,alpha,beta))
     {
-        return moveScore;
+       // return moveScore;
     }
 
     vector<S_MOVE>moves;
-    generateAllMoves(boardObj,&moves);
+    generateAllMoves(boardObj,&moves,false);
 
     if(pvMove!=0)
     {
@@ -157,4 +210,84 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta,searchInfo *SearchInfo)
         boardObj->transpositionTable.storeHashEntry(boardObj->posHashKey,depth,bestMove,alpha,hashFlagAlpha);
     }
     return alpha;
+}
+
+int oldNegamax(Board *boardObj,int depth,int alpha,int beta)
+{
+    if(depth==0)
+    {
+        return evaluatePosition(boardObj);
+    }
+
+    if(isRepetition(boardObj))
+    {
+        return 0;
+    }
+
+    int kingIdx = boardObj->turn==white?whiteKing:blackKing;
+    bool isInCheck = boardObj->isSquareAttacked(boardObj->pieceList[kingIdx][1],boardObj->turn^1);
+
+    vector<S_MOVE>moves;
+    generateAllMoves(boardObj,&moves,false);
+    std::sort(moves.begin(),moves.end(),compareScoreDescending);
+    int legalMoves = 0;
+    for(int i=0;i<moves.size();i++)
+    {
+        boardObj->makeMove(moves[i].move);
+        int moveScore = -INFINITY;
+        if(boardObj->isMoveLegal())
+        {
+            legalMoves++;
+            moveScore = -oldNegamax(boardObj,depth-1,-beta,-alpha);
+        }
+        boardObj->unmakeMove();
+        if(moveScore>=beta)
+        {
+            return moveScore;
+        }
+        if(moveScore>alpha)
+        {
+            alpha=moveScore;
+        }
+    }
+
+        if(legalMoves==0)
+    {
+        if(isInCheck)
+        {
+            return -(MATE + depth);
+        }
+        else return 0;
+    }
+    return alpha;
+}
+
+int testSearch(Board *boardObj,int depth,searchInfo *SearchInfo)
+{
+        int bestMove=0;
+        int bestEval=-INFINITY;
+
+        vector<S_MOVE>moves;
+        generateAllMoves(boardObj,&moves,false);
+        for(int i=0;i<moves.size();i++)
+        {
+
+            boardObj->makeMove(moves[i].move);
+            int moveScore = -INFINITY;
+            if(boardObj->isMoveLegal())
+            {
+
+                moveScore = -oldNegamax(boardObj,depth-1,-INFINITY,INFINITY);
+            }
+            boardObj->unmakeMove();
+
+            if(moveScore>bestEval)
+            {
+                //cout<<moveScore<<endl;;
+                //cout<<getMoveFrom(moves[i].move)<<" "<<getMoveTo(moves[i].move)<<endl;
+                bestEval = moveScore;
+                bestMove = moves[i].move;
+            }
+        }
+        return bestMove;
 }
