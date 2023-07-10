@@ -10,7 +10,7 @@
 
 u64 perfit(int depth,Board *boardObj){
     vector<S_MOVE>movesList;
-    generateAllMoves(boardObj,&movesList,true);
+    generateAllMoves(boardObj,&movesList,false);
 
     u64 nodes=0;
 
@@ -59,14 +59,18 @@ void perfitSearch(int depth,bool logToFile,std::string description)
     {
         std::getline(input,fen[i]);
     }
-    Board boardObj;
+
     //opening phase(28pieces)
     auto openingStart = std::chrono::high_resolution_clock::now();
-    for(int i=0;i<30;i++)
+    /*for(int i=0;i<30;i++)
     {
-        boardObj.parseFen(fen[i]);
-        //int move = SearchPosition(&boardObj,depth);
-    }
+        Board boardObj(fen[i]);
+        searchInfo s_info;
+        s_info.stop = false;
+        s_info.depth = depth;
+        s_info.timeSet = false;
+        int move = SearchPosition(&boardObj,&s_info);
+    }*/
     auto openingEnd =  std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> durationOpening = openingEnd - openingStart;
     double timeOpeningMs = durationOpening.count() * 1000.0;
@@ -75,8 +79,12 @@ void perfitSearch(int depth,bool logToFile,std::string description)
     auto middleStart = std::chrono::high_resolution_clock::now();
     for(int i=30;i<60;i++)
     {
-        boardObj.parseFen(fen[i]);
-        //int move = SearchPosition(&boardObj,depth);
+        Board boardObj(fen[i]);
+        searchInfo s_info;
+        s_info.stop = false;
+        s_info.depth = depth;
+        s_info.timeSet = false;
+        int move = SearchPosition(&boardObj,&s_info);
     }
     auto middleEnd  =std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> durationMiddle = middleEnd - middleStart;
@@ -86,8 +94,12 @@ void perfitSearch(int depth,bool logToFile,std::string description)
     auto endPhaseStart = std::chrono::high_resolution_clock::now();
     for(int i=60;i<100;i++)
     {
-        boardObj.parseFen(fen[i]);
-        //int move = SearchPosition(&boardObj,depth);
+        Board boardObj(fen[i]);
+        searchInfo s_info;
+        s_info.stop = false;
+        s_info.depth = depth;
+        s_info.timeSet = false;
+        int move = SearchPosition(&boardObj,&s_info);
     }
     auto endPhaseEnd = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> durationEnd = endPhaseEnd - endPhaseStart;

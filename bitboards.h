@@ -1,6 +1,8 @@
 #pragma once
+#include "cstdint"
 
 void initBitboards(uint64_t *bitboards,const int *board);
+void initBitboardsMasks();
 void setBit(int idx,uint64_t &bitboard);
 void clearBit(int bitIdx,uint64_t &bitboard);
 void printBitboard(uint64_t bitboard);

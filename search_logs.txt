@@ -319,3 +319,83 @@
 [OVERALL]        20102.4ms
 
 
+[DATE] Mon Jul 10 12:17:14 2023
+
+[DESCRIPTION]    test
+[DEPTH           5
+[OPENING]        1.84781ms
+[MIDDLE]         1.83426ms
+[END]            2.00205ms
+[OVERALL]        5.68435ms
+
+
+[DATE] Mon Jul 10 12:24:22 2023
+
+[DESCRIPTION]    test
+[DEPTH           3
+[OPENING]        107052ms
+[MIDDLE]         319.665ms
+[END]            133.129ms
+[OVERALL]        107505ms
+
+
+[DATE] Mon Jul 10 12:25:53 2023
+
+[DESCRIPTION]    test
+[DEPTH           5
+[OPENING]        0.00031ms
+[MIDDLE]         4169.37ms
+[END]            1999.01ms
+[OVERALL]        6168.38ms
+
+
+[DATE] Mon Jul 10 12:27:10 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.00012ms
+[MIDDLE]         23313.7ms
+[END]            10782.5ms
+[OVERALL]        34096.2ms
+
+
+[DATE] Mon Jul 10 12:28:24 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.00011ms
+[MIDDLE]         23530.8ms
+[END]            10887.1ms
+[OVERALL]        34417.9ms
+
+
+[DATE] Mon Jul 10 12:29:28 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.000331ms
+[MIDDLE]         23462ms
+[END]            10827.7ms
+[OVERALL]        34289.7ms
+
+
+[DATE] Mon Jul 10 13:14:44 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.00011ms
+[MIDDLE]         6637.51ms
+[END]            4621.81ms
+[OVERALL]        11259.3ms
+
+
+[DATE] Mon Jul 10 13:25:48 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.00022ms
+[MIDDLE]         6667.3ms
+[END]            4638.18ms
+[OVERALL]        11305.5ms
+
+

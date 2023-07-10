@@ -13,7 +13,7 @@ int SearchPosition(Board *boardObj,searchInfo *SearchInfo){
     int bestMove=0;
     int bestEval=-INFINITY;
 
-    for(int depth=1;depth<40;depth++)
+    for(int depth=1;depth<SearchInfo->depth;depth++)
     {
         vector<S_MOVE>moves;
         generateAllMoves(boardObj,&moves,false);
@@ -30,7 +30,7 @@ int SearchPosition(Board *boardObj,searchInfo *SearchInfo){
             boardObj->unmakeMove();
             if(SearchInfo->stop==true)
             {
-                cout<<depth<<endl;
+                cout<<" "<<depth<<" searched"<<endl;
                 return bestMove;
             }
 
@@ -59,7 +59,7 @@ bool isRepetition(Board *boardObj)
 }
 void isTimeForSearchEnded(searchInfo *SearchInfo)
 {
-    if(SearchInfo->stopTime<=std::chrono::steady_clock::now())
+    if(SearchInfo->stopTime<=std::chrono::steady_clock::now()&&SearchInfo->timeSet==true)
     {
         SearchInfo->stop= true;
     }
@@ -135,7 +135,7 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta,searchInfo *SearchInfo)
     int pvMove = 0;
     if(boardObj->transpositionTable.getHashEntry(boardObj->posHashKey,depth,pvMove,moveScore,alpha,beta))
     {
-       // return moveScore;
+       return moveScore;
     }
 
     vector<S_MOVE>moves;
@@ -212,82 +212,3 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta,searchInfo *SearchInfo)
     return alpha;
 }
 
-int oldNegamax(Board *boardObj,int depth,int alpha,int beta)
-{
-    if(depth==0)
-    {
-        return evaluatePosition(boardObj);
-    }
-
-    if(isRepetition(boardObj))
-    {
-        return 0;
-    }
-
-    int kingIdx = boardObj->turn==white?whiteKing:blackKing;
-    bool isInCheck = boardObj->isSquareAttacked(boardObj->pieceList[kingIdx][1],boardObj->turn^1);
-
-    vector<S_MOVE>moves;
-    generateAllMoves(boardObj,&moves,false);
-    std::sort(moves.begin(),moves.end(),compareScoreDescending);
-    int legalMoves = 0;
-    for(int i=0;i<moves.size();i++)
-    {
-        boardObj->makeMove(moves[i].move);
-        int moveScore = -INFINITY;
-        if(boardObj->isMoveLegal())
-        {
-            legalMoves++;
-            moveScore = -oldNegamax(boardObj,depth-1,-beta,-alpha);
-        }
-        boardObj->unmakeMove();
-        if(moveScore>=beta)
-        {
-            return moveScore;
-        }
-        if(moveScore>alpha)
-        {
-            alpha=moveScore;
-        }
-    }
-
-        if(legalMoves==0)
-    {
-        if(isInCheck)
-        {
-            return -(MATE + depth);
-        }
-        else return 0;
-    }
-    return alpha;
-}
-
-int testSearch(Board *boardObj,int depth,searchInfo *SearchInfo)
-{
-        int bestMove=0;
-        int bestEval=-INFINITY;
-
-        vector<S_MOVE>moves;
-        generateAllMoves(boardObj,&moves,false);
-        for(int i=0;i<moves.size();i++)
-        {
-
-            boardObj->makeMove(moves[i].move);
-            int moveScore = -INFINITY;
-            if(boardObj->isMoveLegal())
-            {
-
-                moveScore = -oldNegamax(boardObj,depth-1,-INFINITY,INFINITY);
-            }
-            boardObj->unmakeMove();
-
-            if(moveScore>bestEval)
-            {
-                //cout<<moveScore<<endl;;
-                //cout<<getMoveFrom(moves[i].move)<<" "<<getMoveTo(moves[i].move)<<endl;
-                bestEval = moveScore;
-                bestMove = moves[i].move;
-            }
-        }
-        return bestMove;
-}

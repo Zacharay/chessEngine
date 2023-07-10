@@ -162,6 +162,9 @@ void uciLoop(){
                 int time = -1;
                 int inc = 0;
                 int movesToGo = 40;
+                SearchInfo.depth = 40;
+
+
                 if (pos != string::npos&&boardObj.turn==white) {
 
 
@@ -172,6 +175,8 @@ void uciLoop(){
 
                     time = stoi(command.substr(pos + 6));
                 }
+
+
                 SearchInfo.stop = false;
                 SearchInfo.startTime = std::chrono::steady_clock::now();
                 if(time!=-1)
@@ -181,8 +186,8 @@ void uciLoop(){
                     auto searchDuration = std::chrono::milliseconds(time+inc);
                     SearchInfo.stopTime  = SearchInfo.startTime + searchDuration;
                 }
-
-                int bestMove = testSearch(&boardObj,5,&SearchInfo);
+                SearchInfo.timeSet = true;
+                int bestMove = SearchPosition(&boardObj,&SearchInfo);
                 std::string bestMoveStr = convertMoveToString(bestMove);
                 std::cout<<"bestmove "<<bestMoveStr<<std::endl;
             }

@@ -2,21 +2,30 @@
 #include "defs.h"
 #include <iostream>
 
+const int VictimValue[13]= {0,100,200,300,500,900,1000,100,200,300,500,900,1000};
+static int MvvLvaScores[13][13];
+
+void initMvvLva()
+{
+    for(int victim=whitePawn;victim<=blackKing;victim++)
+    {
+        for(int attacker=whitePawn;attacker<=blackKing;attacker++)
+        {
+            MvvLvaScores[victim][attacker] = VictimValue[victim]+ 10 - (VictimValue[attacker]/100);
+        }
+    }
+}
+
 
 void addCaptureMove(vector<S_MOVE> *moves,int move,Board *boardObj)
 {
-    S_MOVE s_move(move,10);
-    moves->push_back(s_move);
-
-    //moves->emplace_back(move,10);
+    int score = MvvLvaScores[getMoveCapture(move)][boardObj->board[getMoveFrom(move)]];
+    moves->emplace_back(move,score);
 }
 
 void addQuietMove(vector<S_MOVE> *moves,int move,Board *boardObj)
 {
-    S_MOVE s_move(move,0);
-    moves->push_back(s_move);
-
-    //moves->emplace_back(move,0);
+    moves->emplace_back(move,0);
 }
 
 void addWhitePawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int capturedPiece)
@@ -24,32 +33,32 @@ void addWhitePawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int 
     int rankFrom = from/10;
     if(capturedPiece)
     {
-        //Promotion Moves
         if(rankFrom==3)
         {
             for(int promotedPiece=whiteKnight;promotedPiece<=whiteQueen;promotedPiece++)
             {
-                int score = 0;
-                moves->emplace_back(setMove(from,to,promotedPiece,0,0,capturedPiece,0),score);
-
+                int move = setMove(from,to,promotedPiece,0,0,capturedPiece,0);
+                addCaptureMove(moves,move,boardObj);
             }
 
         }
         else{
-            addCaptureMove(moves,setMove(from,to,0,0,0,capturedPiece,0),boardObj);
+            int move = setMove(from,to,0,0,0,capturedPiece,0);
+            addCaptureMove(moves,move,boardObj);
         }
     }
     else {
-        //Promotion Moves
         if(rankFrom==3)
         {
-            addQuietMove(moves,setMove(from,to,whiteKnight,0,0,0,0),boardObj);
-            addQuietMove(moves,setMove(from,to,whiteBishop,0,0,0,0),boardObj);
-            addQuietMove(moves,setMove(from,to,whiteRook,0,0,0,0),boardObj);
-            addQuietMove(moves,setMove(from,to,whiteQueen,0,0,0,0),boardObj);
+            for(int promotedPiece = whiteKnight;promotedPiece<=whiteQueen;promotedPiece++)
+            {
+                int move = setMove(from,to,promotedPiece,0,0,0,0);
+                addQuietMove(moves,move,boardObj);
+            }
         }
         else{
-            addQuietMove(moves,setMove(from,to,0,0,0,0,0),boardObj);
+            int move = setMove(from,to,0,0,0,0,0);
+            addQuietMove(moves,move,boardObj);
         }
     }
 }
@@ -60,26 +69,29 @@ void addBlackPawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int 
         //Promotion Moves
         if(rankFrom==8)
         {
-            addCaptureMove(moves,setMove(from,to,blackKnight,0,0,capturedPiece,0),boardObj);
-            addCaptureMove(moves,setMove(from,to,blackBishop,0,0,capturedPiece,0),boardObj);
-            addCaptureMove(moves,setMove(from,to,blackRook,0,0,capturedPiece,0),boardObj);
-            addCaptureMove(moves,setMove(from,to,blackQueen,0,0,capturedPiece,0),boardObj);
+            for(int promotedPiece = blackKnight;promotedPiece<=blackQueen;promotedPiece++)
+            {
+                int move = setMove(from,to,promotedPiece,0,0,capturedPiece,0);
+                addCaptureMove(moves,move,boardObj);
+            }
         }
         else{
-            addCaptureMove(moves,setMove(from,to,0,0,0,capturedPiece,0),boardObj);
+            int move = setMove(from,to,0,0,0,capturedPiece,0);
+            addCaptureMove(moves,move,boardObj);
         }
     }
     else {
-        //Promotion Moves
         if(rankFrom==8)
         {
-            addQuietMove(moves,setMove(from,to,blackKnight,0,0,0,0),boardObj);
-            addQuietMove(moves,setMove(from,to,blackBishop,0,0,0,0),boardObj);
-            addQuietMove(moves,setMove(from,to,blackRook,0,0,0,0),boardObj);
-            addQuietMove(moves,setMove(from,to,blackQueen,0,0,0,0),boardObj);
+            for(int promotedPiece = blackKnight;promotedPiece<=blackQueen;promotedPiece++)
+            {
+                int move = setMove(from,to,promotedPiece,0,0,0,0);
+                addQuietMove(moves,move,boardObj);
+            }
         }
         else{
-            addQuietMove(moves,setMove(from,to,0,0,0,0,0),boardObj);
+            int move = setMove(from,to,0,0,0,0,0);
+            addQuietMove(moves,move,boardObj);
         }
     }
 }
@@ -237,15 +249,14 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves,bool onlyCaptures)
             if(boardObj->board[newKnightPos]==Empty&&onlyCaptures==false)
             {
                 int move  = setMove(knightPos,newKnightPos,0,0,0,0,0);
-                int score = 0;
-                moves->emplace_back(move,score);
+                addQuietMove(moves,move,boardObj);
+
             }
             if(boardObj->board[newKnightPos]!=Empty&&pieceColor[boardObj->board[newKnightPos]]!=pieceColor[boardObj->board[knightPos]])
             {
                 int capturedPiece = boardObj->board[newKnightPos];
                 int move = setMove(knightPos,newKnightPos,0,0,0,capturedPiece,0);
-                int score = PieceValue[capturedPiece]-PieceValue[knight];
-                moves->emplace_back(move,score);
+                addCaptureMove(moves,move,boardObj);
             }
         }
     }
@@ -262,15 +273,13 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves,bool onlyCaptures)
         if(boardObj->board[newKingPos]==Empty&&onlyCaptures==false)
         {
             int move = setMove(kingPos,newKingPos,0,0,0,0,0);
-            int score = 0;
-            moves->emplace_back(move,score);
+            addQuietMove(moves,move,boardObj);
         }
         if(boardObj->board[newKingPos]!=Empty&&pieceColor[boardObj->board[newKingPos]]!=pieceColor[king])
         {
             int capturedPiece = boardObj->board[newKingPos];
             int move = setMove(kingPos,newKingPos,0,0,0,capturedPiece,0);
-            int score = PieceValue[capturedPiece]-PieceValue[king];
-            moves->emplace_back(move,score);
+            addCaptureMove(moves,move,boardObj);
         }
     }
     //Bishop
@@ -290,15 +299,14 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves,bool onlyCaptures)
                     {
                         int capturedPiece = boardObj->board[newBishopPos];
                         int move = setMove(bishopPos,newBishopPos,0,0,0,capturedPiece,0);
-                        int score = PieceValue[capturedPiece]-PieceValue[bishop];
-                        moves->emplace_back(move,score);
+                        addCaptureMove(moves,move,boardObj);
                     }
                     break;
                 }
                 if(boardObj->board[newBishopPos]==Empty&&onlyCaptures==false)
                 {
                     int move = setMove(bishopPos,newBishopPos,0,0,0,0,0);
-                    moves->emplace_back(move,0);
+                    addQuietMove(moves,move,boardObj);
 
                 }
                 newBishopPos+=offset;
@@ -324,15 +332,14 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves,bool onlyCaptures)
                     {
                         int capturedPiece = boardObj->board[newRookPos];
                         int move = setMove(rookPos,newRookPos,0,0,0,capturedPiece,0);
-                        int score = PieceValue[capturedPiece]-PieceValue[rook];
-                        moves->emplace_back(move,score);
+                        addCaptureMove(moves,move,boardObj);
                     }
                     break;
                 }
                 if(boardObj->board[newRookPos]==Empty&&onlyCaptures==false)
                 {
                     int move = setMove(rookPos,newRookPos,0,0,0,0,0);
-                    moves->emplace_back(move,0);
+                    addQuietMove(moves,move,boardObj);
                 }
                 newRookPos+=offset;
             }
@@ -357,14 +364,14 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves,bool onlyCaptures)
                     {
                         int capturedPiece = boardObj->board[newQueenPos];
                         int move = setMove(queenPos,newQueenPos,0,0,0,capturedPiece,0);
-                        int score = PieceValue[capturedPiece]-PieceValue[queen];
-                        moves->emplace_back(move,score);
+                        addCaptureMove(moves,move,boardObj);
                     }
                     break;
                 }
                 if(boardObj->board[newQueenPos]==Empty&&onlyCaptures==false)
                 {
-                    moves->emplace_back(setMove(queenPos,newQueenPos,0,0,0,0,0),0);
+                    int move = setMove(queenPos,newQueenPos,0,0,0,0,0);
+                    addQuietMove(moves,move,boardObj);
                 }
                 newQueenPos+=offset;
             }
@@ -381,14 +388,14 @@ void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves,bool onlyCaptures)
                     {
                         int capturedPiece = boardObj->board[newQueenPos];
                         int move = setMove(queenPos,newQueenPos,0,0,0,capturedPiece,0);
-                        int score = PieceValue[capturedPiece]-PieceValue[queen];
-                        moves->emplace_back(move,score);
+                        addCaptureMove(moves,move,boardObj);
                     }
                     break;
                 }
                 if(boardObj->board[newQueenPos]==Empty&&onlyCaptures==false)
                 {
-                    moves->emplace_back(setMove(queenPos,newQueenPos,0,0,0,0,0),0);
+                    int move = setMove(queenPos,newQueenPos,0,0,0,0,0);
+                    addQuietMove(moves,move,boardObj);
                 }
                 newQueenPos+=offset;
             }

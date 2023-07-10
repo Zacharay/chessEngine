@@ -4,3 +4,4 @@
 #include <board.h>
 
 void generateAllMoves(Board *boardObj,vector<S_MOVE>*moves,bool onlyCaptures);
+void initMvvLva();

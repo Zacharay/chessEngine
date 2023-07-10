@@ -11,4 +11,5 @@
 using namespace std;
 void test()
 {
+    perfitSearch(6,true,"test");
 }
