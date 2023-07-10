@@ -399,3 +399,283 @@
 [OVERALL]        11305.5ms
 
 
+[DATE] Mon Jul 10 13:50:05 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.00021ms
+[MIDDLE]         6157.37ms
+[END]            4366.8ms
+[OVERALL]        10524.2ms
+
+
+[DATE] Mon Jul 10 13:50:26 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.000231ms
+[MIDDLE]         6194.88ms
+[END]            4394.95ms
+[OVERALL]        10589.8ms
+
+
+[DATE] Mon Jul 10 13:50:41 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.000241ms
+[MIDDLE]         6211.15ms
+[END]            4442.99ms
+[OVERALL]        10654.1ms
+
+
+[DATE] Mon Jul 10 13:51:08 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.00021ms
+[MIDDLE]         6347.11ms
+[END]            4504.02ms
+[OVERALL]        10851.1ms
+
+
+[DATE] Mon Jul 10 13:51:22 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.00021ms
+[MIDDLE]         6314.23ms
+[END]            4466.29ms
+[OVERALL]        10780.5ms
+
+
+[DATE] Mon Jul 10 13:51:41 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.000271ms
+[MIDDLE]         6624.18ms
+[END]            4758.01ms
+[OVERALL]        11382.2ms
+
+
+[DATE] Mon Jul 10 13:52:02 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.00011ms
+[MIDDLE]         6362.87ms
+[END]            4425.77ms
+[OVERALL]        10788.6ms
+
+
+[DATE] Mon Jul 10 13:52:21 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.000111ms
+[MIDDLE]         6457.47ms
+[END]            4681.28ms
+[OVERALL]        11138.8ms
+
+
+[DATE] Mon Jul 10 13:53:18 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.000281ms
+[MIDDLE]         6813.71ms
+[END]            4732.7ms
+[OVERALL]        11546.4ms
+
+
+[DATE] Mon Jul 10 13:53:36 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.00011ms
+[MIDDLE]         6846.46ms
+[END]            4708.11ms
+[OVERALL]        11554.6ms
+
+
+[DATE] Mon Jul 10 13:53:59 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.00014ms
+[MIDDLE]         6212.46ms
+[END]            4413.96ms
+[OVERALL]        10626.4ms
+
+
+[DATE] Mon Jul 10 13:55:11 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.00011ms
+[MIDDLE]         6405.86ms
+[END]            4453.4ms
+[OVERALL]        10859.3ms
+
+
+[DATE] Mon Jul 10 13:55:48 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.000121ms
+[MIDDLE]         6465.28ms
+[END]            4510.7ms
+[OVERALL]        10976ms
+
+
+[DATE] Mon Jul 10 13:56:07 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.00011ms
+[MIDDLE]         6372.24ms
+[END]            4442.54ms
+[OVERALL]        10814.8ms
+
+
+[DATE] Mon Jul 10 13:56:25 2023
+
+[DESCRIPTION]    test
+[DEPTH           6
+[OPENING]        0.000261ms
+[MIDDLE]         6365.03ms
+[END]            4519.42ms
+[OVERALL]        10884.4ms
+
+
+[DATE] Mon Jul 10 14:25:43 2023
+
+[DESCRIPTION]    move ordering with mvv lva and killer moves
+[DEPTH           6
+[OPENING]        0.00011ms
+[MIDDLE]         5989.86ms
+[END]            4272.85ms
+[OVERALL]        10262.7ms
+
+
+[DATE] Mon Jul 10 14:25:58 2023
+
+[DESCRIPTION]    move ordering with mvv lva and killer moves
+[DEPTH           6
+[OPENING]        0.000271ms
+[MIDDLE]         5786.27ms
+[END]            4290.55ms
+[OVERALL]        10076.8ms
+
+
+[DATE] Mon Jul 10 14:27:13 2023
+
+[DESCRIPTION]    move ordering with mvv lva and killer moves
+[DEPTH           6
+[OPENING]        0.00012ms
+[MIDDLE]         5961.89ms
+[END]            4303.26ms
+[OVERALL]        10265.1ms
+
+
+[DATE] Mon Jul 10 14:28:44 2023
+
+[DESCRIPTION]    move ordering with mvv lva and killer moves
+[DEPTH           7
+[OPENING]        0.00011ms
+[MIDDLE]         15727.5ms
+[END]            12070.8ms
+[OVERALL]        27798.2ms
+
+
+[DATE] Mon Jul 10 14:29:20 2023
+
+[DESCRIPTION]    move ordering with mvv lva and killer moves
+[DEPTH           7
+[OPENING]        0.00022ms
+[MIDDLE]         16136.8ms
+[END]            12285.8ms
+[OVERALL]        28422.6ms
+
+
+[DATE] Mon Jul 10 14:30:12 2023
+
+[DESCRIPTION]    move ordering with mvv lva and killer moves
+[DEPTH           7
+[OPENING]        0.000251ms
+[MIDDLE]         16188.1ms
+[END]            12276.6ms
+[OVERALL]        28464.7ms
+
+
+[DATE] Mon Jul 10 14:31:36 2023
+
+[DESCRIPTION]    move ordering with mvv lva and killer moves
+[DEPTH           7
+[OPENING]        0.000191ms
+[MIDDLE]         17263.4ms
+[END]            12744.2ms
+[OVERALL]        30007.6ms
+
+
+[DATE] Mon Jul 10 14:32:46 2023
+
+[DESCRIPTION]    move ordering with mvv lva and killer moves
+[DEPTH           7
+[OPENING]        0.00017ms
+[MIDDLE]         17110.5ms
+[END]            12738.5ms
+[OVERALL]        29849ms
+
+
+[DATE] Mon Jul 10 14:33:27 2023
+
+[DESCRIPTION]    move ordering with mvv lva and killer moves
+[DEPTH           7
+[OPENING]        0.00012ms
+[MIDDLE]         17239ms
+[END]            12754.3ms
+[OVERALL]        29993.3ms
+
+
+[DATE] Mon Jul 10 14:34:58 2023
+
+[DESCRIPTION]    move ordering with mvv lva and killer moves
+[DEPTH           7
+[OPENING]        0.000251ms
+[MIDDLE]         14266.5ms
+[END]            9528.43ms
+[OVERALL]        23795ms
+
+
+[DATE] Mon Jul 10 14:36:43 2023
+
+[DESCRIPTION]    move ordering with mvv lva and killer moves
+[DEPTH           7
+[OPENING]        0.00024ms
+[MIDDLE]         13261.6ms
+[END]            9136.99ms
+[OVERALL]        22398.5ms
+
+
+[DATE] Mon Jul 10 14:51:19 2023
+
+[DESCRIPTION]    move ordering with mvv lva and killer moves
+[DEPTH           7
+[OPENING]        0.000151ms
+[MIDDLE]         15306.3ms
+[END]            11878.8ms
+[OVERALL]        27185.1ms
+
+
+[DATE] Mon Jul 10 14:52:01 2023
+
+[DESCRIPTION]    move ordering with mvv lva and killer moves
+[DEPTH           7
+[OPENING]        0.000221ms
+[MIDDLE]         15427.1ms
+[END]            12151.3ms
+[OVERALL]        27578.4ms
+
+

@@ -34,6 +34,8 @@ public:
     int historyPly;
     S_UNDO history[2047];
     TT transpositionTable;
+    int killerMoves[2][2047];
+    int historyHeuristic[13][120];
 
     Board(string fen=DEFAULT_POS);
     void parseFen(string fen);

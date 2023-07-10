@@ -6,6 +6,7 @@
 #include <chrono>
 #include "search.h"
 #include <fstream>
+#include "uci.h"
 #include <ctime>
 
 u64 perfit(int depth,Board *boardObj){
@@ -32,16 +33,36 @@ u64 perfit(int depth,Board *boardObj){
 };
 void perfitTest(int depth,Board *boardObj){
 
-    for(int i=1;i<=depth;i++)
+
+    for(int d=1;d<=depth;d++)
     {
         auto start = std::chrono::high_resolution_clock::now();
 
-        u64 numOfNodes = perfit(i,boardObj);
+        vector<S_MOVE>movesList;
+        generateAllMoves(boardObj,&movesList,false);
+        u64 totalNodes = 0;
+        int legalMoves = 0;
+        for(int i=0;i<movesList.size();i++)
+        {
+            boardObj->makeMove(movesList[i].move);
+            int nodes = 0;
 
+            if (boardObj->isMoveLegal())
+            {
+            legalMoves++;
+                //std::string moveStr= convertMoveToString(movesList[i].move);
+                nodes += perfit(depth - 1,boardObj);
+                //std::cout<<moveStr<<" "<<nodes<<std::endl;
+            }
+            boardObj->unmakeMove();
+            totalNodes+=nodes;
+        }
+        std::cout<<std::endl;
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> duration = end - start;
         double milliseconds = duration.count() * 1000.0;
-        std::cout<<"Depth: "<<i<<" ply  Result: "<<numOfNodes<<" Time: "<<milliseconds<<" ms"<<std::endl;
+        std::cout<<"Depth: "<<depth<<" ply  Result: "<<totalNodes<<" Time: "<<milliseconds<<" ms"<<std::endl;
+
     }
 };
 
@@ -54,12 +75,12 @@ void perfitSearch(int depth,bool logToFile,std::string description)
         return;
     }
     std::string fen[100];
+
     //opening phase
     for(int i=0;i<100;i++)
     {
         std::getline(input,fen[i]);
     }
-
     //opening phase(28pieces)
     auto openingStart = std::chrono::high_resolution_clock::now();
     /*for(int i=0;i<30;i++)

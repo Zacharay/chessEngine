@@ -8,7 +8,13 @@
 Board::Board(string fen)
 :ply(0),historyPly(0),enPassantSq(Offboard),transpositionTable(256)
 {
-
+    for(int i=0;i<13;i++)
+    {
+        for(int j=0;j<120;j++)
+        {
+            historyHeuristic[i][j]=0;
+        }
+    }
     parseFen(fen);
     initBitboards(bitboards,board);
 }
@@ -461,7 +467,6 @@ void Board::parseFen(string fen)
             enPassantSq = it->second;
         }
     }
-
     fiftyMove = int(parts[4][0])*2;
     posHashKey = getHashKey(this);
 

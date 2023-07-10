@@ -107,7 +107,7 @@ void uciLoop(){
             getline(std::cin, command);
             if (command == "uci")
             {
-                std::cout << "id name oldSearch" << std::endl;
+                std::cout << "id name ZacharyChess" << std::endl;
                 std::cout << "id author Zachary" << std::endl;
 
                 std::cout << "uciok" << std::endl;

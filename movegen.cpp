@@ -11,7 +11,7 @@ void initMvvLva()
     {
         for(int attacker=whitePawn;attacker<=blackKing;attacker++)
         {
-            MvvLvaScores[victim][attacker] = VictimValue[victim]+ 10 - (VictimValue[attacker]/100);
+            MvvLvaScores[victim][attacker] = VictimValue[victim]+ 10 - (VictimValue[attacker]/100)+1000000;
         }
     }
 }
@@ -25,7 +25,19 @@ void addCaptureMove(vector<S_MOVE> *moves,int move,Board *boardObj)
 
 void addQuietMove(vector<S_MOVE> *moves,int move,Board *boardObj)
 {
-    moves->emplace_back(move,0);
+    int score= 0;
+    if(boardObj->killerMoves[0][boardObj->ply]==move)
+    {
+        score=900000;
+    }
+    else if(boardObj->killerMoves[1][boardObj->ply]==move)
+    {
+         score=800000;
+    }
+    else{
+        score = boardObj->historyHeuristic[boardObj->board[getMoveFrom(move)]][getMoveTo(move)];
+    }
+    moves->emplace_back(move,score);
 }
 
 void addWhitePawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int capturedPiece)

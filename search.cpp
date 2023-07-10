@@ -9,6 +9,26 @@
 #define INFINITY 10000000
 #define MATE 9000000
 
+void pickNextMove(int moveNum,vector<S_MOVE>&moves)
+{
+    int bestScore = -INFINITY;
+    int bestMove = 0;
+
+    for(int i=moveNum;i<moves.size();i++)
+    {
+        if(moves[i].score>bestScore)
+        {
+            bestMove = i;
+            bestScore = moves[i].score;
+        }
+    }
+
+    S_MOVE temp = moves[moveNum];
+    moves[moveNum] = moves[bestMove];
+    moves[bestMove] =temp;
+
+}
+
 int SearchPosition(Board *boardObj,searchInfo *SearchInfo){
     int bestMove=0;
     int bestEval=-INFINITY;
@@ -19,18 +39,17 @@ int SearchPosition(Board *boardObj,searchInfo *SearchInfo){
         generateAllMoves(boardObj,&moves,false);
         for(int i=0;i<moves.size();i++)
         {
-
+            pickNextMove(i,moves);
             boardObj->makeMove(moves[i].move);
             int moveScore = -INFINITY;
             if(boardObj->isMoveLegal())
             {
-
                 moveScore = -negaMax(boardObj,depth-1,-INFINITY,INFINITY,SearchInfo);
             }
             boardObj->unmakeMove();
             if(SearchInfo->stop==true)
             {
-                cout<<" "<<depth<<" searched"<<endl;
+                cout<<"Depth "<<depth<<" searched."<<endl;
                 return bestMove;
             }
 
@@ -64,9 +83,7 @@ void isTimeForSearchEnded(searchInfo *SearchInfo)
         SearchInfo->stop= true;
     }
 }
-bool compareScoreDescending(const S_MOVE& a, const S_MOVE& b) {
-    return a.score > b.score;
-}
+
 int Quiescence(int alpha,int beta,Board *boardObj, searchInfo *SearchInfo)
 {
     isTimeForSearchEnded(SearchInfo);
@@ -86,12 +103,19 @@ int Quiescence(int alpha,int beta,Board *boardObj, searchInfo *SearchInfo)
     }
     vector<S_MOVE>moves;
     generateAllMoves(boardObj,&moves,true);
-    std::sort(moves.begin(),moves.end(),compareScoreDescending);
+
 
     int legalMoves = 0;
     Score = -INFINITY;
     for(int i=0;i<moves.size();i++)
     {
+        if(SearchInfo->stop==true)
+        {
+            return 0;
+        }
+
+        pickNextMove(i,moves);
+
         boardObj->makeMove(moves[i].move);
         if(boardObj->isMoveLegal())
         {
@@ -100,10 +124,6 @@ int Quiescence(int alpha,int beta,Board *boardObj, searchInfo *SearchInfo)
         }
         boardObj->unmakeMove();
 
-        if(SearchInfo->stop==true)
-        {
-            return 0;
-        }
         if(Score>alpha)
         {
             if(Score>=beta)
@@ -148,11 +168,10 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta,searchInfo *SearchInfo)
             if(moves[i].move==pvMove)
             {
 
-                moves[i].score = 999999;
+                moves[i].score = 2000000;
             }
         }
     }
-    std::sort(moves.begin(),moves.end(),compareScoreDescending);
 
     moveScore = -INFINITY;
 
@@ -162,10 +181,13 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta,searchInfo *SearchInfo)
     int bestMove = 0;
     for(int i=0;i<moves.size();i++)
     {
+
         if(SearchInfo->stop==true)
         {
             return 0;
         }
+
+        pickNextMove(i,moves);
 
         boardObj->makeMove(moves[i].move);
 
@@ -184,9 +206,20 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta,searchInfo *SearchInfo)
                 if(moveScore>=beta)
                 {
                     boardObj->transpositionTable.storeHashEntry(boardObj->posHashKey,depth,bestMove,beta,hashFlagBeta);
+
+
+                    if(!(getMoveCapture(moves[i].move)))
+                    {
+                        boardObj->killerMoves[1][boardObj->ply] = boardObj->killerMoves[0][boardObj->ply];
+                        boardObj->killerMoves[0][boardObj->ply] = moves[i].move;
+                    }
+
                     return beta;
                 }
-
+                if(!(getMoveCapture(moves[i].move)))
+                {
+                    boardObj->historyHeuristic[boardObj->board[getMoveFrom(moves[i].move)]][getMoveTo(moves[i].move)]+=depth;
+                }
                 alpha=moveScore;
             }
 
