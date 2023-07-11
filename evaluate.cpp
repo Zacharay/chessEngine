@@ -1,4 +1,4 @@
-#include "defs.h"
+#include "helpers.h"
 #include "board.h"
 #include "bitboards.h"
 
@@ -97,13 +97,13 @@ int evaluatePosition(Board *boardObj){
 
         int pawnPos64 = sq120to64[pawnPos];
         //passedPawn
-        if(!(whitePassedPawn[pawnPos64]&boardObj->bitboards[blackPawn]))
+        if(!(Bitboards::whitePassedPawn[pawnPos64]&boardObj->bitboards[blackPawn]))
         {
             int pawnRank = 7-getRankFromSq(pawnPos);
             score+=PawnPassedBonus[pawnRank];
         }
         //isolatedPawn
-        if(!(isolatedMask[pawnPos64]&boardObj->bitboards[whitePawn]))
+        if(!(Bitboards::isolatedMask[pawnPos64]&boardObj->bitboards[whitePawn]))
         {
             score+=PawnIsolated;
         }
@@ -132,7 +132,7 @@ int evaluatePosition(Board *boardObj){
         materialWhite+= PieceValue[whiteRook];
         int rookPos = boardObj->pieceList[whiteRook][i];
         score+=RookTable[sq120to64[rookPos]];
-        uint64_t rookFileMask = fileMask[getFileFromSq(rookPos)-1];
+        uint64_t rookFileMask = Bitboards::fileMask[getFileFromSq(rookPos)-1];
         if(!(rookFileMask&boardObj->bitboards[whitePawn])&&!(rookFileMask&boardObj->bitboards[blackPawn]))
         {
             score+=RookOpenBonus;
@@ -160,13 +160,13 @@ int evaluatePosition(Board *boardObj){
 
         //passedPawn
         int pawnPos64 = sq120to64[pawnPos];
-        if(!(blackPassedPawn[pawnPos64]&boardObj->bitboards[whitePawn]))
+        if(!(Bitboards::blackPassedPawn[pawnPos64]&boardObj->bitboards[whitePawn]))
         {
             int pawnRank = getRankFromSq(pawnPos);
             score-=PawnPassedBonus[pawnRank];
         }
         //isolatedPawn
-        if(!(isolatedMask[pawnPos64]&boardObj->bitboards[blackPawn]))
+        if(!(Bitboards::isolatedMask[pawnPos64]&boardObj->bitboards[blackPawn]))
         {
             score-=PawnIsolated;
         }
@@ -196,7 +196,7 @@ int evaluatePosition(Board *boardObj){
         int rookPos = boardObj->pieceList[blackRook][i];
         score-=RookTable[MirrorSq[sq120to64[rookPos]]];
 
-        uint64_t rookFileMask = fileMask[getFileFromSq(rookPos)-1];
+        uint64_t rookFileMask = Bitboards::fileMask[getFileFromSq(rookPos)-1];
         if(!(rookFileMask&boardObj->bitboards[whitePawn])&&!(rookFileMask&boardObj->bitboards[blackPawn]))
         {
             score-=RookOpenBonus;
@@ -254,20 +254,3 @@ int evaluatePosition(Board *boardObj){
 
 };
 
-int evaluateGameOver(Board *boardObj){
-    int kingIdx = boardObj->turn==white?whiteKing:blackKing;
-    int kingPiecePos = boardObj->pieceList[kingIdx][1];
-    if(boardObj->isSquareAttacked(kingPiecePos,!boardObj->turn))
-    {
-        if(boardObj->turn==white)
-        {
-            return 900000;
-        }
-        else{
-            return -900000;
-        }
-    }
-    else{
-        return 0;
-    }
-}

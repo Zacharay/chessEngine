@@ -1,10 +1,9 @@
 #pragma once
 
-#include "defs.h"
+#include "helpers.h"
 #include <string.h>
 #include "bitboards.h"
 #include "tt.h"
-using namespace std;
 
 class Board{
 private:
@@ -15,10 +14,8 @@ private:
     bool isEnPassantPossible();
 
 public:
-//Square Centric
     int board[120];
 
-    //Piece Lists
     int numOfPieces[13];
     int pieceList[13][12];
 
@@ -37,8 +34,8 @@ public:
     int killerMoves[2][2047];
     int historyHeuristic[13][120];
 
-    Board(string fen=DEFAULT_POS);
-    void parseFen(string fen);
+    Board(std::string fen=DEFAULT_POS);
+    void parseFen(std::string fen);
 
     void makeMove(int move);
     void unmakeMove();

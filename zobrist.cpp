@@ -1,5 +1,5 @@
 #include <iostream>
-#include "defs.h"
+#include "helpers.h"
 #include <cstdint>
 #include "board.h"
 #include "zobrist.h"
@@ -208,7 +208,6 @@ const uint64_t Random64[781] = {
    U64(0x70CC73D90BC26E24), U64(0xE21A6B35DF0C3AD7), U64(0x003A93D8B2806962), U64(0x1C99DED33CB890A1),
    U64(0xCF3145DE0ADD4289), U64(0xD0E4427A5514FB72), U64(0x77C621CC9FB3A483), U64(0x67A34DAC4356550B),
    U64(0xF8D626AAAF278509)};
-
 
 bool isEnPassantPossible(Board *boardObj)
 {

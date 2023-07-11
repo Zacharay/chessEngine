@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include <defs.h>
+#include <helpers.h>
 #include <board.h>
 
-void generateAllMoves(Board *boardObj,vector<S_MOVE>*moves,bool onlyCaptures);
+void generateAllMoves(Board *boardObj,std::vector<S_MOVE>*moves,bool onlyCaptures);
 void initMvvLva();

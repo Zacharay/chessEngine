@@ -9,7 +9,7 @@
 #define INFINITY 10000000
 #define MATE 9000000
 
-void pickNextMove(int moveNum,vector<S_MOVE>&moves)
+void pickNextMove(int moveNum,std::vector<S_MOVE>&moves)
 {
     int bestScore = -INFINITY;
     int bestMove = 0;
@@ -35,7 +35,7 @@ int SearchPosition(Board *boardObj,searchInfo *SearchInfo){
 
     for(int depth=1;depth<SearchInfo->depth;depth++)
     {
-        vector<S_MOVE>moves;
+        std::vector<S_MOVE>moves;
         generateAllMoves(boardObj,&moves,false);
         for(int i=0;i<moves.size();i++)
         {
@@ -49,7 +49,6 @@ int SearchPosition(Board *boardObj,searchInfo *SearchInfo){
             boardObj->unmakeMove();
             if(SearchInfo->stop==true)
             {
-                cout<<"Depth "<<depth<<" searched."<<endl;
                 return bestMove;
             }
 
@@ -101,7 +100,7 @@ int Quiescence(int alpha,int beta,Board *boardObj, searchInfo *SearchInfo)
     {
         alpha = Score;
     }
-    vector<S_MOVE>moves;
+    std::vector<S_MOVE>moves;
     generateAllMoves(boardObj,&moves,true);
 
 
@@ -147,6 +146,11 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta,searchInfo *SearchInfo)
     int kingIdx = boardObj->turn==white?whiteKing:blackKing;
     bool isInCheck = boardObj->isSquareAttacked(boardObj->pieceList[kingIdx][1],boardObj->turn^1);
 
+    if(isInCheck)
+    {
+        depth++;
+    }
+
     if(depth==0)
     {
         return Quiescence(alpha,beta,boardObj,SearchInfo);
@@ -155,10 +159,10 @@ int negaMax(Board *boardObj,int depth,int alpha,int beta,searchInfo *SearchInfo)
     int pvMove = 0;
     if(boardObj->transpositionTable.getHashEntry(boardObj->posHashKey,depth,pvMove,moveScore,alpha,beta))
     {
-       return moveScore;
+        return moveScore;
     }
 
-    vector<S_MOVE>moves;
+    std::vector<S_MOVE>moves;
     generateAllMoves(boardObj,&moves,false);
 
     if(pvMove!=0)

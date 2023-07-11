@@ -1,5 +1,5 @@
 #include "movegen.h"
-#include "defs.h"
+#include "helpers.h"
 #include <iostream>
 
 const int VictimValue[13]= {0,100,200,300,500,900,1000,100,200,300,500,900,1000};
@@ -17,13 +17,13 @@ void initMvvLva()
 }
 
 
-void addCaptureMove(vector<S_MOVE> *moves,int move,Board *boardObj)
+void addCaptureMove(std::vector<S_MOVE> *moves,int move,Board *boardObj)
 {
     int score = MvvLvaScores[getMoveCapture(move)][boardObj->board[getMoveFrom(move)]];
     moves->emplace_back(move,score);
 }
 
-void addQuietMove(vector<S_MOVE> *moves,int move,Board *boardObj)
+void addQuietMove(std::vector<S_MOVE> *moves,int move,Board *boardObj)
 {
     int score= 0;
     if(boardObj->killerMoves[0][boardObj->ply]==move)
@@ -40,7 +40,7 @@ void addQuietMove(vector<S_MOVE> *moves,int move,Board *boardObj)
     moves->emplace_back(move,score);
 }
 
-void addWhitePawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int capturedPiece)
+void addWhitePawnMove(Board *boardObj,std::vector<S_MOVE> *moves,int from,int to,int capturedPiece)
 {
     int rankFrom = from/10;
     if(capturedPiece)
@@ -74,7 +74,7 @@ void addWhitePawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int 
         }
     }
 }
-void addBlackPawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int capturedPiece){
+void addBlackPawnMove(Board *boardObj,std::vector<S_MOVE> *moves,int from,int to,int capturedPiece){
     int rankFrom = from/10;
     if(capturedPiece)
     {
@@ -109,7 +109,7 @@ void addBlackPawnMove(Board *boardObj,vector<S_MOVE> *moves,int from,int to,int 
 }
 
 
-void generateAllMoves(Board *boardObj , vector<S_MOVE>*moves,bool onlyCaptures)
+void generateAllMoves(Board *boardObj , std::vector<S_MOVE>*moves,bool onlyCaptures)
 {
     moves->reserve(60);
     if(boardObj->turn==white)

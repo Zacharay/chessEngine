@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-Wall -Wextra" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -43,6 +44,8 @@
 		<Unit filename="evaluate.cpp" />
 		<Unit filename="evaluate.h" />
 		<Unit filename="helpers.cpp" />
+		<Unit filename="init.cpp" />
+		<Unit filename="init.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="movegen.cpp" />
 		<Unit filename="movegen.h" />

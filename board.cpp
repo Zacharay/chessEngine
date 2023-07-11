@@ -5,8 +5,8 @@
 #include <iostream>
 #include "zobrist.h"
 #include "bitboards.h"
-Board::Board(string fen)
-:ply(0),historyPly(0),enPassantSq(Offboard),transpositionTable(256)
+Board::Board(std::string fen)
+:ply(0),historyPly(0),enPassantSq(Offboard),transpositionTable(2048)
 {
     for(int i=0;i<13;i++)
     {
@@ -16,7 +16,7 @@ Board::Board(string fen)
         }
     }
     parseFen(fen);
-    initBitboards(bitboards,board);
+
 }
 bool Board::isMoveLegal()
 {
@@ -147,7 +147,7 @@ void Board::clearPiece(const int from){
     int piece = board[from];
     updatePieceHash(from,posHashKey,piece);
 
-    clearBit(sq120to64[from],bitboards[piece]);
+    Bitboards::clearBit(sq120to64[from],bitboards[piece]);
 
     board[from]=Empty;
     for(int i=1;i<=numOfPieces[piece];i++)
@@ -162,7 +162,7 @@ void Board::clearPiece(const int from){
 void Board::addPiece(const int to,const int piece)
 {
     updatePieceHash(to,posHashKey,piece);
-    setBit(sq120to64[to],bitboards[piece]);
+    Bitboards::setBit(sq120to64[to],bitboards[piece]);
 
     board[to]=piece;
     pieceList[piece][++numOfPieces[piece]]=to;
@@ -176,8 +176,8 @@ void Board::movePiece(const int from,const int to){
     board[to] = board[from];
     board[from]= Empty;
 
-    clearBit(sq120to64[from],bitboards[piece]);
-    setBit(sq120to64[to],bitboards[piece]);
+    Bitboards::clearBit(sq120to64[from],bitboards[piece]);
+    Bitboards::setBit(sq120to64[to],bitboards[piece]);
 
     for(int i=1;i<=numOfPieces[piece];i++)
     {
@@ -366,9 +366,9 @@ void Board::printBoard()
 {
     for(int i=0;i<8;i++)
     {
-        cout<<"+---";
+        std::cout<<"+---";
     }
-    cout<<"+"<<endl;
+    std::cout<<"+"<<std::endl;
 
     for(int rnk=0;rnk<8;rnk++)
     {
@@ -377,22 +377,22 @@ void Board::printBoard()
         {
             int sq120 = fileRankToSq120(file,rnk);
             char pieceChar = pieceToChar.at(board[sq120]);
-            cout<<"| "<<pieceChar<<" ";
+            std::cout<<"| "<<pieceChar<<" ";
 
         }
-        cout<<"| "<<8-rnk<<" "<<endl;
+        std::cout<<"| "<<8-rnk<<" "<<std::endl;
 
         for(int i=0;i<8;i++)
         {
-            cout<<"+---";
+            std::cout<<"+---";
         }
-        cout<<"+"<<endl;
+        std::cout<<"+"<<std::endl;
     }
     for(char c= 'a';c<='h';c++)
     {
-        cout<<"  "<<c<<" ";
+        std::cout<<"  "<<c<<" ";
     }
-    cout<<endl;
+    std::cout<<std::endl;
 }
 void Board::clearBoard()
 {
@@ -405,13 +405,13 @@ void Board::clearBoard()
     }
     for(int i=Empty;i<=blackKing;i++)numOfPieces[i]=0;
 }
-void Board::parseFen(string fen)
+void Board::parseFen(std::string fen)
 {
     clearBoard();
 
-    istringstream iss(fen);
-    vector<string> parts;
-    string part;
+    std::istringstream iss(fen);
+    std::vector<std::string> parts;
+    std::string part;
     while (std::getline(iss, part, ' ')) {
         parts.push_back(part);
     }
@@ -444,7 +444,6 @@ void Board::parseFen(string fen)
     }
     turn = parts[1][0]=='w'?white:black;
 
-    //castling rights
     castlingRights = 0;
     for(int i=0;i<parts[2].length();i++)
     {
@@ -469,15 +468,15 @@ void Board::parseFen(string fen)
     }
     fiftyMove = int(parts[4][0])*2;
     posHashKey = getHashKey(this);
-
+    Bitboards::setBitboards(bitboards,board);
 }
 void Board::printPieceLists(){
      for(int i=1;i<=12;i++)
     {
         for(int j=1;j<=numOfPieces[i];j++)
         {
-            cout<<pieceList[i][j]<<" ";
+            std::cout<<pieceList[i][j]<<" ";
         }
-        cout<<endl;
+        std::cout<<std::endl;
     }
 }

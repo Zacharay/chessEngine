@@ -1,6 +1,6 @@
 #include "perfit.h"
 #include "movegen.h"
-#include "defs.h"
+#include "helpers.h"
 #include <iostream>
 #include <vector>
 #include <chrono>
@@ -10,7 +10,7 @@
 #include <ctime>
 
 u64 perfit(int depth,Board *boardObj){
-    vector<S_MOVE>movesList;
+    std::vector<S_MOVE>movesList;
     generateAllMoves(boardObj,&movesList,false);
 
     u64 nodes=0;
@@ -34,11 +34,11 @@ u64 perfit(int depth,Board *boardObj){
 void perfitTest(int depth,Board *boardObj){
 
 
-    for(int d=1;d<=depth;d++)
-    {
+    //for(int d=1;d<=depth;d++)
+    //{
         auto start = std::chrono::high_resolution_clock::now();
 
-        vector<S_MOVE>movesList;
+        std::vector<S_MOVE>movesList;
         generateAllMoves(boardObj,&movesList,false);
         u64 totalNodes = 0;
         int legalMoves = 0;
@@ -50,9 +50,9 @@ void perfitTest(int depth,Board *boardObj){
             if (boardObj->isMoveLegal())
             {
             legalMoves++;
-                //std::string moveStr= convertMoveToString(movesList[i].move);
+                std::string moveStr= convertMoveToString(movesList[i].move);
                 nodes += perfit(depth - 1,boardObj);
-                //std::cout<<moveStr<<" "<<nodes<<std::endl;
+                std::cout<<moveStr<<" "<<nodes<<std::endl;
             }
             boardObj->unmakeMove();
             totalNodes+=nodes;
@@ -61,9 +61,9 @@ void perfitTest(int depth,Board *boardObj){
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> duration = end - start;
         double milliseconds = duration.count() * 1000.0;
-        std::cout<<"Depth: "<<depth<<" ply  Result: "<<totalNodes<<" Time: "<<milliseconds<<" ms"<<std::endl;
-
-    }
+        //std::cout<<"Depth: "<<depth<<" ply  Result: "<<totalNodes<<" Time: "<<milliseconds<<" ms"<<std::endl;
+         std::cout<<totalNodes;
+    //}
 };
 
 void perfitSearch(int depth,bool logToFile,std::string description)
@@ -156,9 +156,9 @@ void perfitSearch(int depth,bool logToFile,std::string description)
     }
     else
     {
-        cout<<timeOpeningMs<<endl;
-        cout<<timeMiddleMs<<endl;
-        cout<<timeEndMs<<endl;
-        cout<<timeOverallMs<<endl;
+        std::cout<<timeOpeningMs<<std::endl;
+        std::cout<<timeMiddleMs<<std::endl;
+        std::cout<<timeEndMs<<std::endl;
+        std::cout<<timeOverallMs<<std::endl;
     }
 }

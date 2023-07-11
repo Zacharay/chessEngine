@@ -1,5 +1,5 @@
 #include <iostream>
-#include "defs.h"
+#include "helpers.h"
 #include "board.h"
 #include "movegen.h"
 #include "search.h"
@@ -48,7 +48,7 @@ int parseMoveString(std::string moveString,Board *boardObj)
         else promotedPiece = -1;
     }
 
-    vector<S_MOVE>moves;
+    std::vector<S_MOVE>moves;
     generateAllMoves(boardObj,&moves,false);
     for(S_MOVE smove:moves)
     {
@@ -69,7 +69,7 @@ int parseMoveString(std::string moveString,Board *boardObj)
         }
     }
 }
-string convertMoveToString(int bestMove)
+std::string convertMoveToString(int bestMove)
 {
     int moveFrom = getMoveFrom(bestMove);
     int moveTo = getMoveTo(bestMove);
@@ -77,25 +77,125 @@ string convertMoveToString(int bestMove)
 
     auto it_first = sqNumberToName.find(moveFrom);
     auto it_second = sqNumberToName.find(moveTo);
-    string fromSq = it_first->second;
-    string toSq = it_second->second;
+    std::string fromSq = it_first->second;
+    std::string toSq = it_second->second;
 
     if(promotedPiece!=0)
     {
         promotedPiece = promotedPiece<blackPawn?promotedPiece+6:promotedPiece;
         auto it_third = pieceToChar.find(promotedPiece);
         char promotedChar = it_third->second;
-        string ans = fromSq+toSq+promotedChar;
+        std::string ans = fromSq+toSq+promotedChar;
         return ans;
     }
     else{
-        string ans = fromSq+toSq;
+        std::string ans = fromSq+toSq;
         return ans;
     }
 
 
 
 }
+void ParsePosition(std::string command,Board *boardObj)
+{
+    size_t startPos = command.find("startpos");
+    size_t fen = command.find("fen");
+
+    if(startPos!=std::string::npos)
+    {
+        boardObj->parseFen(DEFAULT_POS);
+    }
+    else if(fen!= std::string::npos)
+    {
+        std::string temp = command.substr(fen+4);
+        std::istringstream iss(temp);
+        std::string fenStr="";
+        std::string tempStr;
+        for(int i=0;i<5;i++)
+        {
+            iss>>tempStr;
+            fenStr+= tempStr+" ";
+        }
+        iss>>tempStr;
+        fenStr+= tempStr;
+        boardObj->parseFen(fenStr);
+    }
+
+    size_t movesPos = command.find("moves");
+    if(movesPos!=std::string::npos)
+    {
+        std::string allMoves = command.substr(movesPos+6);
+        std::istringstream iss(allMoves);
+        std::string moveStr;
+        while (iss >> moveStr)
+        {
+            int move = parseMoveString(moveStr,boardObj);
+            boardObj->makeMove(move);
+        }
+
+    }
+}
+void ParseGo(std::string command,searchInfo *SearchInfo,Board *boardObj)
+{
+    int time = -1;
+    int inc = 0;
+    int movesToGo = 40;
+
+    SearchInfo->depth = 40;
+    SearchInfo->timeSet= false;
+    SearchInfo->stop = false;
+
+    if(boardObj->turn==white)
+    {
+        size_t timePos = command.find("wtime");
+        if (timePos != std::string::npos) {
+            time = stoi(command.substr(timePos + 6));
+        }
+        size_t incPos = command.find("winc");
+        if(incPos != std::string::npos){
+            inc = stoi(command.substr(incPos + 5));
+        }
+    }
+    else{
+        size_t timePos = command.find("btime");
+        if (timePos != std::string::npos) {
+            time = stoi(command.substr(timePos + 6));
+        }
+        size_t incPos = command.find("binc");
+        if(incPos != std::string::npos){
+            inc = stoi(command.substr(incPos + 5));
+        }
+    }
+
+
+    size_t movesToGoPos = command.find("movestogo");
+    if(movesToGoPos!= std::string::npos)
+    {
+        movesToGo = stoi(command.substr(movesToGoPos + 10));
+    }
+    size_t depthPos = command.find("depth");
+    if(depthPos!= std::string::npos)
+    {
+        SearchInfo->depth = stoi(command.substr(depthPos + 6));
+    }
+
+
+    if(time!=-1)
+    {
+        time/=movesToGo;
+        time -=50;
+        auto searchDuration = std::chrono::milliseconds(time+inc);
+
+        SearchInfo->startTime = std::chrono::steady_clock::now();
+        SearchInfo->stopTime  = SearchInfo->startTime + searchDuration;
+        SearchInfo->timeSet = true;
+    }
+
+    int bestMove = SearchPosition(boardObj,SearchInfo);
+    std::string bestMoveStr = convertMoveToString(bestMove);
+    std::cout<<"bestmove "<<bestMoveStr<<std::endl;
+}
+
 void uciLoop(){
 
     Board boardObj;
@@ -112,88 +212,25 @@ void uciLoop(){
 
                 std::cout << "uciok" << std::endl;
             }
+            else if (command == "ucinewgame")
+            {
+                boardObj.parseFen(DEFAULT_POS);
+            }
             else if (command == "isready")
             {
                 std::cout << "readyok" << std::endl;
             }
             else if (command.substr(0, 8) == "position")
             {
-                size_t startPos = command.find("startpos");
-                size_t fen = command.find("fen");
-
-                if(startPos!=string::npos)
-                {
-                    boardObj.parseFen(DEFAULT_POS);
-                }
-                else if(fen!= string::npos)
-                {
-                    std::string temp = command.substr(fen+4);
-                    std::istringstream iss(temp);
-                    std::string fenStr="";
-                    std::string tempStr;
-                    for(int i=0;i<5;i++)
-                    {
-                        iss>>tempStr;
-                        fenStr+= tempStr+" ";
-                    }
-                    iss>>tempStr;
-                    fenStr+= tempStr;
-                    boardObj.parseFen(fenStr);
-                }
-
-                size_t movesPos = command.find("moves");
-                if(movesPos!=string::npos)
-                {
-                    std::string allMoves = command.substr(movesPos+6);
-                    std::istringstream iss(allMoves);
-                    std::string moveStr;
-                    while (iss >> moveStr) {
-
-                        int move = parseMoveString(moveStr,&boardObj);
-                        boardObj.makeMove(move);
-                    }
-
-                }
+                ParsePosition(command,&boardObj);
             }
             else if (command.substr(0, 2) == "go")
             {
-
-                size_t pos = command.find("wtime");
-                int time = -1;
-                int inc = 0;
-                int movesToGo = 40;
-                SearchInfo.depth = 40;
-
-
-                if (pos != string::npos&&boardObj.turn==white) {
-
-
-                    time = stoi(command.substr(pos + 6));
-                }
-                pos = command.find("btime");
-                if (pos != string::npos&&boardObj.turn==black) {
-
-                    time = stoi(command.substr(pos + 6));
-                }
-
-
-                SearchInfo.stop = false;
-                SearchInfo.startTime = std::chrono::steady_clock::now();
-                if(time!=-1)
-                {
-                    time/=movesToGo;
-                    time -=50;
-                    auto searchDuration = std::chrono::milliseconds(time+inc);
-                    SearchInfo.stopTime  = SearchInfo.startTime + searchDuration;
-                }
-                SearchInfo.timeSet = true;
-                int bestMove = SearchPosition(&boardObj,&SearchInfo);
-                std::string bestMoveStr = convertMoveToString(bestMove);
-                std::cout<<"bestmove "<<bestMoveStr<<std::endl;
+                ParseGo(command,&SearchInfo,&boardObj);
             }
             else if (command == "stop")
             {
-
+                SearchInfo.stop= true;
             }
             else if (command == "quit") {
                 break;

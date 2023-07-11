@@ -1,18 +1,15 @@
-#include "defs.h"
-
-const int hashTableSizeMB = 64;
-
-unordered_map<int, char> pieceToChar({
+#include "helpers.h"
+std::unordered_map<int, char> pieceToChar({
 {whitePawn, 'P'},{whiteKnight, 'N'},{whiteBishop, 'B'},{whiteRook, 'R'},{whiteQueen, 'Q'},{whiteKing, 'K'},
 {blackPawn, 'p'},{blackKnight, 'n'},{blackBishop, 'b'},{blackRook, 'r'},{blackQueen, 'q'},{blackKing, 'k'},
 {Empty, ' '}});
 
-unordered_map<char, int> charToPiece({
+std::unordered_map<char, int> charToPiece({
 {'P', whitePawn},{'N', whiteKnight},{'B', whiteBishop},{'R', whiteRook},{'Q', whiteQueen},{'K', whiteKing},
 {'p', blackPawn},{'n', blackKnight},{'b', blackBishop},{'r', blackRook},{'q', blackQueen},{'k', blackKing},
 {' ', Empty}});
 
-unordered_map<string,int> sqNameToNumber({
+std::unordered_map<std::string,int> sqNameToNumber({
     {"a1",A1},{"b1",B1},{"c1",C1},{"d1",D1},{"e1",E1},{"f1",F1},{"g1",G1},{"h1",H1},
     {"a2",A2},{"b2",B2},{"c2",C2},{"d2",D2},{"e2",E2},{"f2",F2},{"g2",G2},{"h2",H2},
     {"a3",A3},{"b3",B3},{"c3",C3},{"d3",D3},{"e3",E3},{"f3",F3},{"g3",G3},{"h3",H3},
@@ -23,7 +20,7 @@ unordered_map<string,int> sqNameToNumber({
     {"a8",A8},{"b8",B8},{"c8",C8},{"d8",D8},{"e8",E8},{"f8",F8},{"g8",G8},{"h8",H8},
 });
 
-unordered_map<int, string> sqNumberToName({
+std::unordered_map<int, std::string> sqNumberToName({
     {A1, "a1"}, {B1, "b1"}, {C1, "c1"}, {D1, "d1"}, {E1, "e1"}, {F1, "f1"}, {G1, "g1"}, {H1, "h1"},
     {A2, "a2"}, {B2, "b2"}, {C2, "c2"}, {D2, "d2"}, {E2, "e2"}, {F2, "f2"}, {G2, "g2"}, {H2, "h2"},
     {A3, "a3"}, {B3, "b3"}, {C3, "c3"}, {D3, "d3"}, {E3, "e3"}, {F3, "f3"}, {G3, "g3"}, {H3, "h3"},

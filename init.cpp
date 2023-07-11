@@ -3,6 +3,6 @@
 
 void init()
 {
-    initBitboardsMasks();
+    Bitboards::initBitboardsMasks();
     initMvvLva();
 }
