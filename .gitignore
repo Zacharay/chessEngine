@@ -4,3 +4,4 @@
 # generated directories
 bin/
 obj/
+build/
